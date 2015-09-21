@@ -1,0 +1,2 @@
+# Dinobot
+Python IRC bot
