@@ -306,6 +306,7 @@ while online: # Be careful with these! it might send you to an infinite loop
                 if "what is love" in lmess:
                     sendmsg(_channel,"Oh baby, don't hurt me")
                     sendmsg(_channel,"Don't hurt me no more")
+                    """
                 elif "what is" in lmess:
                     lmess=lmess[lmess.find("wh"):]
                     wiki(_channel,lmess.replace("what is",''),1)
@@ -317,7 +318,7 @@ while online: # Be careful with these! it might send you to an infinite loop
                     wiki(_channel,lmess.replace("whats",''),1)
                 if "how do i" in lmess:
                     lmess=lmess[lmess.find("how"):]
-                    wiki(_channel,lmess.replace("how do i",''),1)
+                    wiki(_channel,lmess.replace("how do i",''),1)"""
                 if "slymodi" not in lmess:   
                     if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
                         yay(_channel,)
