@@ -56,7 +56,7 @@ def quitirc(): # This function is used to quit IRC entirely
 def leavechan(chan):
     ircsock.send(bytes("PART "+ chan+" :PUDDING\n", 'UTF-8'))
     
-def hello(_channel,): # This function responds to a user that inputs "Hello Mybot"
+def hello(_channel): # This function responds to a user that inputs "Hello Mybot"
     sendmsg(_channel, "Hello!")
     
 def yay(_channel):
@@ -256,8 +256,8 @@ while online: # Be careful with these! it might send you to an infinite loop
             if "saoirse" in lmess and "slymodi" not in lmess:
                 lmess=lmess.replace("saoirse",'')
                 mess=mess.replace("Saoirse",'')
-                if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
-                    hello()
+                if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or ("hi " in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
+                    hello(_channel)
                 elif "join" in lmess:
                     tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
                     joinchan(tojoin)
