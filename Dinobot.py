@@ -7,12 +7,17 @@ Created on Sat Sep 19 21:09:34 2015
 
 # Import some necessary libraries.
 import socket 
-import StringIO
+import io
 from time import *
 import wikipedia
+from urllib import request
+
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0}
+shushed=False
+online=True
+
 def decrtimer(dur):
     global timers
     for key in timers:
@@ -32,96 +37,168 @@ botnick = "Saoirse" # Your bots nick
 
 
 def ping(mess): # This is our first function! It will respond to server Pings.
-    ircsock.send("PONG"+mess.strip("PING")+'\n')  
+    ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
 
 def sendmsg(chan , msg, delay=True): # This is the send message function, it simply sends messages to the channel.
     if delay: 
-        time=len(msg)/25.0
-        sleeping(time)
-    ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n") 
+        time=len(msg)/50.0
+        sleeping(1)
+    ircsock.send(bytes("PRIVMSG "+ chan +" :"+ msg +"\n", 'UTF-8') )
 
 def joinchan(chan): # This function is used to join channels.
-    ircsock.send("JOIN "+ chan +"\n")
+    ircsock.send(bytes("JOIN "+ chan +"\n", 'UTF-8'))
 
-def hello(): # This function responds to a user that inputs "Hello Mybot"
-    sendmsg(channel, "Hello!")
+def quitirc(): # This function is used to quit IRC entirely
+    global online
+    ircsock.send(bytes("QUIT "+" :PUDDING\n", 'UTF-8'))
+    online=False
     
-def yay():
+def leavechan(chan):
+    ircsock.send(bytes("PART "+ chan+" :PUDDING\n", 'UTF-8'))
+    
+def hello(_channel,): # This function responds to a user that inputs "Hello Mybot"
+    sendmsg(_channel, "Hello!")
+    
+def yay(_channel):
     global timers
     if timers['yay']<=0:
         sleeping(0.6)
-        sendmsg(channel, '\o/')
-        timers['yay']=5
+        sendmsg(_channel, '\o/')
+        timers['yay']=10
         
-def joshpost():
+def pudding(_channel, small=False):
+    global timers
+    if timers['pudding']<=0:
+        sleeping(0.6)
+        if small:
+            sendmsg(_channel, 'Pudding!')
+        else:
+            sendmsg(_channel, 'PUDDING!')
+        timers['pudding']=10
+        
+def joshpost(_channel):
     global timers
     if timers['joshpost']<=0:
         sleeping(0.6)
-        sendmsg(channel, 'POSHJOST! \o/')
-        timers['joshpost']=5
+        sendmsg(_channel, 'POSHJOST! \o/')
+        timers['joshpost']=10
         
-def greet(mess):
+def greet(_channel,mess):
     usr=mess[1:mess.find('!')]
-    sendmsg(channel, "Hey "+usr+"!")
-    sendmsg(channel, "o/")
+    sendmsg(_channel, "Hey "+usr+"!")
+    sendmsg(_channel, "o/")
     
-def wiki(string):
-    string=string.strip("?").strip(".").strip("!")
-    res = wikipedia.search(string)
-    print(res)
-    temppage=0
-    pageresult=0 
-    ref=0
-    counter=0
-    maxres=10
-    for stuff in res:
-        try: 
-            temppage=wikipedia.page(stuff)
-            if len(temppage.references)>ref:
-                ref=len(temppage.references)
-                pageresult=stuff
-            counter+=1
-            if counter>maxres:
-                break
-        except wikipedia.exceptions.DisambiguationError as e:
-            print e.options
-            for opt in e.options:
-                try: 
-                    temppage=wikipedia.page(opt)
-                    if len(temppage.references)>ref:
-                        ref=len(temppage.references)
-                        pageresult=opt
+def rektwiki(_channel,mess):
+    r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/"+mess.strip().replace(' ','\%20'))
+    htmlstr = r.read().decode().replace(' ','').replace('\t','').replace('\n','')
+    htmlstr=htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"",'')
+    htmlstr=htmlstr[:htmlstr.find("\""):].replace("\"",'')
+    print(htmlstr+'\n')
+    sendmsg(_channel, htmlstr)
+   
+   
+   
+   
+def wiki(_channel,string, count):
+    string=string.strip("'").strip('\r\n').strip("?").strip(".").strip("!").lower()
+    string=string.strip()
+    if string.startswith("a "):
+        string=string[2:]
+    elif string.startswith("an "):
+        string=string[3:]
+    elif string.startswith("the "):
+        string=string[4:]
+    print(string)
+    try: 
+        message=wikipedia.summary(string, sentences=count).replace('. ',".\n")
+        pageresult=string
+    except Exception:
+        res = wikipedia.search(string)
+        print(res)
+        temppage=0
+        pageresult=0 
+        ref=0
+        counter=0
+        maxres=5
+        test=wikipedia.suggest(string)
+        print(test)
+        if test== None or test.lower().replace(' ','')!=string.replace(' ',''):
+            for stuff in res:
+                print(stuff.lower().replace(' ','') )
+                print(string.replace(' ',''))
+                if stuff.lower().replace(' ','') == string.replace(' ','') : #exact match
+                    pageresult=stuff
+                    break
+                else:
+                    try: 
+                        temppage=wikipedia.page(stuff)
+                        if len(temppage.references)>ref:
+                            ref=len(temppage.references)
+                            pageresult=stuff
+                        counter+=1
+                        if counter>maxres:
+                            break
+                    except wikipedia.exceptions.DisambiguationError as e:
+                        #print(e.options)
+                        for opt in e.options:
+                            try: 
+                                temppage=wikipedia.page(opt)
+                                if len(temppage.references)>ref:
+                                    ref=len(temppage.references)
+                                    pageresult=opt
+                                counter+=1
+                                if counter>maxres:
+                                    break
+                            except : 
+                                pass
+                    except KeyError:
+                        pass
                     counter+=1
                     if counter>maxres:
                         break
-                except : 
-                    pass
-        except KeyError:
-            pass
-        counter+=1
-        if counter>maxres:
-            break
-    message=wikipedia.summary(pageresult, sentences=3).replace('.',".\n")
-    buf=StringIO.StringIO(message)
+        else:
+            pageresult=test
+            print(pageresult)
+        try: message=wikipedia.summary(pageresult, sentences=count).replace('. ',".\n")
+        except wikipedia.exceptions.DisambiguationError as e:
+            sendmsg(_channel, "I'm not sure what you mean, i could find:", delay=False)
+            i=0
+            if count!=1:
+                for stuff in e.options:
+        
+                        sendmsg(_channel, "https://en.wikipedia.org/wiki/"+stuff.replace(' ','_'))
+                        message="That's all!"
+                        i+=1
+                        if i==count:
+                            message="There's more but I'm stopping there!!"
+                            break
+            else:
+                message="https://en.wikipedia.org/wiki/"+pageresult.replace(' ','_')
+        except Exception as e: 
+            print(e)
+            message="Something went wrong. It's the fault of the python library makers!"
+            sendmsg(_channel, message, delay=False)
+            return
+    buf=io.StringIO(str(message))
     read=buf.readline()
     testbool=False
     while read!="":  
-        sendmsg(channel, read.strip(), delay=testbool)
+        sendmsg(_channel, read.strip(), delay=testbool)
         read=buf.readline()
         testbool=True
-    sendmsg(channel, "https://en.wikipedia.org/wiki/"+pageresult.replace(' ','_'))
+    if count!=1: sendmsg(_channel, "https://en.wikipedia.org/wiki/"+pageresult.replace(' ','_'))
     
                   
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
-ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n") # user authentication
-ircsock.send("NICK "+ botnick +"\n") # here we actually assign the nick to the bot
+ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
+ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot
 
  # Join the channel using the functions we previously defined
 
 while 1: # Be careful with these! it might send you to an infinite loop
     ircmsg = ircsock.recv(2048) # receive data from the server
-    buf=StringIO.StringIO(ircmsg)
+    buf=io.StringIO(str(ircmsg))
     while True:
         read=buf.readline()
         if read!="":
@@ -129,15 +206,15 @@ while 1: # Be careful with these! it might send you to an infinite loop
         else: break
     mess = queue[0] # removing any unnecessary linebreaks.
     mess = mess.strip('\n\r').strip()
-    print(mess) # Here we print what's coming from the server
+    #print(mess) # Here we print what's coming from the server
 
 
     if mess.find("Found your hostname") != -1 or mess.find("No ident response") !=-1:
       
       sent="NICK "+ botnick +"\n"+"USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
-      ircsock.send(sent) # here we actually assign the nick to the bot
+      ircsock.send(bytes(sent, 'UTF-8')) # here we actually assign the nick to the bot
       print(sent)
-      ircsock.send("PRIVMSG nickserv :iNOOPE\r\n")
+      ircsock.send(bytes("PRIVMSG nickserv :iNOOPE\r\n", 'UTF-8'))
 
     if mess.find("Welcome to the GameSurge IRC") != -1: # if the server pings us then we've got to respond!
         break
@@ -148,62 +225,121 @@ while 1: # Be careful with these! it might send you to an infinite loop
     if len(queue)!=0:
         del queue[0]
       
-joinchan("#talstest")
+joinchan(channel)
 del queue
 queue=[]
 print("yay")
-while 1: # Be careful with these! it might send you to an infinite loop
+while online: # Be careful with these! it might send you to an infinite loop
+    global shushed
     timer=time()
     ircmsg = ircsock.recv(2048) # receive data from the server
-    buf=StringIO.StringIO(ircmsg)
+    try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
+    except Exception: buf=io.StringIO("")
     while True:
         read=buf.readline()
         if read!="":
             queue.append(read)
         else: break
     while len(queue)!=0:
+        
         mess = queue[0] # removing any unnecessary linebreaks.
-        mess = mess.strip('\n\r').strip()
+        print(mess)
+        test = mess.strip('\r\n').strip().strip("'")
+        mess=test
         lmess=mess.lower()
-        print(mess) # Here we print what's coming from the server
+        _channel=lmess[lmess.find("#"):]
+        _channel=_channel[:_channel.find(":")].strip()
+        print(_channel)
         if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
             ping(mess)
         if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:      
-            if "saoirse" in lmess:
+            if "saoirse" in lmess and "slymodi" not in lmess:
+                lmess=lmess.replace("saoirse",'')
+                mess=mess.replace("Saoirse",'')
                 if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
                     hello()
+                elif "join" in lmess:
+                    tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                    joinchan(tojoin)
+                    sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                elif "leave" in lmess:
+                    sendmsg(_channel, "Bye! o/")
+                    leavechan(_channel)
+                elif "quit" in lmess:
+                    sendmsg(_channel, "Bye! o/")
+                    quitirc()
+                elif "help" in lmess:
+                    sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
+                elif "shush" in lmess:
+                    sendmsg(_channel,"OK, I'll shut up :(")
+                    shushed=True
+                elif "speak" in lmess:
+                    sendmsg(_channel,"Yay! Pudding!")
+                    shushed=False
+                elif "what is love" in lmess:
+                    sendmsg(_channel,"Oh baby, don't hurt me")
+                    sendmsg(_channel,"Don't hurt me no more")
+                elif "what is" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("what is",''),3)
+                elif "what's" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("what's",''),3)               
+                elif "whats" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("whats",''),3)
+                elif "who's" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("who's",''),3)
+                elif "who is" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("who is",''),3)
+                elif "how do i" in lmess:
+                    lmess=lmess[lmess.find("how"):]
+                    wiki(_channel,lmess.replace("how do i",''),3)
+                elif "rekt wiki" in lmess:
+                        lmess=lmess[lmess.find("rekt wiki"):]
+                        lmess=lmess.replace("rekt wiki",'').strip()
+                        rektwiki(_channel,lmess)
+                else: pudding(_channel,small=True)
+            elif not shushed:     
+                if "what is love" in lmess:
+                    sendmsg(_channel,"Oh baby, don't hurt me")
+                    sendmsg(_channel,"Don't hurt me no more")
+                elif "what is" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("what is",''),1)
+                if "what's" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("what's",''),1)               
+                if "whats" in lmess:
+                    lmess=lmess[lmess.find("wh"):]
+                    wiki(_channel,lmess.replace("whats",''),1)
+                if "how do i" in lmess:
+                    lmess=lmess[lmess.find("how"):]
+                    wiki(_channel,lmess.replace("how do i",''),1)
+                if "slymodi" not in lmess:   
+                    if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
+                        yay(_channel,)
+                    elif "rekt wiki" in lmess:
+                        lmess=lmess[lmess.find("rekt wiki"):]
+                        lmess=lmess.replace("rekt wiki",'').strip()
+                        rektwiki(_channel,lmess)
+                        
+                    elif "joshpost" in lmess: # if the server pings us then we've got to respond!
+                        joshpost(_channel,)
                     
-                else: sendmsg(channel, "Pudding!")
-                
-            if mess.find("\o/") != -1: # if the server pings us then we've got to respond!
-                yay()
-                
-            if mess.find("joshpost") != -1: # if the server pings us then we've got to respond!
-                joshpost()
-            
-            if "join" in lmess:
-                greet(mess)
-            
-            if "pudding" in lmess:
-                sendmsg(channel, "PUDDING!")
-                
-            if "what is" in lmess:
-                lmess=lmess[lmess.find("wh"):]
-                wiki(lmess.strip("what is"))
-            if "what's" in lmess:
-                lmess=lmess[lmess.find("wh"):]
-                wiki(lmess.strip("what's") )               
-            if "whats" in lmess:
-                lmess=lmess[lmess.find("wh"):]
-                wiki(lmess.strip("whats"))
-            if "how do i" in lmess:
-                lmess=lmess[lmess.find("how"):]
-                wiki(lmess.strip("how do i"))
-                
-            if "microsoft" in lmess or "windows" in lmess:
-                sendmsg(channel, "ACTION shakes fist at Microsoft")
-            if "whyy" in lmess:
-                sendmsg(channel, "¯\_(ツ)_/¯")
+                    elif "pudding" in lmess:
+                        pudding(_channel)
+     
+                    elif "microsoft" in lmess or "windows" in lmess:
+                        sendmsg(_channel, "ACTION shakes fist at Microsoft")
+                    elif "python" in lmess:
+                        sendmsg(_channel, "Yay Python! \o/")
+                    elif "whyy" in lmess:
+                        sendmsg(_channel, "¯\_(ツ)_/¯")
+                    
+
 
             
 
