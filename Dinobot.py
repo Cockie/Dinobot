@@ -11,6 +11,8 @@ import io
 from time import *
 import wikipedia
 from urllib import request
+import _thread
+import sys
 
 
 queue=[]
@@ -32,7 +34,7 @@ def sleeping(dur):
 
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-channel = "#talstest" # Channel
+channel = "#limittheory" # Channel
 botnick = "Saoirse" # Your bots nick
 
 
@@ -56,7 +58,7 @@ def quitirc(): # This function is used to quit IRC entirely
 def leavechan(chan):
     ircsock.send(bytes("PART "+ chan+" :PUDDING\n", 'UTF-8'))
     
-def hello(_channel): # This function responds to a user that inputs "Hello Mybot"
+def hello(_channel,): # This function responds to a user that inputs "Hello Mybot"
     sendmsg(_channel, "Hello!")
     
 def yay(_channel):
@@ -87,7 +89,6 @@ def greet(_channel,mess):
     usr=mess[1:mess.find('!')]
     sendmsg(_channel, "Hey "+usr+"!")
     sendmsg(_channel, "o/")
-    
 def rektwiki(_channel,mess):
     r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/"+mess.strip().replace(' ','\%20'))
     htmlstr = r.read().decode().replace(' ','').replace('\t','').replace('\n','')
@@ -187,6 +188,19 @@ def wiki(_channel,string, count):
         read=buf.readline()
         testbool=True
     if count!=1: sendmsg(_channel, "https://en.wikipedia.org/wiki/"+pageresult.replace(' ','_'))
+        
+
+def inpsay():
+    cmd = sys.stdin.readline()
+    if cmd!="":
+        if cmd.startswith("/me"):
+            string="ACTION"+cmd[3:].strip('\n')+""
+            #print(string)
+            sendmsg(channel,string)
+        else:
+            sendmsg(channel, cmd)
+        
+        
     
                   
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -229,122 +243,126 @@ joinchan(channel)
 del queue
 queue=[]
 print("yay")
-while online: # Be careful with these! it might send you to an infinite loop
-    global shushed
-    timer=time()
-    ircmsg = ircsock.recv(2048) # receive data from the server
-    try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
-    except Exception: buf=io.StringIO("")
-    while True:
-        read=buf.readline()
-        if read!="":
-            queue.append(read)
-        else: break
-    while len(queue)!=0:
-        
-        mess = queue[0] # removing any unnecessary linebreaks.
-        print(mess)
-        test = mess.strip('\r\n').strip().strip("'")
-        mess=test
-        lmess=mess.lower()
-        _channel=lmess[lmess.find("#"):]
-        _channel=_channel[:_channel.find(":")].strip()
-        print(_channel)
-        if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
-            ping(mess)
-        if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:      
-            if "saoirse" in lmess and "slymodi" not in lmess:
-                lmess=lmess.replace("saoirse",'')
-                mess=mess.replace("Saoirse",'')
-                if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or ("hi " in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
-                    hello(_channel)
-                elif "join" in lmess:
-                    tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
-                    joinchan(tojoin)
-                    sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
-                elif "leave" in lmess:
-                    sendmsg(_channel, "Bye! o/")
-                    leavechan(_channel)
-                elif "quit" in lmess:
-                    sendmsg(_channel, "Bye! o/")
-                    quitirc()
-                elif "help" in lmess:
-                    sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
-                elif "shush" in lmess:
-                    sendmsg(_channel,"OK, I'll shut up :(")
-                    shushed=True
-                elif "speak" in lmess:
-                    sendmsg(_channel,"Yay! Pudding!")
-                    shushed=False
-                elif "what is love" in lmess:
-                    sendmsg(_channel,"Oh baby, don't hurt me")
-                    sendmsg(_channel,"Don't hurt me no more")
-                elif "what is" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("what is",''),3)
-                elif "what's" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("what's",''),3)               
-                elif "whats" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("whats",''),3)
-                elif "who's" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("who's",''),3)
-                elif "who is" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("who is",''),3)
-                elif "how do i" in lmess:
-                    lmess=lmess[lmess.find("how"):]
-                    wiki(_channel,lmess.replace("how do i",''),3)
-                elif "rekt wiki" in lmess:
-                        lmess=lmess[lmess.find("rekt wiki"):]
-                        lmess=lmess.replace("rekt wiki",'').strip()
-                        rektwiki(_channel,lmess)
-                else: pudding(_channel,small=True)
-            elif not shushed:     
-                if "what is love" in lmess:
-                    sendmsg(_channel,"Oh baby, don't hurt me")
-                    sendmsg(_channel,"Don't hurt me no more")
-                    """
-                elif "what is" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("what is",''),1)
-                if "what's" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("what's",''),1)               
-                if "whats" in lmess:
-                    lmess=lmess[lmess.find("wh"):]
-                    wiki(_channel,lmess.replace("whats",''),1)
-                if "how do i" in lmess:
-                    lmess=lmess[lmess.find("how"):]
-                    wiki(_channel,lmess.replace("how do i",''),1)"""
-                if "slymodi" not in lmess:   
-                    if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
-                        yay(_channel,)
+def main():
+    while online: # Be careful with these! it might send you to an infinite loop
+        global shushed
+        timer=time()
+        ircmsg = ircsock.recv(2048) # receive data from the server
+        try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
+        except Exception: buf=io.StringIO("")
+        while True:
+            read=buf.readline()
+            if read!="":
+                queue.append(read)
+            else: break
+        while len(queue)!=0:
+            mess = queue[0] # removing any unnecessary linebreaks.
+            print(mess)
+            test = mess.strip('\r\n').strip().strip("'")
+            mess=test
+            lmess=mess.lower()
+            _channel=lmess[lmess.find("#"):]
+            _channel=_channel[:_channel.find(":")].strip()
+            #print(_channel)
+            if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
+                ping(mess)
+            if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:   
+                
+                if "saoirse" in lmess and "slymodi" not in lmess:
+                    lmess=lmess.replace("saoirse",'')
+                    mess=mess.replace("Saoirse",'')
+                    if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
+                        hello(_channel)
+                    elif "join" in lmess:
+                        tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                        joinchan(tojoin)
+                        sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                    elif "leave" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        leavechan(_channel)
+                    elif "quit" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        quitirc()
+                    elif "help" in lmess:
+                        sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
+                    elif "shush" in lmess:
+                        sendmsg(_channel,"OK, I'll shut up :(")
+                        shushed=True
+                    elif "speak" in lmess:
+                        sendmsg(_channel,"Yay! Pudding!")
+                        shushed=False
+                    elif "what is love" in lmess:
+                        sendmsg(_channel,"Oh baby, don't hurt me")
+                        sendmsg(_channel,"Don't hurt me no more")
+                    elif "what is" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("what is",''),3)
+                    elif "what's" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("what's",''),3)               
+                    elif "whats" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("whats",''),3)
+                    elif "who's" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("who's",''),3)
+                    elif "who is" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("who is",''),3)
+                    elif "how do i" in lmess:
+                        lmess=lmess[lmess.find("how"):]
+                        wiki(_channel,lmess.replace("how do i",''),3)
                     elif "rekt wiki" in lmess:
-                        lmess=lmess[lmess.find("rekt wiki"):]
-                        lmess=lmess.replace("rekt wiki",'').strip()
-                        rektwiki(_channel,lmess)
+                            lmess=lmess[lmess.find("rekt wiki"):]
+                            lmess=lmess.replace("rekt wiki",'').strip()
+                            rektwiki(_channel,lmess)
+                    else: pudding(_channel,small=True)
+                elif not shushed:     
+                    if "what is love" in lmess:
+                        sendmsg(_channel,"Oh baby, don't hurt me")
+                        sendmsg(_channel,"Don't hurt me no more")
+                    """elif "what is" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("what is",''),1)
+                    if "what's" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("what's",''),1)               
+                    if "whats" in lmess:
+                        lmess=lmess[lmess.find("wh"):]
+                        wiki(_channel,lmess.replace("whats",''),1)
+                    if "how do i" in lmess:
+                        lmess=lmess[lmess.find("how"):]
+                        wiki(_channel,lmess.replace("how do i",''),1)"""
+                    if "slymodi" not in lmess:   
+                        if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
+                            yay(_channel,)
+                        elif "rekt wiki" in lmess:
+                            lmess=lmess[lmess.find("rekt wiki"):]
+                            lmess=lmess.replace("rekt wiki",'').strip()
+                            rektwiki(_channel,lmess)
+                            
+                        elif "joshpost" in lmess: # if the server pings us then we've got to respond!
+                            joshpost(_channel,)
                         
-                    elif "joshpost" in lmess: # if the server pings us then we've got to respond!
-                        joshpost(_channel,)
-                    
-                    elif "pudding" in lmess:
-                        pudding(_channel)
-     
-                    elif "microsoft" in lmess or "windows" in lmess:
-                        sendmsg(_channel, "ACTION shakes fist at Microsoft")
-                    elif "python" in lmess:
-                        sendmsg(_channel, "Yay Python! \o/")
-                    elif "whyy" in lmess:
-                        sendmsg(_channel, "¯\_(ツ)_/¯")
-                    
+                        elif "pudding" in lmess:
+                            pudding(_channel)
+         
+                        elif "microsoft" in lmess or "windows" in lmess:
+                            sendmsg(_channel, "ACTION shakes fist at Microsoft")
+                        elif "python" in lmess:
+                            sendmsg(_channel, "Yay Python! \o/")
+                        elif "whyy" in lmess:
+                            sendmsg(_channel, "¯\_(ツ)_/¯")
+                        
+    
+    
+                
+    
+            del queue[0]
+        timer-=time()
+        timer=-timer
+        decrtimer(timer)
 
-
-            
-
-        del queue[0]
-    timer-=time()
-    timer=-timer
-    decrtimer(timer)
+_thread.start_new_thread(main,())
+while True:
+    inpsay()
