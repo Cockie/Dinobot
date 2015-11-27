@@ -13,12 +13,19 @@ import wikipedia
 from urllib import request
 import _thread
 import sys
+import random
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0}
 shushed=False
 online=True
+confus=[]
+with open('confucius.txt') as f:
+   for line in f:
+       print(line)
+       line=line[line.find('.')+1:].strip()
+       confus.append(line)
 
 def decrtimer(dur):
     global timers
@@ -85,6 +92,20 @@ def joshpost(_channel):
         sendmsg(_channel, 'POSHJOST! \o/')
         timers['joshpost']=10
         
+def microsoft(_channel):
+    global timers
+    if timers['microsoft']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "ACTION shakes fist at Microsoft")
+        timers['microsoft']=500
+        
+def python(_channel):
+    global timers
+    if timers['python']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "Yay Python! \o/")
+        timers['python']=500
+        
 def greet(_channel,mess):
     usr=mess[1:mess.find('!')]
     sendmsg(_channel, "Hey "+usr+"!")
@@ -96,6 +117,9 @@ def rektwiki(_channel,mess):
     htmlstr=htmlstr[:htmlstr.find("\""):].replace("\"",'')
     print(htmlstr+'\n')
     sendmsg(_channel, htmlstr)
+    
+def confucius(_channel):
+    sendmsg(_channel, "Confucius says: "+random.choice(confus))
    
    
    
@@ -112,7 +136,7 @@ def wiki(_channel,string, count):
     print(string)
     try: 
         message=wikipedia.summary(string, sentences=count).replace('. ',".\n")
-        pageresult=string
+        pageresult=wikipedia.page(string).url.replace('Https://en.wikipedia.org/wiki/','').replace('https://en.wikipedia.org/wiki/','')
     except Exception:
         res = wikipedia.search(string)
         print(res)
@@ -200,6 +224,8 @@ def inpsay():
         else:
             sendmsg(channel, cmd)
         
+def stripleft(string, stuff):
+    return string[string.find(stuff)+len(stuff):]
         
     
                   
@@ -269,8 +295,9 @@ def main():
             if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:   
                 
                 if "saoirse" in lmess and "slymodi" not in lmess:
-                    lmess=lmess.replace("saoirse",'')
-                    mess=mess.replace("Saoirse",'')
+                    lmess=stripleft(lmess,"saoirse")
+                    mess=stripleft(mess,"Saoirse")
+                    print(lmess)
                     if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
                         hello(_channel)
                     elif "join" in lmess:
@@ -296,26 +323,28 @@ def main():
                         sendmsg(_channel,"Don't hurt me no more")
                     elif "what is" in lmess:
                         lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("what is",''),3)
+                        wiki(_channel,stripleft(lmess,"what is"),3)
                     elif "what's" in lmess:
                         lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("what's",''),3)               
+                        wiki(_channel,stripleft(lmess,"what's"),3)               
                     elif "whats" in lmess:
                         lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("whats",''),3)
+                        wiki(_channel,stripleft(lmess,"whats"),3)
                     elif "who's" in lmess:
                         lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("who's",''),3)
+                        wiki(_channel,stripleft(lmess,"who's"),3)
                     elif "who is" in lmess:
                         lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("who is",''),3)
+                        wiki(_channel,stripleft(lmess,"who is"),3)
                     elif "how do i" in lmess:
                         lmess=lmess[lmess.find("how"):]
-                        wiki(_channel,lmess.replace("how do i",''),3)
+                        wiki(_channel,stripleft(lmess,"how do i"),3)
                     elif "rekt wiki" in lmess:
                             lmess=lmess[lmess.find("rekt wiki"):]
                             lmess=lmess.replace("rekt wiki",'').strip()
                             rektwiki(_channel,lmess)
+                    elif "confuc" in lmess or "confusius" in lmess:
+                        confucius(_channel)
                     else: pudding(_channel,small=True)
                 elif not shushed:     
                     if "what is love" in lmess:
@@ -348,9 +377,9 @@ def main():
                             pudding(_channel)
          
                         elif "microsoft" in lmess or "windows" in lmess:
-                            sendmsg(_channel, "ACTION shakes fist at Microsoft")
+                            microsoft(_channel)
                         elif "python" in lmess:
-                            sendmsg(_channel, "Yay Python! \o/")
+                            python(_channel)
                         elif "whyy" in lmess:
                             sendmsg(_channel, "¯\_(ツ)_/¯")
                         
