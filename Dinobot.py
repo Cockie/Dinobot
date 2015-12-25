@@ -121,7 +121,7 @@ def rektwiki(_channel,mess):
 def confucius(_channel):
     sendmsg(_channel, "Confucius says: "+random.choice(confus))
    
-   
+ 
    
    
 def wiki(_channel,string, count):
@@ -295,12 +295,13 @@ def main():
             if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:   
                 
                 if "saoirse" in lmess and "slymodi" not in lmess:
+                    if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
+                        hello(_channel)
                     lmess=stripleft(lmess,"saoirse")
                     mess=stripleft(mess,"Saoirse")
                     print(lmess)
-                    if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
-                        hello(_channel)
-                    elif "join" in lmess:
+                    
+                    if "join" in lmess:
                         tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
                         joinchan(tojoin)
                         sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
