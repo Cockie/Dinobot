@@ -293,96 +293,78 @@ def main():
             if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
                 ping(mess)
             if "GameSurge" not in mess and lmess.find(":saoirse!")!=0:   
-                
-                if "saoirse" in lmess and "slymodi" not in lmess:
-                    if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
-                        hello(_channel)
-                    lmess=stripleft(lmess,"saoirse")
-                    mess=stripleft(mess,"Saoirse")
-                    print(lmess)
-                    
-                    if "join" in lmess:
-                        tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
-                        joinchan(tojoin)
-                        sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
-                    elif "leave" in lmess:
-                        sendmsg(_channel, "Bye! o/")
-                        leavechan(_channel)
-                    elif "quit" in lmess:
-                        sendmsg(_channel, "Bye! o/")
-                        quitirc()
-                    elif "help" in lmess:
-                        sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
-                    elif "shush" in lmess:
-                        sendmsg(_channel,"OK, I'll shut up :(")
-                        shushed=True
-                    elif "speak" in lmess:
-                        sendmsg(_channel,"Yay! Pudding!")
-                        shushed=False
-                    elif "what is love" in lmess:
-                        sendmsg(_channel,"Oh baby, don't hurt me")
-                        sendmsg(_channel,"Don't hurt me no more")
-                    elif "what is" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,stripleft(lmess,"what is"),3)
-                    elif "what's" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,stripleft(lmess,"what's"),3)               
-                    elif "whats" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,stripleft(lmess,"whats"),3)
-                    elif "who's" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,stripleft(lmess,"who's"),3)
-                    elif "who is" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,stripleft(lmess,"who is"),3)
-                    elif "how do i" in lmess:
-                        lmess=lmess[lmess.find("how"):]
-                        wiki(_channel,stripleft(lmess,"how do i"),3)
-                    elif "rekt wiki" in lmess:
-                            lmess=lmess[lmess.find("rekt wiki"):]
-                            lmess=lmess.replace("rekt wiki",'').strip()
-                            rektwiki(_channel,lmess)
-                    elif "confuc" in lmess or "confusius" in lmess:
-                        confucius(_channel)
-                    else: pudding(_channel,small=True)
-                elif not shushed:     
+                if not shushed:     
                     if "what is love" in lmess:
                         sendmsg(_channel,"Oh baby, don't hurt me")
-                        sendmsg(_channel,"Don't hurt me no more")
-                    """elif "what is" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("what is",''),1)
-                    if "what's" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("what's",''),1)               
-                    if "whats" in lmess:
-                        lmess=lmess[lmess.find("wh"):]
-                        wiki(_channel,lmess.replace("whats",''),1)
-                    if "how do i" in lmess:
-                        lmess=lmess[lmess.find("how"):]
-                        wiki(_channel,lmess.replace("how do i",''),1)"""
-                    if "slymodi" not in lmess:   
-                        if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
-                            yay(_channel,)
-                        elif "rekt wiki" in lmess:
-                            lmess=lmess[lmess.find("rekt wiki"):]
-                            lmess=lmess.replace("rekt wiki",'').strip()
-                            rektwiki(_channel,lmess)
-                            
-                        elif "joshpost" in lmess: # if the server pings us then we've got to respond!
-                            joshpost(_channel,)
+                        sendmsg(_channel,"Don't hurt me no more")  
+                    if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess:                
+                        yay(_channel,)
+                    elif "rekt wiki" in lmess:
+                        lmess=lmess[lmess.find("rekt wiki"):]
+                        lmess=lmess.replace("rekt wiki",'').strip()
+                        rektwiki(_channel,lmess)
+                    elif "tableflip" in lmess:
+                        sendmsg(_channel,"(╯°□°）╯︵ ┻━┻ ")  
+                    elif "joshpost" in lmess: # if the server pings us then we've got to respond!
+                        joshpost(_channel,)
+                    
+                    elif "pudding" in lmess:
+                        pudding(_channel)
+     
+                    elif "microsoft" in lmess or "windows" in lmess:
+                        microsoft(_channel)
+                    elif "python" in lmess:
+                        python(_channel)
+                    elif "doomed" in lmess:
+                        sendmsg(_channel,"DOOOOMED!")
+                    elif "whyy" in lmess:
+                        sendmsg(_channel, "¯\_(ツ)_/¯")
+                    elif "saoirse" in lmess:
+                        if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
+                            hello(_channel)
+                        lmess=stripleft(lmess,"saoirse")
+                        mess=stripleft(mess,"Saoirse")
+                        print(lmess)
                         
-                        elif "pudding" in lmess:
-                            pudding(_channel)
-         
-                        elif "microsoft" in lmess or "windows" in lmess:
-                            microsoft(_channel)
-                        elif "python" in lmess:
-                            python(_channel)
-                        elif "whyy" in lmess:
-                            sendmsg(_channel, "¯\_(ツ)_/¯")
+                        if "join" in lmess:
+                            tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                            joinchan(tojoin)
+                            sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                        elif "leave" in lmess:
+                            sendmsg(_channel, "Bye! o/")
+                            leavechan(_channel)
+                        elif "quit" in lmess:
+                            sendmsg(_channel, "Bye! o/")
+                            quitirc()
+                        elif "help" in lmess:
+                            sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
+                        elif "shush" in lmess:
+                            sendmsg(_channel,"OK, I'll shut up :(")
+                            shushed=True
+                        elif "speak" in lmess:
+                            sendmsg(_channel,"Yay! Pudding!")
+                            shushed=False
+                        elif "what is" in lmess:
+                            lmess=lmess[lmess.find("wh"):]
+                            wiki(_channel,stripleft(lmess,"what is"),3)
+                        elif "what's" in lmess:
+                            lmess=lmess[lmess.find("wh"):]
+                            wiki(_channel,stripleft(lmess,"what's"),3)               
+                        elif "whats" in lmess:
+                            lmess=lmess[lmess.find("wh"):]
+                            wiki(_channel,stripleft(lmess,"whats"),3)
+                        elif "who's" in lmess:
+                            lmess=lmess[lmess.find("wh"):]
+                            wiki(_channel,stripleft(lmess,"who's"),3)
+                        elif "who is" in lmess:
+                            lmess=lmess[lmess.find("wh"):]
+                            wiki(_channel,stripleft(lmess,"who is"),3)
+                        elif "how do i" in lmess:
+                            lmess=lmess[lmess.find("how"):]
+                            wiki(_channel,stripleft(lmess,"how do i"),3)
+                        elif "confuc" in lmess or "confusius" in lmess:
+                            confucius(_channel)
+                        else: pudding(_channel,small=True)
                         
     
     
