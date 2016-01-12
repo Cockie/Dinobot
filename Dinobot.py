@@ -14,6 +14,7 @@ from urllib import request
 import _thread
 import sys
 import random
+import re
 
 
 queue=[]
@@ -289,6 +290,8 @@ def main():
             lmess=mess.lower()
             _channel=lmess[lmess.find("#"):]
             _channel=_channel[:_channel.find(":")].strip()
+            regex1 = re.compile('do+omed')
+            regex2 = re.compile('spa+ce')
             #print(_channel)
             if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
                 ping(mess)
@@ -315,8 +318,11 @@ def main():
                         microsoft(_channel)
                     elif "python" in lmess:
                         python(_channel)
-                    elif "doomed" in lmess:
+                    
+                    elif re.search(regex1, lmess)!=None:
                         sendmsg(_channel,"DOOOOMED!")
+                    elif re.search(regex2, lmess)!=None:
+                        sendmsg(_channel,"SPAAACE!")
                     elif "whyy" in lmess:
                         sendmsg(_channel, "¯\_(ツ)_/¯")
                     elif "saoirse" in lmess:
