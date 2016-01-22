@@ -18,7 +18,7 @@ import re
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0}
 shushed=False
 online=True
 confus=[]
@@ -106,6 +106,13 @@ def python(_channel):
         sleeping(0.6)
         sendmsg(_channel, "Yay Python! \o/")
         timers['python']=500
+        
+def linux(_channel):
+    global timers
+    if timers['linux']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "Yay Linux! \o/")
+        timers['linux']=500
         
 def greet(_channel,mess):
     usr=mess[1:mess.find('!')]
@@ -306,8 +313,22 @@ def main():
                         lmess=lmess[lmess.find("rekt wiki"):]
                         lmess=lmess.replace("rekt wiki",'').strip()
                         rektwiki(_channel,lmess)
-                    elif "tableflip" in lmess:
-                        sendmsg(_channel,"(╯°□°）╯︵ ┻━┻ ")  
+                    elif "tableflip" in mess:
+                        temp="(╯°□°）╯︵"
+                        for i in range(1,lmess.count('!')):
+                            temp+="  "
+                        temp+="┻━┻ "
+                        sendmsg(_channel,temp)  
+                    elif "TABLEFLIP" in mess:
+                        temp="︵ヽ(`Д´)ﾉ︵"
+                        for i in range(1,lmess.count('!')):
+                            temp+="  "
+                            temp="  "+temp
+                        temp+="┻━┻ "
+                        print(temp)
+                        temp="┻━┻ "+temp
+                        print(temp)
+                        sendmsg(_channel,temp) 
                     elif "joshpost" in lmess: # if the server pings us then we've got to respond!
                         joshpost(_channel,)
                     
@@ -318,7 +339,10 @@ def main():
                         microsoft(_channel)
                     elif "python" in lmess:
                         python(_channel)
-                    
+                    elif "linux" in lmess:
+                        linux(_channel)
+                    elif "hail satan" in lmess:
+                        sendmsg(_channel,"All hail the dark lord!! o/ His victory is certain!! o/")
                     elif re.search(regex1, lmess)!=None:
                         sendmsg(_channel,"DOOOOMED!")
                     elif re.search(regex2, lmess)!=None:
@@ -347,9 +371,6 @@ def main():
                         elif "shush" in lmess:
                             sendmsg(_channel,"OK, I'll shut up :(")
                             shushed=True
-                        elif "speak" in lmess:
-                            sendmsg(_channel,"Yay! Pudding!")
-                            shushed=False
                         elif "what is" in lmess:
                             lmess=lmess[lmess.find("wh"):]
                             wiki(_channel,stripleft(lmess,"what is"),3)
@@ -371,6 +392,9 @@ def main():
                         elif "confuc" in lmess or "confusius" in lmess:
                             confucius(_channel)
                         else: pudding(_channel,small=True)
+            elif "speak" in lmess:
+                            sendmsg(_channel,"Yay! Pudding!")
+                            shushed=False
                         
     
     
