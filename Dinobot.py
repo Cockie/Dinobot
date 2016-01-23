@@ -313,12 +313,6 @@ def main():
                         lmess=lmess[lmess.find("rekt wiki"):]
                         lmess=lmess.replace("rekt wiki",'').strip()
                         rektwiki(_channel,lmess)
-                    elif "tableflip" in mess:
-                        temp="(╯°□°）╯︵"
-                        for i in range(1,lmess.count('!')):
-                            temp+="  "
-                        temp+="┻━┻ "
-                        sendmsg(_channel,temp)  
                     elif "TABLEFLIP" in mess:
                         temp="︵ヽ(`Д´)ﾉ︵"
                         for i in range(1,lmess.count('!')):
@@ -328,6 +322,12 @@ def main():
                         print(temp)
                         temp="┻━┻ "+temp
                         print(temp)
+                        sendmsg(_channel,temp) 
+                    elif "tableflip" in lmess:
+                        temp="(╯°□°）╯︵"
+                        for i in range(1,lmess.count('!')):
+                            temp+="  "
+                        temp+="┻━┻ "
                         sendmsg(_channel,temp) 
                     elif "joshpost" in lmess: # if the server pings us then we've got to respond!
                         joshpost(_channel,)
