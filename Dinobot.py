@@ -18,7 +18,7 @@ import re
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0}
 shushed=False
 online=True
 confus=[]
@@ -85,6 +85,13 @@ def pudding(_channel, small=False):
         else:
             sendmsg(_channel, 'PUDDING!')
         timers['pudding']=10
+        
+def space(_channel):
+    global timers
+    if timers['space']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "SPAAACE!")
+        timers['space']=200
         
 def joshpost(_channel):
     global timers
@@ -239,7 +246,7 @@ def stripleft(string, stuff):
                   
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
-ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
+ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutorial covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
 ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot
 
  # Join the channel using the functions we previously defined
@@ -346,7 +353,7 @@ def main():
                     elif re.search(regex1, lmess)!=None:
                         sendmsg(_channel,"DOOOOMED!")
                     elif re.search(regex2, lmess)!=None:
-                        sendmsg(_channel,"SPAAACE!")
+                        space(_channel)
                     elif "whyy" in lmess:
                         sendmsg(_channel, "¯\_(ツ)_/¯")
                     elif "saoirse" in lmess:
@@ -392,9 +399,9 @@ def main():
                         elif "confuc" in lmess or "confusius" in lmess:
                             confucius(_channel)
                         else: pudding(_channel,small=True)
-            elif "speak" in lmess:
-                            sendmsg(_channel,"Yay! Pudding!")
-                            shushed=False
+                elif "speak" in lmess and "saoirse" in lmess:
+                    sendmsg(_channel,"Yay! Pudding!")
+                    shushed=False
                         
     
     
