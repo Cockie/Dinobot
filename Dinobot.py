@@ -18,10 +18,15 @@ import re
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0, 'murikah': 0, 'tintin': 0}
 shushed=False
 online=True
 confus=[]
+spacelist=[]
+fi = open('space.txt', 'r')
+for line in fi:
+    spacelist.append(line.strip().replace('"',''))
+fi.close()
 with open('confucius.txt') as f:
    for line in f:
        print(line)
@@ -90,8 +95,22 @@ def space(_channel):
     global timers
     if timers['space']<=0:
         sleeping(0.6)
-        sendmsg(_channel, "SPAAACE!")
+        sendmsg(_channel, random.choice(spacelist))
         timers['space']=200
+        
+def tintin(_channel):
+    global timers
+    if timers['tintin']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "YAY TINTIN!")
+        timers['tintin']=200
+
+def murikah(_channel):
+    global timers
+    if timers['murikah']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "MURIKAH!!! /o/")
+        timers['murikah']=200
         
 def joshpost(_channel):
     global timers
@@ -348,6 +367,10 @@ def main():
                         python(_channel)
                     elif "linux" in lmess:
                         linux(_channel)
+                    elif "america" in lmess:
+                        murikah(_channel)
+                    elif "tintin" in lmess:
+                        tintin(_channel)
                     elif "hail satan" in lmess:
                         sendmsg(_channel,"All hail the dark lord!! o/ His victory is certain!! o/")
                     elif re.search(regex1, lmess)!=None:
