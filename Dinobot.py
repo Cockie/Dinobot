@@ -333,7 +333,7 @@ def main():
                     if "what is love" in lmess:
                         sendmsg(_channel,"Oh baby, don't hurt me")
                         sendmsg(_channel,"Don't hurt me no more")  
-                    if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess and quackbot not in lmess:                
+                    if "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:                
                         yay(_channel,)
                     elif "rekt wiki" in lmess:
                         lmess=lmess[lmess.find("rekt wiki"):]
