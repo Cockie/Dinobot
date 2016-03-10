@@ -377,8 +377,32 @@ def main():
                         sendmsg(_channel,"DOOOOMED!")
                     elif re.search(regex2, lmess)!=None:
                         space(_channel)
-                    elif "whyy" in lmess:
+                    elif "whyy" in lmess or "!shrug" in lmess:
                         sendmsg(_channel, "¯\_(ツ)_/¯")
+                    elif "!facepalm" in lmess:
+                        sendmsg(_channel, "(－‸ლ)")
+                    elif "!headshake" in lmess or "!hmm" in lmess:
+                        sendmsg(_channel, "ಠ_ಠ")
+                    elif "!frown" in lmess:
+                        sendmsg(_channel, "ఠ_ఠ")
+                    elif "!run" in lmess or "!scared" in lmess:
+                        sendmsg(_channel, "ヽ(ﾟДﾟ)ﾉ")
+                    elif "!lenny" in lmess or "!eyebrows" in lmess:
+                        sendmsg(_channel, "( ͡° ͜ʖ ͡°)")
+                    elif "!yay" in lmess:
+                        sendmsg(_channel, "\(^.^)/")
+                    elif "!magic" in lmess:
+                        sendmsg(_channel, "(∩｀-´)⊃━☆ﾟ.*･｡ﾟ")
+                    elif "!highfive" in lmess:
+                        sendmsg(_channel, "\(＾○＾)人(＾○＾)/")
+                    elif "!cry" in lmess:
+                        sendmsg(_channel, "｡･ﾟﾟ･(>д<)･ﾟﾟ･｡")
+                    elif "!shiny" in lmess:
+                        sendmsg(_channel, "°˖✧◝(⁰▿⁰)◜✧˖°")
+                    elif "!walk" in lmess:
+                        sendmsg(_channel, "ᕕ( ᐛ )ᕗ")
+                    elif "!creeper" in lmess:
+                        sendmsg(_channel, "ʘ‿ʘ")
                     elif "saoirse" in lmess:
                         if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
                             hello(_channel)
