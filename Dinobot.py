@@ -403,6 +403,8 @@ def main():
                         sendmsg(_channel, "ᕕ( ᐛ )ᕗ")
                     elif "!creeper" in lmess:
                         sendmsg(_channel, "ʘ‿ʘ")
+                    elif "!aww" in lmess:
+                        sendmsg(_channel, "(｡◕‿‿◕｡)")
                     elif "saoirse" in lmess:
                         if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
                             hello(_channel)
