@@ -5,6 +5,8 @@ Created on Sat Sep 19 21:09:34 2015
 @author: yorick
 """
 
+
+
 # Import some necessary libraries.
 import socket 
 import io
@@ -22,6 +24,12 @@ timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'lin
 shushed=False
 online=True
 confus=[]
+
+lefts=[]
+rights=[]
+eyes=[]
+mouths=[]
+
 spacelist=[]
 fi = open('space.txt', 'r')
 for line in fi:
@@ -32,6 +40,24 @@ with open('confucius.txt') as f:
        print(line)
        line=line[line.find('.')+1:].strip()
        confus.append(line)
+test="#LEFTS"
+with open('procemo.txt') as f:
+    for line in f:
+        print(line)
+        line=line.strip('\n').strip(' ')
+        if line=='':
+            pass
+        elif line.startswith('#'):
+            test=line
+        else:
+            if test=="#LEFTS":
+                lefts.append(line)
+            elif test=="#RIGHTS":
+                rights.append(line)
+            elif test=="#EYES":
+                eyes.append(line)
+            elif test=="#MOUTHS":
+                mouths.append(line)
 
 def decrtimer(dur):
     global timers
@@ -50,7 +76,15 @@ server = "irc.web.gamesurge.net" # Server
 channel = "#limittheory" # Channel
 botnick = "Saoirse" # Your bots nick
 
-
+def procemo(chan):
+    test=random.choice(lefts)
+    test+=random.choice(eyes)
+    test+=random.choice(mouths)
+    test+=random.choice(eyes)
+    test+=random.choice(rights)
+    print(test)
+    sendmsg(chan, test)
+    
 def ping(mess): # This is our first function! It will respond to server Pings.
     ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
 
@@ -405,6 +439,8 @@ def main():
                         sendmsg(_channel, "ʘ‿ʘ")
                     elif "!aww" in lmess:
                         sendmsg(_channel, "(｡◕‿‿◕｡)")
+                    elif "!procemo" in lmess:
+                        procemo(_channel)
                     elif "saoirse" in lmess:
                         if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
                             hello(_channel)
