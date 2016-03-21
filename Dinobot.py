@@ -20,7 +20,7 @@ import re
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0, 'murikah': 0, 'tintin': 0}
+timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0, 'murikah': 0, 'tintin': 0, 'cpp': 0}
 shushed=False
 online=True
 confus=[]
@@ -77,12 +77,17 @@ channel = "#limittheory" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def procemo(chan):
+    i=random.randint(1,6)
     test=random.choice(lefts)
-    test+=random.choice(eyes)
+    eye=random.choice(eyes)
+    test+=eye
     test+=random.choice(mouths)
-    test+=random.choice(eyes)
+    if i==6:
+        test+=random.choice(eyes)
+    else:
+        test+=eye
     test+=random.choice(rights)
-    print(test)
+    print(i)
     sendmsg(chan, test)
     
 def ping(mess): # This is our first function! It will respond to server Pings.
@@ -166,6 +171,13 @@ def python(_channel):
         sleeping(0.6)
         sendmsg(_channel, "Yay Python! \o/")
         timers['python']=500
+
+def cpp(_channel):
+    global timers
+    if timers['cpp']<=0:
+        sleeping(0.6)
+        sendmsg(_channel, "Yay C++! \o/")
+        timers['cpp']=500
         
 def linux(_channel):
     global timers
@@ -399,6 +411,8 @@ def main():
                         microsoft(_channel)
                     elif "python" in lmess:
                         python(_channel)
+                    elif "c++" in lmess:
+                        cpp(_channel)
                     elif "linux" in lmess:
                         linux(_channel)
                     elif "america" in lmess:
