@@ -43,12 +43,14 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !facepalm: (－‸ლ)  
 !frown: ఠ_ఠ  
 !headshake: ಠ_ಠ  
+!hi: ( ﾟ▽ﾟ)/  
 !highfive: \(＾○＾)人(＾○＾)/  
 !hmm: ಠ_ಠ  
 !hug: (>^_^)><(^o^<)  
 !lenny: ( ͡° ͜ʖ ͡°)  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
 !muhaha: ψ(｀∇´)ψ  
+!ohno:  ヽ（゜ロ゜；）ノ  
 !run: ヽ(ﾟДﾟ)ﾉ  
 !scared: ヽ(ﾟДﾟ)ﾉ  
 !shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
