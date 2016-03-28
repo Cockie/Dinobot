@@ -14,18 +14,18 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
 doomed: DOOOOMED!  
 space: SPAAACE!  
-saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
-microsoft, windows, : ACTION shakes fist at Microsoft  
 \o/, : \o/  
-joshpost, : POSHJOST! \o/  
-saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
-linux, : Yay Linux! \o/  
-tintin, : YAY TINTIN!  
 america, murika, : MURIKAH!!! /o/  
-hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 c++, : Yay C++!  
+hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
+joshpost, : POSHJOST! \o/  
+linux, : Yay Linux! \o/  
+microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
 python, : Yay Python!  
+saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
+saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
+tintin, : YAY TINTIN!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
   
@@ -34,26 +34,26 @@ Emoticons:
 tableflip: (╯°□°）╯︵ ┻━┻    
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
-!lenny: ( ͡° ͜ʖ ͡°)  
-!shrug: ¯\_(ツ)_/¯  
+!aww: (｡◕‿‿◕｡)  
+!creeper: ʘ‿ʘ  
+!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+!dance: （〜^∇^)〜  
 !drink: (^-^)_旦”"  
+!eyebrows: ( ͡° ͜ʖ ͡°)  
+!facepalm: (－‸ლ)  
+!frown: ఠ_ఠ  
+!headshake: ಠ_ಠ  
+!highfive: \(＾○＾)人(＾○＾)/  
+!hmm: ಠ_ಠ  
+!lenny: ( ͡° ͜ʖ ͡°)  
+!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!run: ヽ(ﾟДﾟ)ﾉ  
+!scared: ヽ(ﾟДﾟ)ﾉ  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
+!shrug: ¯\_(ツ)_/¯  
+!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
 !walk: ᕕ( ᐛ )ᕗ  
 !whee: ─=≡Σ(((つ◕ل͜◕)つ  
 !whistle: ♪(´ε｀)  
-!hmm: ಠ_ಠ  
-!scared: ヽ(ﾟДﾟ)ﾉ  
-!eyebrows: ( ͡° ͜ʖ ͡°)  
-!dance: （〜^∇^)〜  
-!facepalm: (－‸ლ)  
-whyy: ¯\_(ツ)_/¯  
-!frown: ఠ_ఠ  
 !yay: \(^.^)/  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
-!headshake: ಠ_ಠ  
-!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!creeper: ʘ‿ʘ  
-!highfive: \(＾○＾)人(＾○＾)/  
-!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
-!run: ヽ(ﾟДﾟ)ﾉ  
-!aww: (｡◕‿‿◕｡)  
-!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+whyy: ¯\_(ツ)_/¯  
