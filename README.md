@@ -14,46 +14,46 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
 doomed: DOOOOMED!  
 space: SPAAACE! 
-linux, : Yay Linux! \o/  
 pudding, : PUDDING!  
-america, murika, : MURIKAH!!! /o/  
-c++, : Yay C++!  
-\o/, : \o/  
-saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
-tintin, : YAY TINTIN!  
-joshpost, : POSHJOST! \o/  
-microsoft, windows, : ACTION shakes fist at Microsoft  
-python, : Yay Python!  
-hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
+joshpost, : POSHJOST! \o/  
+python, : Yay Python!  
+america, murika, : MURIKAH!!! /o/  
+hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
+\o/, : \o/  
+c++, : Yay C++!  
+linux, : Yay Linux! \o/  
+microsoft, windows, : ACTION shakes fist at Microsoft  
+saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
+tintin, : YAY TINTIN!  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands
 tableflip: (╯°□°）╯︵ ┻━┻   
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻   
 !procemo: generates a procedural emoticon  
-!highfive: \(＾○＾)人(＾○＾)/  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
-whyy: ¯\_(ツ)_/¯  
+!yay: \(^.^)/  
+!creeper: ʘ‿ʘ  
 !headshake: ಠ_ಠ  
+!scared: ヽ(ﾟДﾟ)ﾉ  
+!whee: ─=≡Σ(((つ◕ل͜◕)つ  
 !run: ヽ(ﾟДﾟ)ﾉ  
 !drink: (^-^)_旦”"  
-!whee: ─=≡Σ(((つ◕ل͜◕)つ  
-!shrug: ¯\_(ツ)_/¯  
-!whistle: ♪(´ε｀)  
-!yay: \(^.^)/  
-!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
+whyy: ¯\_(ツ)_/¯  
 !hmm: ಠ_ಠ  
-!scared: ヽ(ﾟДﾟ)ﾉ  
-!walk: ᕕ( ᐛ )ᕗ  
+!shrug: ¯\_(ツ)_/¯  
 !dance: （〜^∇^)〜  
-!aww: (｡◕‿‿◕｡)  
-!frown: ఠ_ఠ  
-!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!lenny: ( ͡° ͜ʖ ͡°)  
-!creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
-!facepalm: (－‸ლ)  
+!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
+!whistle: ♪(´ε｀)  
+!aww: (｡◕‿‿◕｡)  
+!walk: ᕕ( ᐛ )ᕗ  
 !eyebrows: ( ͡° ͜ʖ ͡°)  
+!facepalm: (－‸ლ)  
+!frown: ఠ_ఠ  
+!highfive: \(＾○＾)人(＾○＾)/  
+!lenny: ( ͡° ͜ʖ ͡°)  
+!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
