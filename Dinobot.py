@@ -38,9 +38,9 @@ emoticons={}
 spacelist=[]         
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-channel = "#limittheory" # Channel
-#channel = "#talstest" # Channel
-botnick = "Saoirse" # Your bots nick
+#channel = "#limittheory" # Channel
+channel = "#talstest" # Channel
+botnick = "Saoirse2" # Your bots nick
 
 def stringify(t):
     res=""
@@ -116,18 +116,23 @@ def initialise():
         with open('read1.txt') as f1:
             for line in f1:
                 f.write(line)
-            for key, value in triggers.items():
-                f.write(stringify(key)+": "+value+"  \n")
+            for key in sorted(triggers):
+                f.write(stringify(key)+": "+triggers[key]+"  \n")
         f.write("  \n")
         with open('read2.txt') as f1:
             for line in f1:
                 f.write(line)
-            for key, value in emoticons.items():
-                f.write(key+": "+value+"  \n")
-    output = subprocess.call(["git","commit", "-m" ,"'Automatic manual update'", "README.md"], stdout=subprocess.PIPE)
+            for key in sorted(emoticons):
+                f.write(key+": "+emoticons[key]+"  \n")
+    output = subprocess.check_output(["git", "diff", "README.md"])
     print(output)
-    output = subprocess.call(["git", "push"], stdout=subprocess.PIPE)
-    print(output)
+    if output!=b'':   
+        output = subprocess.call(["git","commit", "-m" ,"'Automatic manual update'", "README.md"], stdout=subprocess.PIPE)
+        print(output)
+        output = subprocess.call(["git", "push"], stdout=subprocess.PIPE)
+        print(output)
+    
+    
         
                 
 def decrtimer(dur):
