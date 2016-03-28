@@ -38,8 +38,8 @@ emoticons={}
 spacelist=[]         
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-#channel = "#limittheory" # Channel
-channel = "#talstest" # Channel
+channel = "#limittheory" # Channel
+#channel = "#talstest" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
@@ -379,26 +379,31 @@ def readirc(queue):
                 if any([greeting in lmess for greeting in greetings]):
                     sendmsg(_channel, random.choice(greetings).title()+"!")
                     
-                lmess=stripleft(lmess,"saoirse")
-                mess=stripleft(mess,"Saoirse")
+                #lmess=stripleft(lmess,"saoirse")
+                #mess=stripleft(mess,"Saoirse")
                 print(lmess)
                 if "join" in lmess:
                     tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
                     joinchan(tojoin)
                     sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                    return
                 elif "leave" in lmess:
                     sendmsg(_channel, "Bye! o/")
                     leavechan(_channel)
+                    return
                 elif "quit" in lmess:
                     sendmsg(_channel, "Bye! o/")
                     quitirc()
+                    return
                 elif "shush" in lmess:
                     sendmsg(_channel,"OK, I'll shut up :(")
                     shushed=True
+                    return
                 elif "initialise" in lmess or "initialize" in lmess:
                     sendmsg(_channel,"OK, reinitialising...")
                     initialise()
                     sendmsg(_channel,"Done! Should work now.")
+                    return
                 #wikipedia search
                 else:
                     for stuff in wikitriggers:
@@ -408,10 +413,12 @@ def readirc(queue):
                             return
                 if "confuc" in lmess or "confusius" in lmess:
                     confucius(_channel)
+                    return
                 else: sendmsg(_channel,"Pudding!")
             #no-named things
-            elif "rekt wiki" in lmess:
+            if "rekt wiki" in lmess:
                 rektwiki(_channel,lmess)
+                return
             elif "TABLEFLIP" in mess:
                 temp="︵ヽ(`Д´)ﾉ︵"
                 for i in range(1,lmess.count('!')):
@@ -420,12 +427,14 @@ def readirc(queue):
                 temp+="┻━┻ "
                 temp="┻━┻ "+temp
                 sendmsg(_channel,temp) 
+                return
             elif "tableflip" in lmess:
                 temp="(╯°□°）╯︵"
                 for i in range(1,lmess.count('!')):
                     temp+="  "
                 temp+="┻━┻ "
                 sendmsg(_channel,temp) 
+                return
             else:
                 for key, value in triggers.items():
                     if any([stuff in lmess for stuff in key]):
@@ -436,12 +445,16 @@ def readirc(queue):
                             return
             if re.search(regex1, lmess)!=None:
                 sendmsg(_channel,"DOOOOMED!")
+                return
             elif re.search(regex2, lmess)!=None:
                 space(_channel)
+                return
             elif "!procemo" in lmess:
                 procemo(_channel)
+                return
             elif "!listemo" in lmess or "!emoticonlist" in lmess:
                 listemo(_channel, mess)
+                return
             else:
                 for key, value in emoticons.items():
                     if key in lmess:
@@ -450,6 +463,7 @@ def readirc(queue):
         elif "speak" in lmess and "saoirse" in lmess:
             sendmsg(_channel,"Yay! Pudding!")
             shushed=False    
+            return
     return
 
 
