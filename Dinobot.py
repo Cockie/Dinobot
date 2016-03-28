@@ -17,6 +17,7 @@ import _thread
 import sys
 import random
 import re
+import subprocess
 
 
 queue=[]
@@ -40,6 +41,13 @@ server = "irc.web.gamesurge.net" # Server
 #channel = "#limittheory" # Channel
 channel = "#talstest" # Channel
 botnick = "Saoirse2" # Your bots nick
+
+def stringify(t):
+    res=""
+    for stuff in t:
+        res+=stuff
+        res+=", "
+    return res.strip(',')
 
 def initialise():
     global spacelist
@@ -102,6 +110,32 @@ def initialise():
                 triggers[tuple(line[0])]=line[1].replace("\\n",'\n')
                 timers[line[0][0]]=0
                 timervals[line[0][0]]=int(line[2])
+
+    with open('README.md','w') as f:
+        with open('read1.txt') as f1:
+            for line in f1:
+                f.write(line)
+            for key, value in triggers.items():
+                f.write(stringify(key)+": "+value+"  \n")
+        f.write("  \n")
+        with open('read2.txt') as f1:
+            for line in f1:
+                f.write(line)
+            for key, value in emoticons.items():
+                f.write(key+": "+value+"  \n")
+    bashCommand = "git add README.md"
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print(output)
+    bashCommand = "git commit -a --allow-empty-message -m ''"
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print(output)
+    bashCommand = "git push"
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    print(output)
+        
                 
 def decrtimer(dur):
     global timers
@@ -450,5 +484,5 @@ def main():
         decrtimer(timer)
 
 _thread.start_new_thread(main,())
-while True:
+while online:
     inpsay()
