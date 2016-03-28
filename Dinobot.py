@@ -40,7 +40,7 @@ spacelist=[]
 server = "irc.web.gamesurge.net" # Server
 #channel = "#limittheory" # Channel
 channel = "#talstest" # Channel
-botnick = "Saoirse2" # Your bots nick
+botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
     res=""
@@ -123,17 +123,9 @@ def initialise():
                 f.write(line)
             for key, value in emoticons.items():
                 f.write(key+": "+value+"  \n")
-    bashCommand = "git add README.md"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
+    output = subprocess.call(["git","commit", "-m" ,"'Automatic manual update'", "README.md"], stdout=subprocess.PIPE)
     print(output)
-    bashCommand = "git commit -a --allow-empty-message -m ''"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    print(output)
-    bashCommand = "git push"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
+    output = subprocess.call(["git", "push"], stdout=subprocess.PIPE)
     print(output)
         
                 
@@ -364,12 +356,106 @@ joinchan(channel)
 del queue
 queue=[]
 print("yay")
+
+def readirc(queue):
+    global shushed
+    global broken
+    global timers
+    mess = queue[0] # removing any unnecessary linebreaks.
+    print(mess)
+    test = mess.strip('\r\n').strip().strip("'")
+    mess=test
+    lmess=mess.lower()
+    _channel=lmess[lmess.find("#"):]
+    _channel=_channel[:_channel.find(":")].strip()
+    regex1 = re.compile('do+omed')
+    regex2 = re.compile('spa+ce')
+    #print(_channel)
+    if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
+        ping(mess)
+    if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
+        if not shushed and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:    
+            if "saoirse" in lmess:
+                if any([greeting in lmess for greeting in greetings]):
+                    sendmsg(_channel, random.choice(greetings).title()+"!")
+                    
+                lmess=stripleft(lmess,"saoirse")
+                mess=stripleft(mess,"Saoirse")
+                print(lmess)
+                if "join" in lmess:
+                    tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                    joinchan(tojoin)
+                    sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                elif "leave" in lmess:
+                    sendmsg(_channel, "Bye! o/")
+                    leavechan(_channel)
+                elif "quit" in lmess:
+                    sendmsg(_channel, "Bye! o/")
+                    quitirc()
+                elif "shush" in lmess:
+                    sendmsg(_channel,"OK, I'll shut up :(")
+                    shushed=True
+                elif "initialise" in lmess or "initialize" in lmess:
+                    sendmsg(_channel,"OK, reinitialising...")
+                    initialise()
+                    sendmsg(_channel,"Done! Should work now.")
+                #wikipedia search
+                else:
+                    for stuff in wikitriggers:
+                        if stuff in lmess:
+                            lmess=lmess[lmess.find(stuff):]
+                            wiki(_channel,stripleft(lmess,stuff),3)
+                            return
+                if "confuc" in lmess or "confusius" in lmess:
+                    confucius(_channel)
+                else: sendmsg(_channel,"Pudding!")
+            #no-named things
+            elif "rekt wiki" in lmess:
+                rektwiki(_channel,lmess)
+            elif "TABLEFLIP" in mess:
+                temp="︵ヽ(`Д´)ﾉ︵"
+                for i in range(1,lmess.count('!')):
+                    temp+="  "
+                    temp="  "+temp
+                temp+="┻━┻ "
+                temp="┻━┻ "+temp
+                sendmsg(_channel,temp) 
+            elif "tableflip" in lmess:
+                temp="(╯°□°）╯︵"
+                for i in range(1,lmess.count('!')):
+                    temp+="  "
+                temp+="┻━┻ "
+                sendmsg(_channel,temp) 
+            else:
+                for key, value in triggers.items():
+                    if any([stuff in lmess for stuff in key]):
+                        if timers[key[0]]<=0:
+                            sleeping(0.6)
+                            sendmsg(_channel, value)
+                            timers[key[0]]=timervals[key[0]]
+                            return
+            if re.search(regex1, lmess)!=None:
+                sendmsg(_channel,"DOOOOMED!")
+            elif re.search(regex2, lmess)!=None:
+                space(_channel)
+            elif "!procemo" in lmess:
+                procemo(_channel)
+            elif "!listemo" in lmess or "!emoticonlist" in lmess:
+                listemo(_channel, mess)
+            else:
+                for key, value in emoticons.items():
+                    if key in lmess:
+                        sendmsg(_channel,value)
+                        return         
+        elif "speak" in lmess and "saoirse" in lmess:
+            sendmsg(_channel,"Yay! Pudding!")
+            shushed=False    
+    return
+
+
 def main():
     while online: # Be careful with these! it might send you to an infinite loop
-        global shushed
-        global broken
-        global timers
-        timer=time()
+        
         ircmsg = ircsock.recv(2048) # receive data from the server
         try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
         except Exception: buf=io.StringIO("")
@@ -379,109 +465,13 @@ def main():
                 queue.append(read)
             else: break
         while len(queue)!=0:
-            mess = queue[0] # removing any unnecessary linebreaks.
-            print(mess)
-            test = mess.strip('\r\n').strip().strip("'")
-            mess=test
-            lmess=mess.lower()
-            _channel=lmess[lmess.find("#"):]
-            _channel=_channel[:_channel.find(":")].strip()
-            regex1 = re.compile('do+omed')
-            regex2 = re.compile('spa+ce')
-            #print(_channel)
-            if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
-                ping(mess)
-            if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
-                if not shushed and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:    
-                    if "saoirse" in lmess:
-                        if any([greeting in lmess for greeting in greetings]):
-                            sendmsg(_channel, random.choice(greetings).title()+"!")
-                            
-                        lmess=stripleft(lmess,"saoirse")
-                        mess=stripleft(mess,"Saoirse")
-                        print(lmess)
-                        
-                        if "join" in lmess:
-                            tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
-                            joinchan(tojoin)
-                            sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
-                        elif "leave" in lmess:
-                            sendmsg(_channel, "Bye! o/")
-                            leavechan(_channel)
-                        elif "quit" in lmess:
-                            sendmsg(_channel, "Bye! o/")
-                            quitirc()
-                        elif "shush" in lmess:
-                            sendmsg(_channel,"OK, I'll shut up :(")
-                            shushed=True
-                        elif "initialise" in lmess or "initialize" in lmess:
-                            sendmsg(_channel,"OK, reinitialising...")
-                            initialise()
-                            sendmsg(_channel,"Done! Should work now.")
-                        #wikipedia search
-                        elif not broken:
-                            for stuff in wikitriggers:
-                                if stuff in lmess:
-                                    lmess=lmess[lmess.find(stuff):]
-                                    wiki(_channel,stripleft(lmess,stuff),3)
-                                    broken=True
-                                    break
-                        if broken:
-                            break
-                        elif "confuc" in lmess or "confusius" in lmess:
-                            confucius(_channel)
-                        else: sendmsg(_channel,"Pudding!")
-                    #no-named things
-                    elif "rekt wiki" in lmess:
-                        rektwiki(_channel,lmess)
-                    elif "TABLEFLIP" in mess:
-                        temp="︵ヽ(`Д´)ﾉ︵"
-                        for i in range(1,lmess.count('!')):
-                            temp+="  "
-                            temp="  "+temp
-                        temp+="┻━┻ "
-                        temp="┻━┻ "+temp
-                        sendmsg(_channel,temp) 
-                    elif "tableflip" in lmess:
-                        temp="(╯°□°）╯︵"
-                        for i in range(1,lmess.count('!')):
-                            temp+="  "
-                        temp+="┻━┻ "
-                        sendmsg(_channel,temp) 
-                    elif not broken:
-                        for key, value in triggers.items():
-                            if any([stuff in lmess for stuff in key]):
-                                if timers[key[0]]<=0:
-                                    sleeping(0.6)
-                                    sendmsg(_channel, value)
-                                    timers[key[0]]=timervals[key[0]]
-                                    broken=True
-                    if broken:
-                        break
-                    elif re.search(regex1, lmess)!=None:
-                        sendmsg(_channel,"DOOOOMED!")
-                    elif re.search(regex2, lmess)!=None:
-                        space(_channel)
-                    elif "!procemo" in lmess:
-                        procemo(_channel)
-                    elif "!listemo" in lmess or "!emoticonlist" in lmess:
-                        listemo(_channel, mess)
-                    elif not broken:
-                        for key, value in emoticons.items():
-                            if key in lmess:
-                                sendmsg(_channel,value)
-                                broken=True
-                                break
-                    elif broken:
-                        break         
-                elif "speak" in lmess and "saoirse" in lmess:
-                    sendmsg(_channel,"Yay! Pudding!")
-                    shushed=False    
-            broken=False
+            timer=time()
+            readirc(queue)
             del queue[0]
-        timer-=time()
-        timer=-timer
-        decrtimer(timer)
+            timer-=time()
+            timer=-timer
+            decrtimer(timer)
+
 
 _thread.start_new_thread(main,())
 while online:
