@@ -15,45 +15,45 @@ Saoirse speak: she will start responding generally again
 doomed: DOOOOMED!  
 space: SPAAACE! 
 microsoft, windows, : ACTION shakes fist at Microsoft  
-linux, : Yay Linux! \o/  
-saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
-saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
-\o/, : \o/  
-pudding, : PUDDING!  
+tintin, : YAY TINTIN!  
 c++, : Yay C++!  
+pudding, : PUDDING!  
+linux, : Yay Linux! \o/  
+saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
 python, : Yay Python!  
+america, murika, : MURIKAH!!! /o/  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
 joshpost, : POSHJOST! \o/  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
-america, murika, : MURIKAH!!! /o/  
-tintin, : YAY TINTIN!  
+\o/, : \o/  
+saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands
 tableflip: (╯°□°）╯︵ ┻━┻   
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻   
 !procemo: generates a procedural emoticon  
+!hmm: ಠ_ಠ  
 !drink: (^-^)_旦”"  
-!eyebrows: ( ͡° ͜ʖ ͡°)  
-!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
-!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!headshake: ಠ_ಠ  
-!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !yay: \(^.^)/  
-!run: ヽ(ﾟДﾟ)ﾉ  
-!whee: ─=≡Σ(((つ◕ل͜◕)つ  
-!aww: (｡◕‿‿◕｡)  
+!creeper: ʘ‿ʘ  
+!eyebrows: ( ͡° ͜ʖ ͡°)  
+!headshake: ಠ_ಠ  
 !scared: ヽ(ﾟДﾟ)ﾉ  
 !lenny: ( ͡° ͜ʖ ͡°)  
-!hmm: ಠ_ಠ  
-whyy: ¯\_(ツ)_/¯  
 !facepalm: (－‸ლ)  
-!walk: ᕕ( ᐛ )ᕗ  
-!dance: （〜^∇^)〜  
 !highfive: \(＾○＾)人(＾○＾)/  
-!shrug: ¯\_(ツ)_/¯  
+!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !frown: ఠ_ఠ  
-!creeper: ʘ‿ʘ  
+!whee: ─=≡Σ(((つ◕ل͜◕)つ  
+!aww: (｡◕‿‿◕｡)  
+whyy: ¯\_(ツ)_/¯  
+!dance: （〜^∇^)〜  
+!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
 !whistle: ♪(´ε｀)  
+!walk: ᕕ( ᐛ )ᕗ  
+!shrug: ¯\_(ツ)_/¯  
+!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!run: ヽ(ﾟДﾟ)ﾉ  
