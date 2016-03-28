@@ -38,9 +38,9 @@ emoticons={}
 spacelist=[]         
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-#channel = "#limittheory" # Channel
-channel = "#talstest" # Channel
-botnick = "Saoirse2" # Your bots nick
+channel = "#limittheory" # Channel
+#channel = "#talstest" # Channel
+botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
     res=""
@@ -490,7 +490,7 @@ def main():
             timer-=time()
             timer=-timer
             decrtimer(timer)
-
+        sleeping(0.100)
 
 _thread.start_new_thread(main,())
 while online:
