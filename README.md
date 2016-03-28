@@ -45,6 +45,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !headshake: ಠ_ಠ  
 !highfive: \(＾○＾)人(＾○＾)/  
 !hmm: ಠ_ಠ  
+!hug: (>^_^)><(^o^<)  
 !lenny: ( ͡° ͜ʖ ͡°)  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
 !muhaha: ψ(｀∇´)ψ  
