@@ -15,7 +15,7 @@ Saoirse speak: she will start responding generally again
 doomed: DOOOOMED!  
 space: SPAAACE! 
 python, : Yay Python!  
-saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
+saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
 america, murika, : MURIKAH!!! /o/  
