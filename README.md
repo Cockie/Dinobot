@@ -14,46 +14,46 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
 doomed: DOOOOMED!  
 space: SPAAACE! 
-pudding, : PUDDING!  
-saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
+microsoft, windows, : ACTION shakes fist at Microsoft  
+joshpost, : POSHJOST! \o/  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
-joshpost, : POSHJOST! \o/  
-python, : Yay Python!  
-america, murika, : MURIKAH!!! /o/  
-hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
-\o/, : \o/  
-c++, : Yay C++!  
 linux, : Yay Linux! \o/  
-microsoft, windows, : ACTION shakes fist at Microsoft  
 saoirse help, help saoirse, saoirse, help, : https://github.com/Cockie/Dinobot/blob/master/README.md  
+america, murika, : MURIKAH!!! /o/  
 tintin, : YAY TINTIN!  
+hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
+pudding, : PUDDING!  
+\o/, : \o/  
+python, : Yay Python!  
+c++, : Yay C++!  
+saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands
 tableflip: (╯°□°）╯︵ ┻━┻   
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻   
 !procemo: generates a procedural emoticon  
-!yay: \(^.^)/  
-!creeper: ʘ‿ʘ  
-!headshake: ಠ_ಠ  
-!scared: ヽ(ﾟДﾟ)ﾉ  
-!whee: ─=≡Σ(((つ◕ل͜◕)つ  
-!run: ヽ(ﾟДﾟ)ﾉ  
-!drink: (^-^)_旦”"  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
-whyy: ¯\_(ツ)_/¯  
-!hmm: ಠ_ಠ  
-!shrug: ¯\_(ツ)_/¯  
+!eyebrows: ( ͡° ͜ʖ ͡°)  
 !dance: （〜^∇^)〜  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!whistle: ♪(´ε｀)  
 !aww: (｡◕‿‿◕｡)  
-!walk: ᕕ( ᐛ )ᕗ  
-!eyebrows: ( ͡° ͜ʖ ͡°)  
-!facepalm: (－‸ლ)  
-!frown: ఠ_ఠ  
-!highfive: \(＾○＾)人(＾○＾)/  
-!lenny: ( ͡° ͜ʖ ͡°)  
+!drink: (^-^)_旦”"  
+!scared: ヽ(ﾟДﾟ)ﾉ  
+!shrug: ¯\_(ツ)_/¯  
+!run: ヽ(ﾟДﾟ)ﾉ  
+!yay: \(^.^)/  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
+!highfive: \(＾○＾)人(＾○＾)/  
+!frown: ఠ_ఠ  
+!walk: ᕕ( ᐛ )ᕗ  
+!headshake: ಠ_ಠ  
+!creeper: ʘ‿ʘ  
+whyy: ¯\_(ツ)_/¯  
+!hmm: ಠ_ಠ  
+!whee: ─=≡Σ(((つ◕ل͜◕)つ  
+!whistle: ♪(´ε｀)  
+!lenny: ( ͡° ͜ʖ ͡°)  
+!facepalm: (－‸ლ)  
