@@ -51,6 +51,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 whyy: ¯\_(ツ)_/¯  
 !facepalm: (－‸ლ)  
 !walk: ᕕ( ᐛ )ᕗ  
+!dance: （〜^∇^)〜  
 !highfive: \(＾○＾)人(＾○＾)/  
 !shrug: ¯\_(ツ)_/¯  
 !frown: ఠ_ఠ  
