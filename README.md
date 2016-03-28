@@ -14,20 +14,20 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
 doomed: DOOOOMED!  
 space: SPAAACE!  
+saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
+microsoft, windows, : ACTION shakes fist at Microsoft  
+\o/, : \o/  
+joshpost, : POSHJOST! \o/  
+saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
+linux, : Yay Linux! \o/  
 tintin, : YAY TINTIN!  
 america, murika, : MURIKAH!!! /o/  
-pudding, : PUDDING!  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
-saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 c++, : Yay C++!  
-microsoft, windows, : ACTION shakes fist at Microsoft  
+pudding, : PUDDING!  
+python, : Yay Python!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
-\o/, : \o/  
-linux, : Yay Linux! \o/  
-joshpost, : POSHJOST! \o/  
-python, : Yay Python!  
-saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands  
@@ -35,25 +35,25 @@ tableflip: (╯°□°）╯︵ ┻━┻
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
 !lenny: ( ͡° ͜ʖ ͡°)  
+!shrug: ¯\_(ツ)_/¯  
+!drink: (^-^)_旦”"  
 !walk: ᕕ( ᐛ )ᕗ  
-!highfive: \(＾○＾)人(＾○＾)/  
-!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+!whee: ─=≡Σ(((つ◕ل͜◕)つ  
 !whistle: ♪(´ε｀)  
-!aww: (｡◕‿‿◕｡)  
-!frown: ఠ_ఠ  
-!scared: ヽ(ﾟДﾟ)ﾉ  
-!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
-!run: ヽ(ﾟДﾟ)ﾉ  
-!yay: \(^.^)/  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !hmm: ಠ_ಠ  
+!scared: ヽ(ﾟДﾟ)ﾉ  
+!eyebrows: ( ͡° ͜ʖ ͡°)  
+!dance: （〜^∇^)〜  
 !facepalm: (－‸ლ)  
 whyy: ¯\_(ツ)_/¯  
+!frown: ఠ_ఠ  
+!yay: \(^.^)/  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !headshake: ಠ_ಠ  
-!eyebrows: ( ͡° ͜ʖ ͡°)  
-!drink: (^-^)_旦”"  
+!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
 !creeper: ʘ‿ʘ  
-!shrug: ¯\_(ツ)_/¯  
-!dance: （〜^∇^)〜  
-!whee: ─=≡Σ(((つ◕ل͜◕)つ  
+!highfive: \(＾○＾)人(＾○＾)/  
+!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+!run: ヽ(ﾟДﾟ)ﾉ  
+!aww: (｡◕‿‿◕｡)  
+!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
