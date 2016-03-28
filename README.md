@@ -34,24 +34,25 @@ Emoticons:
 tableflip: (╯°□°）╯︵ ┻━┻   
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻   
 !procemo: generates a procedural emoticon  
+!drink: (^-^)_旦”"  
+!eyebrows: ( ͡° ͜ʖ ͡°)  
+!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
+!headshake: ಠ_ಠ  
+!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
+!yay: \(^.^)/  
+!run: ヽ(ﾟДﾟ)ﾉ  
+!whee: ─=≡Σ(((つ◕ل͜◕)つ  
+!aww: (｡◕‿‿◕｡)  
 !scared: ヽ(ﾟДﾟ)ﾉ  
 !lenny: ( ͡° ͜ʖ ͡°)  
 !hmm: ಠ_ಠ  
 whyy: ¯\_(ツ)_/¯  
-!eyebrows: ( ͡° ͜ʖ ͡°)  
 !facepalm: (－‸ლ)  
-!magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
 !walk: ᕕ( ᐛ )ᕗ  
-!yay: \(^.^)/  
 !highfive: \(＾○＾)人(＾○＾)/  
-!cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !shrug: ¯\_(ツ)_/¯  
 !frown: ఠ_ఠ  
-!shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
-!whistle: ♪(´ε｀)  
-!swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!headshake: ಠ_ಠ  
 !creeper: ʘ‿ʘ  
-!run: ヽ(ﾟДﾟ)ﾉ  
-!whee: ─=≡Σ(((つ◕ل͜◕)つ  
-!aww: (｡◕‿‿◕｡)  
+!whistle: ♪(´ε｀)  
