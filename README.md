@@ -22,6 +22,7 @@ joshpost, : POSHJOST! \o/
 linux, : Yay Linux! \o/  
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
+pudding,🍮, : PUDDING!  
 python, : Yay Python!  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
