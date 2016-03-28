@@ -20,45 +20,89 @@ import re
 
 
 queue=[]
-timers={'yay': 0, 'joshpost': 0, 'pudding': 0, 'python': 0, 'microsoft': 0, 'linux': 0, 'space': 0, 'murikah': 0, 'tintin': 0, 'cpp': 0}
+greetings=["hello", "hey", "hi", "greetings", "hoi"]
+wikitriggers=["what is", "what's", "whats", "who's", "who is", "how do i"]
+timers={}
+triggers={}
+timervals={}
 shushed=False
 online=True
+broken=False
 confus=[]
-
 lefts=[]
 rights=[]
 eyes=[]
 mouths=[]
+emoticons={}
+spacelist=[]         
+# Some basic variables used to configure the bot        
+server = "irc.web.gamesurge.net" # Server
+#channel = "#limittheory" # Channel
+channel = "#talstest" # Channel
+botnick = "Saoirse2" # Your bots nick
 
-spacelist=[]
-fi = open('space.txt', 'r')
-for line in fi:
-    spacelist.append(line.strip().replace('"',''))
-fi.close()
-with open('confucius.txt') as f:
-   for line in f:
-       print(line)
-       line=line[line.find('.')+1:].strip()
-       confus.append(line)
-test="#LEFTS"
-with open('procemo.txt') as f:
-    for line in f:
-        print(line)
-        line=line.strip('\n').strip(' ')
-        if line=='':
-            pass
-        elif line.startswith('#'):
-            test=line
-        else:
-            if test=="#LEFTS":
-                lefts.append(line)
-            elif test=="#RIGHTS":
-                rights.append(line)
-            elif test=="#EYES":
-                eyes.append(line)
-            elif test=="#MOUTHS":
-                mouths.append(line)
-
+def initialise():
+    global spacelist
+    global timers
+    global triggers
+    global timervals
+    global confus
+    global eyes
+    global lefts
+    global rights
+    global mouths
+    global emoticons
+    global spacelist
+    
+    with open('space.txt') as f:
+        for line in f:
+            spacelist.append(line.strip().replace('"',''))
+    
+    
+    with open('confucius.txt') as f:
+       for line in f:
+           line=line[line.find('.')+1:].strip()
+           confus.append(line)
+           
+    test="#LEFTS"
+    with open('procemo.txt') as f:
+        for line in f:
+            line=line.strip('\n').strip(' ')
+            if line=='':
+                pass
+            elif line.startswith('#'):
+                test=line
+            else:
+                if test=="#LEFTS":
+                    lefts.append(line)
+                elif test=="#RIGHTS":
+                    rights.append(line)
+                elif test=="#EYES":
+                    eyes.append(line)
+                elif test=="#MOUTHS":
+                    mouths.append(line)
+    
+    with open('emoticons.txt') as f:
+        for line in f:
+            #print(line)
+            line=line.strip('\n').strip(' ').split('&')
+            if line[0]=='':
+                pass
+            else:
+                emoticons[line[0]]=line[1]
+    print("EMOTICONS")
+    print(emoticons)
+    with open('triggers.txt') as f:
+        for line in f:
+            line=line.strip('\n').strip(' ').split('|')
+            line[0]=line[0].split('&')
+            if line[0][0]=='':
+                pass
+            else:
+                triggers[tuple(line[0])]=line[1].replace("\\n",'\n')
+                timers[line[0][0]]=0
+                timervals[line[0][0]]=int(line[2])
+                
 def decrtimer(dur):
     global timers
     for key in timers:
@@ -69,12 +113,6 @@ def decrtimer(dur):
 def sleeping(dur):
     sleep(dur)
     decrtimer(dur)
-
-
-# Some basic variables used to configure the bot        
-server = "irc.web.gamesurge.net" # Server
-channel = "#limittheory" # Channel
-botnick = "Saoirse" # Your bots nick
 
 def procemo(chan):
     i=random.randint(1,6)
@@ -97,7 +135,12 @@ def sendmsg(chan , msg, delay=True): # This is the send message function, it sim
     if delay: 
         time=len(msg)/50.0
         sleeping(1)
-    ircsock.send(bytes("PRIVMSG "+ chan +" :"+ msg +"\n", 'UTF-8') )
+        msg=msg.split('\n')
+    for line in msg:
+        ircsock.send(bytes("PRIVMSG "+ chan +" :"+ line +"\n", 'UTF-8') )
+
+def pm(name , msg): # This is the send message function, it simply sends messages to the channel.
+    ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
 
 def joinchan(chan): # This function is used to join channels.
     ircsock.send(bytes("JOIN "+ chan +"\n", 'UTF-8'))
@@ -109,27 +152,7 @@ def quitirc(): # This function is used to quit IRC entirely
     
 def leavechan(chan):
     ircsock.send(bytes("PART "+ chan+" :PUDDING\n", 'UTF-8'))
-    
-def hello(_channel,): # This function responds to a user that inputs "Hello Mybot"
-    sendmsg(_channel, "Hello!")
-    
-def yay(_channel):
-    global timers
-    if timers['yay']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, '\o/')
-        timers['yay']=10
-        
-def pudding(_channel, small=False):
-    global timers
-    if timers['pudding']<=0:
-        sleeping(0.6)
-        if small:
-            sendmsg(_channel, 'Pudding!')
-        else:
-            sendmsg(_channel, 'PUDDING!')
-        timers['pudding']=10
-        
+         
 def space(_channel):
     global timers
     if timers['space']<=0:
@@ -137,60 +160,15 @@ def space(_channel):
         sendmsg(_channel, random.choice(spacelist))
         timers['space']=200
         
-def tintin(_channel):
-    global timers
-    if timers['tintin']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "YAY TINTIN!")
-        timers['tintin']=200
-
-def murikah(_channel):
-    global timers
-    if timers['murikah']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "MURIKAH!!! /o/")
-        timers['murikah']=200
-        
-def joshpost(_channel):
-    global timers
-    if timers['joshpost']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, 'POSHJOST! \o/')
-        timers['joshpost']=10
-        
-def microsoft(_channel):
-    global timers
-    if timers['microsoft']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "ACTION shakes fist at Microsoft")
-        timers['microsoft']=500
-        
-def python(_channel):
-    global timers
-    if timers['python']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "Yay Python! \o/")
-        timers['python']=500
-
-def cpp(_channel):
-    global timers
-    if timers['cpp']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "Yay C++! \o/")
-        timers['cpp']=500
-        
-def linux(_channel):
-    global timers
-    if timers['linux']<=0:
-        sleeping(0.6)
-        sendmsg(_channel, "Yay Linux! \o/")
-        timers['linux']=500
-        
+       
 def greet(_channel,mess):
     usr=mess[1:mess.find('!')]
     sendmsg(_channel, "Hey "+usr+"!")
     sendmsg(_channel, "o/")
+    
 def rektwiki(_channel,mess):
+    mess=mess[mess.find("rekt wiki"):]
+    mess=mess.replace("rekt wiki",'').strip()
     r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/"+mess.strip().replace(' ','\%20'))
     htmlstr = r.read().decode().replace(' ','').replace('\t','').replace('\n','')
     htmlstr=htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"",'')
@@ -199,10 +177,13 @@ def rektwiki(_channel,mess):
     sendmsg(_channel, htmlstr)
     
 def confucius(_channel):
-    sendmsg(_channel, "Confucius says: "+random.choice(confus))
-   
- 
-   
+    sendmsg(_channel, "Confucius says: "+random.choice(confus))  
+
+def listemo(_channel, mess):
+    sendmsg(_channel, "I'll pm you.")
+    user=mess[mess.find(":")+1:mess.find("!")]
+    for key, value in emoticons.items():
+        pm(user, key+": "+value)
    
 def wiki(_channel,string, count):
     string=string.strip("'").strip('\r\n').strip("?").strip(".").strip("!").lower()
@@ -307,7 +288,7 @@ def inpsay():
 def stripleft(string, stuff):
     return string[string.find(stuff)+len(stuff):]
         
-    
+initialise()  
                   
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
@@ -352,6 +333,8 @@ print("yay")
 def main():
     while online: # Be careful with these! it might send you to an infinite loop
         global shushed
+        global broken
+        global timers
         timer=time()
         ircmsg = ircsock.recv(2048) # receive data from the server
         try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
@@ -375,10 +358,11 @@ def main():
             if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
                 ping(mess)
             if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
-                if not shushed:    
+                if not shushed and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:    
                     if "saoirse" in lmess:
-                        if ("hello" in lmess) or ("hey" in lmess) or ("greetings" in lmess) or (" hi" in lmess) or ("hi saoirse" in lmess) or ("hi," in lmess): # if the server pings us then we've got to respond!
-                            hello(_channel)
+                        if any([greeting in lmess for greeting in greetings]):
+                            sendmsg(_channel, random.choice(greetings).title()+"!")
+                            
                         lmess=stripleft(lmess,"saoirse")
                         mess=stripleft(mess,"Saoirse")
                         print(lmess)
@@ -393,40 +377,28 @@ def main():
                         elif "quit" in lmess:
                             sendmsg(_channel, "Bye! o/")
                             quitirc()
-                        elif "help" in lmess:
-                            sendmsg(_channel,"https://docs.google.com/document/d/12HqksZncFBCE-wKQuNAUtHwyYj9LqZQ9xe3hEP_AekQ/edit?usp=sharing")
                         elif "shush" in lmess:
                             sendmsg(_channel,"OK, I'll shut up :(")
                             shushed=True
-                        elif "what is" in lmess:
-                            lmess=lmess[lmess.find("wh"):]
-                            wiki(_channel,stripleft(lmess,"what is"),3)
-                        elif "what's" in lmess:
-                            lmess=lmess[lmess.find("wh"):]
-                            wiki(_channel,stripleft(lmess,"what's"),3)               
-                        elif "whats" in lmess:
-                            lmess=lmess[lmess.find("wh"):]
-                            wiki(_channel,stripleft(lmess,"whats"),3)
-                        elif "who's" in lmess:
-                            lmess=lmess[lmess.find("wh"):]
-                            wiki(_channel,stripleft(lmess,"who's"),3)
-                        elif "who is" in lmess:
-                            lmess=lmess[lmess.find("wh"):]
-                            wiki(_channel,stripleft(lmess,"who is"),3)
-                        elif "how do i" in lmess:
-                            lmess=lmess[lmess.find("how"):]
-                            wiki(_channel,stripleft(lmess,"how do i"),3)
+                        elif "initialise" in lmess or "initialize" in lmess:
+                            sendmsg(_channel,"OK, reinitialising...")
+                            initialise()
+                            sendmsg(_channel,"Done! Should work now.")
+                        #wikipedia search
+                        elif not broken:
+                            for stuff in wikitriggers:
+                                if stuff in lmess:
+                                    lmess=lmess[lmess.find(stuff):]
+                                    wiki(_channel,stripleft(lmess,stuff),3)
+                                    broken=True
+                                    break
+                        if broken:
+                            break
                         elif "confuc" in lmess or "confusius" in lmess:
                             confucius(_channel)
-                        else: pudding(_channel,small=True)
-                    elif "what is love" in lmess:
-                        sendmsg(_channel,"Oh baby, don't hurt me")
-                        sendmsg(_channel,"Don't hurt me no more")  
-                    elif "\o/" in lmess and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:                
-                        yay(_channel,)
+                        else: sendmsg(_channel,"Pudding!")
+                    #no-named things
                     elif "rekt wiki" in lmess:
-                        lmess=lmess[lmess.find("rekt wiki"):]
-                        lmess=lmess.replace("rekt wiki",'').strip()
                         rektwiki(_channel,lmess)
                     elif "TABLEFLIP" in mess:
                         temp="︵ヽ(`Д´)ﾉ︵"
@@ -434,9 +406,7 @@ def main():
                             temp+="  "
                             temp="  "+temp
                         temp+="┻━┻ "
-                        print(temp)
                         temp="┻━┻ "+temp
-                        print(temp)
                         sendmsg(_channel,temp) 
                     elif "tableflip" in lmess:
                         temp="(╯°□°）╯︵"
@@ -444,69 +414,36 @@ def main():
                             temp+="  "
                         temp+="┻━┻ "
                         sendmsg(_channel,temp) 
-                    elif "joshpost" in lmess: # if the server pings us then we've got to respond!
-                        joshpost(_channel,)
-                    
-                    elif "pudding" in lmess:
-                        pudding(_channel)
-     
-                    elif "microsoft" in lmess or "windows" in lmess:
-                        microsoft(_channel)
-                    elif "python" in lmess:
-                        python(_channel)
-                    elif "c++" in lmess:
-                        cpp(_channel)
-                    elif "linux" in lmess:
-                        linux(_channel)
-                    elif "america" in lmess:
-                        murikah(_channel)
-                    elif "tintin" in lmess:
-                        tintin(_channel)
-                    elif "hail satan" in lmess:
-                        sendmsg(_channel,"All hail the dark lord!! o/ His victory is certain!! o/")
+                    elif not broken:
+                        for key, value in triggers.items():
+                            if any([stuff in lmess for stuff in key]):
+                                if timers[key[0]]<=0:
+                                    sleeping(0.6)
+                                    sendmsg(_channel, value)
+                                    timers[key[0]]=timervals[key[0]]
+                                    broken=True
+                    if broken:
+                        break
                     elif re.search(regex1, lmess)!=None:
                         sendmsg(_channel,"DOOOOMED!")
                     elif re.search(regex2, lmess)!=None:
                         space(_channel)
-                    elif "whyy" in lmess or "!shrug" in lmess:
-                        sendmsg(_channel, "¯\_(ツ)_/¯")
-                    elif "!facepalm" in lmess:
-                        sendmsg(_channel, "(－‸ლ)")
-                    elif "!headshake" in lmess or "!hmm" in lmess:
-                        sendmsg(_channel, "ಠ_ಠ")
-                    elif "!frown" in lmess:
-                        sendmsg(_channel, "ఠ_ఠ")
-                    elif "!run" in lmess or "!scared" in lmess:
-                        sendmsg(_channel, "ヽ(ﾟДﾟ)ﾉ")
-                    elif "!lenny" in lmess or "!eyebrows" in lmess:
-                        sendmsg(_channel, "( ͡° ͜ʖ ͡°)")
-                    elif "!yay" in lmess:
-                        sendmsg(_channel, "\(^.^)/")
-                    elif "!magic" in lmess:
-                        sendmsg(_channel, "(∩｀-´)⊃━☆ﾟ.*･｡ﾟ")
-                    elif "!highfive" in lmess:
-                        sendmsg(_channel, "\(＾○＾)人(＾○＾)/")
-                    elif "!cry" in lmess:
-                        sendmsg(_channel, "｡･ﾟﾟ･(>д<)･ﾟﾟ･｡")
-                    elif "!shiny" in lmess:
-                        sendmsg(_channel, "°˖✧◝(⁰▿⁰)◜✧˖°")
-                    elif "!walk" in lmess:
-                        sendmsg(_channel, "ᕕ( ᐛ )ᕗ")
-                    elif "!creeper" in lmess:
-                        sendmsg(_channel, "ʘ‿ʘ")
-                    elif "!aww" in lmess:
-                        sendmsg(_channel, "(｡◕‿‿◕｡)")
                     elif "!procemo" in lmess:
                         procemo(_channel)
-                    
+                    elif "!listemo" in lmess or "!emoticonlist" in lmess:
+                        listemo(_channel, mess)
+                    elif not broken:
+                        for key, value in emoticons.items():
+                            if key in lmess:
+                                sendmsg(_channel,value)
+                                broken=True
+                                break
+                    elif broken:
+                        break         
                 elif "speak" in lmess and "saoirse" in lmess:
                     sendmsg(_channel,"Yay! Pudding!")
-                    shushed=False
-                        
-    
-    
-                
-    
+                    shushed=False    
+            broken=False
             del queue[0]
         timer-=time()
         timer=-timer
