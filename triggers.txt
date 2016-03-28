@@ -1,4 +1,4 @@
-saoirse help&help saoirse&saoirse, help|https://github.com/Cockie/Dinobot/blob/master/README.md|5
+saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5
 joshpost|POSHJOST! \o/|10
 pudding|PUDDING!|10

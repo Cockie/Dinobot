@@ -65,7 +65,7 @@ def initialise():
     with open('space.txt') as f:
         for line in f:
             spacelist.append(line.strip().replace('"',''))
-    
+    timers['space']=0
     
     with open('confucius.txt') as f:
        for line in f:
@@ -110,6 +110,7 @@ def initialise():
                 triggers[tuple(line[0])]=line[1].replace("\\n",'\n')
                 timers[line[0][0]]=0
                 timervals[line[0][0]]=int(line[2])
+                
 
     with open('README.md','w') as f:
         with open('read1.txt') as f1:
@@ -185,7 +186,6 @@ def space(_channel):
         sleeping(0.6)
         sendmsg(_channel, random.choice(spacelist))
         timers['space']=200
-        
        
 def greet(_channel,mess):
     usr=mess[1:mess.find('!')]

@@ -1,5 +1,5 @@
 Emoticons:  
-!listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands
-tableflip: (╯°□°）╯︵ ┻━┻   
-TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻   
+!listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands  
+tableflip: (╯°□°）╯︵ ┻━┻    
+TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
