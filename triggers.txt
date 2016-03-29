@@ -1,7 +1,7 @@
 saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5
 joshpost|POSHJOST! \o/|10
-pudding|PUDDING!|10
+pudding,🍮|PUDDING!|10
 tintin|YAY TINTIN!|200
 america&murika|MURIKAH!!! /o/|200
 microsoft&windows|ACTION shakes fist at Microsoft|500

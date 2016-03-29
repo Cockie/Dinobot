@@ -90,7 +90,7 @@ def initialise():
                 elif test=="#MOUTHS":
                     mouths.append(line)
     
-    with open('emoticons.txt') as f:
+    with open('emoticons.txt',encoding='utf-8') as f:
         for line in f:
             #print(line)
             line=line.strip('\n').strip(' ').split('&')
@@ -100,7 +100,7 @@ def initialise():
                 emoticons[line[0]]=line[1]
     print("EMOTICONS")
     print(emoticons)
-    with open('triggers.txt') as f:
+    with open('triggers.txt',encoding='utf-8') as f:
         for line in f:
             line=line.strip('\n').strip(' ').split('|')
             line[0]=line[0].split('&')
@@ -110,6 +110,8 @@ def initialise():
                 triggers[tuple(line[0])]=line[1].replace("\\n",'\n')
                 timers[line[0][0]]=0
                 timervals[line[0][0]]=int(line[2])
+    print("TRIGGERS")
+    print(triggers)
                 
 
     with open('README.md','w') as f:
@@ -379,7 +381,7 @@ def readirc(queue):
     if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
         ping(mess)
     if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
-        if not shushed and "taiya" not in lmess and "jimmy" not in lmess and "quackbot" not in lmess:    
+        if not shushed and ":taiya" not in lmess and ":jimmy" not in lmess and ":quackbot" not in lmess:    
             if "saoirse" in lmess:
                 if any([greeting in lmess for greeting in greetings]):
                     sendmsg(_channel, random.choice(greetings).title()+"!")
@@ -441,6 +443,18 @@ def readirc(queue):
                 sendmsg(_channel,temp) 
                 return
             else:
+                for key, value in emoticons.items():
+                    if key in lmess:
+                        sendmsg(_channel,value)
+                        return  
+
+            if re.search(regex1, lmess)!=None:
+                sendmsg(_channel,"DOOOOMED!")
+                return
+            elif re.search(regex2, lmess)!=None:
+                space(_channel)
+                return
+            else:
                 for key, value in triggers.items():
                     if any([stuff in lmess for stuff in key]):
                         if timers[key[0]]<=0:
@@ -448,23 +462,13 @@ def readirc(queue):
                             sendmsg(_channel, value)
                             timers[key[0]]=timervals[key[0]]
                             return
-            if re.search(regex1, lmess)!=None:
-                sendmsg(_channel,"DOOOOMED!")
-                return
-            elif re.search(regex2, lmess)!=None:
-                space(_channel)
-                return
-            elif "!procemo" in lmess:
+            if "!procemo" in lmess:
                 procemo(_channel)
                 return
             elif "!listemo" in lmess or "!emoticonlist" in lmess:
                 listemo(_channel, mess)
                 return
-            else:
-                for key, value in emoticons.items():
-                    if key in lmess:
-                        sendmsg(_channel,value)
-                        return         
+       
         elif "speak" in lmess and "saoirse" in lmess:
             sendmsg(_channel,"Yay! Pudding!")
             shushed=False    
@@ -474,7 +478,7 @@ def readirc(queue):
 
 def main():
     while online: # Be careful with these! it might send you to an infinite loop
-        
+        timer=time()
         ircmsg = ircsock.recv(2048) # receive data from the server
         try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
         except Exception: buf=io.StringIO("")
@@ -483,9 +487,13 @@ def main():
             if read!="":
                 queue.append(read)
             else: break
+        timer-=time()
+        timer=-timer
+        decrtimer(timer)
         while len(queue)!=0:
             timer=time()
             readirc(queue)
+            #print(timers)
             del queue[0]
             timer-=time()
             timer=-timer
