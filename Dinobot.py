@@ -443,30 +443,28 @@ def readirc(queue):
                 temp+="┻━┻ "
                 sendmsg(_channel,temp) 
                 return
-            else:
-                for key, value in emoticons.items():
-                    if key in lmess:
-                        sendmsg(_channel,value)
-                        return  
+            for key, value in emoticons.items():
+                if key in lmess:
+                    sendmsg(_channel,value)
+                    return  
 
             if re.search(regex1, lmess)!=None:
                 sendmsg(_channel,"DOOOOMED!")
                 return
-            elif re.search(regex2, lmess)!=None:
+            if re.search(regex2, lmess)!=None:
                 space(_channel)
                 return
-            else:
-                for key, value in triggers.items():
-                    if any([stuff in lmess for stuff in key]):
-                        if timers[key[0]]<=0:
-                            sleeping(0.6)
-                            sendmsg(_channel, value)
-                            timers[key[0]]=timervals[key[0]]
-                            return
+            for key, value in triggers.items():
+                if any([stuff in lmess for stuff in key]):
+                    if timers[key[0]]<=0:
+                        sleeping(0.6)
+                        sendmsg(_channel, value)
+                        timers[key[0]]=timervals[key[0]]
+                        return
             if "!procemo" in lmess:
                 procemo(_channel)
                 return
-            elif "!listemo" in lmess or "!emoticonlist" in lmess:
+            if "!listemo" in lmess or "!emoticonlist" in lmess:
                 listemo(_channel, mess)
                 return
        
