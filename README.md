@@ -16,6 +16,7 @@ doomed: DOOOOMED!
 space: SPAAACE!  
 \o/, : \o/  
 america, murika, : MURIKAH!!! /o/  
+blood, : B L O O D  
 c++, : Yay C++!  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
