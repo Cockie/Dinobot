@@ -38,8 +38,8 @@ emoticons={}
 spacelist=[]         
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-channel = "#limittheory" # Channel
-#channel = "#talstest" # Channel
+#channel = "#limittheory" # Channel
+channel = "#talstest" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
@@ -169,7 +169,7 @@ def sendmsg(chan , msg, delay=True): # This is the send message function, it sim
     if delay: 
         time=len(msg)/50.0
         sleeping(1)
-        msg=msg.split('\n')
+    msg=msg.split('\n')
     for line in msg:
         ircsock.send(bytes("PRIVMSG "+ chan +" :"+ line +"\n", 'UTF-8') )
 
@@ -300,9 +300,10 @@ def wiki(_channel,string, count):
             return
     buf=io.StringIO(str(message))
     read=buf.readline()
+    print(read)
     testbool=False
     while read!="":  
-        sendmsg(_channel, read.strip(), delay=testbool)
+        sendmsg(_channel, read.strip().replace('\n',''), delay=testbool)
         read=buf.readline()
         testbool=True
     if count!=1: sendmsg(_channel, "https://en.wikipedia.org/wiki/"+pageresult.replace(' ','_'))
