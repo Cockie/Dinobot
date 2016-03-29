@@ -38,8 +38,8 @@ emoticons={}
 spacelist=[]         
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-#channel = "#limittheory" # Channel
-channel = "#talstest" # Channel
+channel = "#limittheory" # Channel
+#channel = "#talstest" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
