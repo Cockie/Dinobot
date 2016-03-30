@@ -35,6 +35,7 @@ Emoticons:
 tableflip: (╯°□°）╯︵ ┻━┻    
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
+!awizard: (｡͡°□͡°)⊃━☆ﾟ.*･｡ﾟ  
 !aww: (｡◕‿‿◕｡)  
 !creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
