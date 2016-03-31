@@ -457,7 +457,6 @@ def readirc(queue):
     _channel=_channel[:_channel.find(":")].strip()
     regex1 = re.compile('do+omed')
     regex2 = re.compile('spa+ce')
-    regexurl=re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
     #print(_channel)
     if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
         ping(mess)
@@ -465,8 +464,7 @@ def readirc(queue):
         if not shushed and not any([stuff in lmess for stuff in blacklist]):    
             if "saoirse" in lmess:
                 if any([greeting in lmess for greeting in greetings]):
-                    sendmsg(_channel, random.choice(greetings).title()+"!")
-                    
+                    sendmsg(_channel, random.choice(greetings).title()+"!")     
                 #lmess=stripleft(lmess,"saoirse")
                 #mess=stripleft(mess,"Saoirse")
                 print(lmess)
@@ -536,7 +534,6 @@ def readirc(queue):
                 if key in lmess:
                     sendmsg(_channel,value)
                     return  
-
             if re.search(regex1, lmess)!=None:
                 sendmsg(_channel,"DOOOOMED!")
                 return
@@ -556,11 +553,9 @@ def readirc(queue):
             if "!listemo" in lmess or "!emoticonlist" in lmess:
                 listemo(_channel, mess)
                 return
-            if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(channel)+2:]))!=0:
+            if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(channel)+2:]))!=0:
                 findtitle(_channel, mess)
                 return
-
-       
         elif "speak" in lmess and "saoirse" in lmess:
             sendmsg(_channel,"Yay! Pudding!")
             shushed=False    
