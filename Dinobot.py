@@ -13,22 +13,16 @@ import io
 from time import *
 import wikipedia
 from urllib import request
-from urllib.request import urlopen
 import _thread
 import sys
 import random
 import re
 import subprocess
-from lxml import etree
-#import requests
-#from selenium import webdriver
-#browser = webdriver.Firefox()
-
-
 
 queue=[]
 greetings=["hello", "hey", "hi", "greetings", "hoi"]
 wikitriggers=["what is", "what's", "whats", "who's", "who is", "how do i"]
+blacklist=[]
 timers={}
 triggers={}
 timervals={}
@@ -54,6 +48,22 @@ def stringify(t):
         res+=stuff
         res+=", "
     return res.strip(',')
+
+def readblacklist():
+    global blacklist
+    blacklist=[]
+    with open('blacklist.txt') as f:
+        for line in f:
+            blacklist.append(":"+line.strip())
+    print(blacklist)
+
+def writeblacklist():
+    global blacklist
+    f=open('blacklist.txt','w')
+    for nick in blacklist:
+        f.write(nick.strip(':')+'\n')
+    f.close()
+    print(blacklist)
 
 def initialise():
     global spacelist
@@ -132,6 +142,7 @@ def initialise():
                 f.write(line)
             for key in sorted(emoticons):
                 f.write(key+": "+emoticons[key]+"  \n")
+    readblacklist()
 
     push=False
     strout="Automatic update"
@@ -156,6 +167,13 @@ def initialise():
         output = subprocess.call(["git","add", "triggers.txt"], stdout=subprocess.PIPE)
         print(output)
         strout+=" triggers"
+    output = subprocess.check_output(["git", "diff", "blacklist.txt"])
+    print(output)
+    if output!=b'': 
+        push=True
+        output = subprocess.call(["git","add", "blacklist.txt"], stdout=subprocess.PIPE)
+        print(output)
+        strout+=" blacklist"
     if push:
         output = subprocess.call(["git","commit", "-m" ,strout], stdout=subprocess.PIPE)
         print(output)
@@ -238,9 +256,8 @@ def rektwiki(_channel,mess):
     sendmsg(_channel, htmlstr)
 
 def findtitle(_channel,mess):
-    global br
     res=re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', mess[mess.find(channel)+2:])
-    print(res[0])
+    print(res)
     req = request.Request(
     res[0], 
     data=None, 
@@ -248,19 +265,28 @@ def findtitle(_channel,mess):
         'User-Agent': 'Chrome/35.0.1916.47'
     }
     )
-    r = request.urlopen(req)
+    try:
+        r = request.urlopen(req, timeout=1)
+    except Exception:
+        return
     print(r.geturl())
-    htmlstr = r.read().decode().replace('\t','').replace('\n','')
+    htmlstr = r.read()
+    try:
+        htmlstr=htmlstr.decode()
+    except Exception:
+        htmlstr=str(htmlstr)
+    htmlstr=htmlstr.replace('\t','').replace('\n','')
     print(htmlstr)
+    #htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
+    #print(htmlstr)
     try:
         htmlstr=htmlstr[htmlstr.find("<title>"):].replace("<title>",'')
         htmlstr=htmlstr[:htmlstr.find("</title>"):].replace("</title>",'')
         print(htmlstr+'\n')
     except Exception:
         return
-    
-
-    sendmsg(_channel, "^ "+htmlstr)
+    if htmlstr!="":
+        sendmsg(_channel, htmlstr.strip())
     
 def confucius(_channel):
     sendmsg(_channel, "Confucius says: "+random.choice(confus))  
@@ -436,7 +462,7 @@ def readirc(queue):
     if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
         ping(mess)
     if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
-        if not shushed and ":taiya" not in lmess and ":jimmy" not in lmess and ":quackbot" not in lmess:    
+        if not shushed and not any([stuff in lmess for stuff in blacklist]):    
             if "saoirse" in lmess:
                 if any([greeting in lmess for greeting in greetings]):
                     sendmsg(_channel, random.choice(greetings).title()+"!")
@@ -466,6 +492,15 @@ def readirc(queue):
                     initialise()
                     sendmsg(_channel,"Done! Should work now.")
                     return
+                elif "deignore" in lmess and ":dinosawer" in lmess:
+                    nick=lmess[lmess.find("deignore")+len("deignore"):].strip()
+                    blacklist.remove(":"+nick)
+                    writeblacklist()
+                elif "ignore" in lmess and ":dinosawer" in lmess:
+                    nick=lmess[lmess.find("ignore")+len("ignore"):].strip()
+                    if nick!="dinosawer":
+                        blacklist.append(":"+nick)
+                        writeblacklist()
                 #wikipedia search
                 else:
                     for stuff in wikitriggers:
