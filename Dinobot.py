@@ -38,8 +38,8 @@ emoticons={}
 spacelist=[]     
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-channel = "#limittheory" # Channel
-#channel = "#talstest" # Channel
+#channel = "#limittheory" # Channel
+channel = "#talstest" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
@@ -266,7 +266,7 @@ def findtitle(_channel,mess):
     }
     )
     try:
-        r = request.urlopen(req, timeout=1)
+        r = request.urlopen(req, timeout=15)
     except Exception:
         return
     print(r.geturl())
@@ -294,8 +294,17 @@ def confucius(_channel):
 def listemo(_channel, mess):
     sendmsg(_channel, "I'll pm you.")
     user=mess[mess.find(":")+1:mess.find("!")]
+    m=""
+    i=0
     for key, value in emoticons.items():
-        pm(user, key+": "+value)
+        m+=key+": "+value+"     "
+        i+=1
+        if i==3:
+            pm(user, m)
+            m=""
+            i=0
+            sleeping(2)
+    pm(user, "Done!")
    
 def wiki(_channel,string, count):
     string=string.strip("'").strip('\r\n').strip("?").strip(".").strip("!").lower()
