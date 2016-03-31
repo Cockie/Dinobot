@@ -2,3 +2,4 @@ taiya
 quackbot
 jimmy
 shocky
+chanserv
