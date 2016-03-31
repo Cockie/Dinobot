@@ -41,6 +41,9 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !dance: （〜^∇^)〜  
+!dealwithit: (•_•)
+( •_•)>⌐■-■
+(⌐■_■)  
 !drink: (^-^)_旦”"  
 !eyebrows: ( ͡° ͜ʖ ͡°)  
 !facepalm: (－‸ლ)  
