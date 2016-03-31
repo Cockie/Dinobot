@@ -36,10 +36,11 @@ eyes=[]
 mouths=[]
 emoticons={}
 spacelist=[]     
+ircsock=0
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-#channel = "#limittheory" # Channel
-channel = "#talstest" # Channel
+channel = "#limittheory" # Channel
+#channel = "#talstest" # Channel
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
@@ -178,10 +179,7 @@ def initialise():
         output = subprocess.call(["git","commit", "-m" ,strout], stdout=subprocess.PIPE)
         print(output)
         output = subprocess.call(["git", "push"], stdout=subprocess.PIPE)
-        print(output)
-    
-    
-        
+        print(output)    
                 
 def decrtimer(dur):
     global timers
@@ -409,49 +407,44 @@ def inpsay():
         
 def stripleft(string, stuff):
     return string[string.find(stuff)+len(stuff):]
-        
-initialise()  
-                  
-ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
-ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutorial covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
-ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot
 
- # Join the channel using the functions we previously defined
+def connect():
+    global queue
+    global ircsock
+    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
+    ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutorial covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
+    ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot    
+    while 1: # Be careful with these! it might send you to an infinite loop
+        ircmsg = ircsock.recv(2048) # receive data from the server
+        buf=io.StringIO(str(ircmsg))
+        while True:
+            read=buf.readline()
+            if read!="":
+                queue.append(read)
+            else: break
+        mess = queue[0] # removing any unnecessary linebreaks.
+        mess = mess.strip('\n\r').strip()
+        #print(mess) # Here we print what's coming from the server
+        if mess.find("Found your hostname") != -1 or mess.find("No ident response") !=-1:       
+          sent="NICK "+ botnick +"\n"+"USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
+          ircsock.send(bytes(sent, 'UTF-8')) # here we actually assign the nick to the bot
+          print(sent)
+          ircsock.send(bytes("PRIVMSG nickserv :iNOOPE\r\n", 'UTF-8'))    
+        if mess.find("Welcome to the GameSurge IRC") != -1: # if the server pings us then we've got to respond!
+            break        
+        if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
+            ping(mess)      
+        if len(queue)!=0:
+            del queue[0]
+    # Join the channel using the functions we previously defined 
+    joinchan(channel)
+    del queue
+    queue=[]
+    print("yay")
 
-while 1: # Be careful with these! it might send you to an infinite loop
-    ircmsg = ircsock.recv(2048) # receive data from the server
-    buf=io.StringIO(str(ircmsg))
-    while True:
-        read=buf.readline()
-        if read!="":
-            queue.append(read)
-        else: break
-    mess = queue[0] # removing any unnecessary linebreaks.
-    mess = mess.strip('\n\r').strip()
-    #print(mess) # Here we print what's coming from the server
-
-
-    if mess.find("Found your hostname") != -1 or mess.find("No ident response") !=-1:
-      
-      sent="NICK "+ botnick +"\n"+"USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
-      ircsock.send(bytes(sent, 'UTF-8')) # here we actually assign the nick to the bot
-      print(sent)
-      ircsock.send(bytes("PRIVMSG nickserv :iNOOPE\r\n", 'UTF-8'))
-
-    if mess.find("Welcome to the GameSurge IRC") != -1: # if the server pings us then we've got to respond!
-        break
-    
-    if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
-        ping(mess)
-    
-    if len(queue)!=0:
-        del queue[0]
-      
-joinchan(channel)
-del queue
-queue=[]
-print("yay")
+initialise()
+connect()
 
 def readirc(queue):
     global shushed
@@ -576,25 +569,29 @@ def main():
     while online: # Be careful with these! it might send you to an infinite loop
         timer=time()
         ircmsg = ircsock.recv(2048) # receive data from the server
-        try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
-        except Exception: buf=io.StringIO("")
-        while True:
-            read=buf.readline()
-            if read!="":
-                queue.append(read)
-            else: break
-        timer-=time()
-        timer=-timer
-        decrtimer(timer)
-        while len(queue)!=0:
-            timer=time()
-            readirc(queue)
-            #print(timers)
-            del queue[0]
+        if len(ircmsg) == 0:
+            print("Disconnected!")
+            connect()
+        else:
+            try: buf=io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
+            except Exception: buf=io.StringIO("")
+            while True:
+                read=buf.readline()
+                if read!="":
+                    queue.append(read)
+                else: break
             timer-=time()
             timer=-timer
             decrtimer(timer)
-        sleeping(0.100)
+            while len(queue)!=0:
+                timer=time()
+                readirc(queue)
+                #print(timers)
+                del queue[0]
+                timer-=time()
+                timer=-timer
+                decrtimer(timer)
+            sleeping(0.100)
 
 _thread.start_new_thread(main,())
 while online:
