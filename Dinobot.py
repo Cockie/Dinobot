@@ -114,7 +114,7 @@ def initialise():
             if line[0]=='':
                 pass
             else:
-                emoticons[line[0]]=line[1]
+                emoticons[line[0]]=line[1].replace("\\n",'\n')
     print("EMOTICONS")
     print(emoticons)
     with open('triggers.txt',encoding='utf-8') as f:
