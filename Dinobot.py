@@ -41,6 +41,9 @@ ircsock=0
 server = "irc.web.gamesurge.net" # Server
 channel = []
 botnick = "Saoirse" # Your bots nick
+username=""
+password=""
+auth=True
 
 def stringify(t):
     res=""
@@ -77,6 +80,8 @@ def initialise():
     global mouths
     global emoticons
     global spacelist
+    global username
+    global password
     
     with open('space.txt') as f:
         for line in f:
@@ -146,6 +151,12 @@ def initialise():
     with open('autojoin.txt') as f:
         for line in f:
             channel.append(line.strip().replace('\n',''))
+    
+    with open('auth.txt') as f:
+        username=f.readline().strip().replace('\n','')
+        password=f.readline().strip().replace('\n','')
+        if username=="" or password=="":
+            auth=False
     
     readblacklist()
 
@@ -222,6 +233,7 @@ def sendmsg(chan , msg, delay=True): # This is the send message function, it sim
         ircsock.send(bytes("PRIVMSG "+ chan +" :"+ line +"\n", 'UTF-8') )
 
 def pm(name , msg): # This is the send message function, it simply sends messages to the channel.
+    print("PM'd "+name+": "+msg)
     ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
 
 def joinchan(chan): # This function is used to join channels.
@@ -258,7 +270,7 @@ def rektwiki(_channel,mess):
     sendmsg(_channel, htmlstr)
 
 def findtitle(_channel,mess):
-    res=re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', mess[mess.find(channel)+2:])
+    res=re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', mess[mess.find(_channel)+2:])
     print(res)
     req = request.Request(
     res[0], 
@@ -405,9 +417,9 @@ def inpsay():
         if cmd.startswith("/me"):
             string="ACTION"+cmd[3:].strip('\n')+""
             #print(string)
-            sendmsg(channel,string)
+            sendmsg(channel[0],string)
         else:
-            sendmsg(channel, cmd)
+            sendmsg(channel[0], cmd)
         
 def stripleft(string, stuff):
     return string[string.find(stuff)+len(stuff):]
@@ -416,7 +428,15 @@ def connect():
     global queue
     global ircsock
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
+    # Here we connect to the server using the port 6667
+    connected=False
+    while not connected:
+        try:
+            ircsock.connect((server, 6667))
+            connected=True
+        except Exception:
+            connected=False
+            sleeping(5)
     ircsock.settimeout(180)
     ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutorial covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
     ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot    
@@ -434,8 +454,7 @@ def connect():
         if mess.find("Found your hostname") != -1 or mess.find("No ident response") !=-1:       
           sent="NICK "+ botnick +"\n"+"USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
           ircsock.send(bytes(sent, 'UTF-8')) # here we actually assign the nick to the bot
-          print(sent)
-          ircsock.send(bytes("PRIVMSG nickserv :iNOOPE\r\n", 'UTF-8'))    
+          print(sent)  
         if mess.find("Welcome to the GameSurge IRC") != -1: # if the server pings us then we've got to respond!
             break        
         if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
@@ -443,6 +462,8 @@ def connect():
         if len(queue)!=0:
             del queue[0]
     # Join the channel using the functions we previously defined 
+    if auth:
+        pm("AuthServ@Services.GameSurge.net", "AUTH "+username+" "+password)  
     for chan in channel:
         joinchan(chan)
     del queue
@@ -478,6 +499,7 @@ def readirc(queue):
                 print(lmess)
                 if "join" in lmess:
                     tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                    channels.append(tojoin)
                     joinchan(tojoin)
                     sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
                     return
@@ -575,7 +597,7 @@ def main():
     while online: # Be careful with these! it might send you to an infinite loop
         timer=time()
         received=True
-        print("receiving...")
+        #print("receiving...")
         try:
             ircmsg = ircsock.recv(2048) # receive data from the server
             received=True
