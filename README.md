@@ -36,6 +36,7 @@ Emoticons:
 tableflip: (╯°□°）╯︵ ┻━┻    
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
+!alizard: ᘛ⁐̤ᕐᕗ--°  
 !awizard: (｡͡°□͡°)⊃━☆ﾟ.*･｡ﾟ  
 !aww: (｡◕‿‿◕｡)  
 !bow: (シ_ _)シ  
@@ -55,6 +56,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !hmm: ಠ_ಠ  
 !hug: (>^_^)><(^o^<)  
 !lenny: ( ͡° ͜ʖ ͡°)  
+!lizard: ᘛ⁐̤ᕐᕗ--°  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
 !muhaha: ψ(｀∇´)ψ  
 !ohno:  ヽ（゜ロ゜；）ノ  
