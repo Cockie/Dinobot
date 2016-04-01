@@ -74,4 +74,5 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !whistle: ♪(´ε｀)  
 !wink: (◕‿↼)  
 !yay: \(^.^)/  
+!zzz: (ᴗ˳ᴗ)｡｡｡zzz  
 whyy: ¯\_(ツ)_/¯  
