@@ -39,8 +39,7 @@ spacelist=[]
 ircsock=0
 # Some basic variables used to configure the bot        
 server = "irc.web.gamesurge.net" # Server
-channel = "#limittheory" # Channel
-#channel = "#talstest" # Channel
+channel = []
 botnick = "Saoirse" # Your bots nick
 
 def stringify(t):
@@ -143,6 +142,11 @@ def initialise():
                 f.write(line)
             for key in sorted(emoticons):
                 f.write(key+": "+emoticons[key]+"  \n")
+    
+    with open('autojoin.txt') as f:
+        for line in f:
+            channel.append(line.strip().replace('\n',''))
+    
     readblacklist()
 
     push=False
@@ -413,6 +417,7 @@ def connect():
     global ircsock
     ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ircsock.connect((server, 6667)) # Here we connect to the server using the port 6667
+    ircsock.settimeout(180)
     ircsock.send(bytes("USER "+ botnick +" "+ botnick +" "+ botnick +" :This is a result of a tutorial covered on http://shellium.org/wiki.\n", 'UTF-8')) # user authentication
     ircsock.send(bytes("NICK "+ botnick +"\n", 'UTF-8')) # here we actually assign the nick to the bot    
     while 1: # Be careful with these! it might send you to an infinite loop
@@ -438,7 +443,8 @@ def connect():
         if len(queue)!=0:
             del queue[0]
     # Join the channel using the functions we previously defined 
-    joinchan(channel)
+    for chan in channel:
+        joinchan(chan)
     del queue
     queue=[]
     print("yay")
@@ -555,7 +561,7 @@ def readirc(queue):
             if "!listemo" in lmess or "!emoticonlist" in lmess:
                 listemo(_channel, mess)
                 return
-            if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(channel)+2:]))!=0:
+            if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(_channel)+2:]))!=0:
                 findtitle(_channel, mess)
                 return
         elif "speak" in lmess and "saoirse" in lmess:
@@ -568,8 +574,14 @@ def readirc(queue):
 def main():
     while online: # Be careful with these! it might send you to an infinite loop
         timer=time()
-        ircmsg = ircsock.recv(2048) # receive data from the server
-        if len(ircmsg) == 0:
+        received=True
+        print("receiving...")
+        try:
+            ircmsg = ircsock.recv(2048) # receive data from the server
+            received=True
+        except Exception:
+            received=False
+        if not received or len(ircmsg) == 0:
             print("Disconnected!")
             connect()
         else:
