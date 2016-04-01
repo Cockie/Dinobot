@@ -15,6 +15,7 @@ Saoirse speak: she will start responding generally again
 doomed: DOOOOMED!  
 space: SPAAACE!  
 \o/, : \o/  
+all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  
 blood, : B L O O D  
 c++, : Yay C++!  
