@@ -63,6 +63,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !pudding: (^-^)_🍮  
 !run: ヽ(ﾟДﾟ)ﾉ  
 !scared: ヽ(ﾟДﾟ)ﾉ  
+!shakef: ᕙ(｀Д´ )  
 !shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !shrug: ¯\_(ツ)_/¯  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
