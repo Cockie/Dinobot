@@ -22,6 +22,7 @@ c++, : Yay C++!
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
 linux, : Yay Linux! \o/  
+madness?, : This is PUUDDIIIIIINNGGG!!!!  
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
 python, : Yay Python!  
