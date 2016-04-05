@@ -25,6 +25,7 @@ wikitriggers=["what is", "what's", "whats", "who's", "who is", "how do i"]
 blacklist=[]
 timers={}
 triggers={}
+bottriggers={}
 timervals={}
 shushed=False
 online=True
@@ -131,6 +132,7 @@ def initialise():
                 triggers[tuple(line[0])]=line[1].replace("\\n",'\n')
                 timers[line[0][0]]=0
                 timervals[line[0][0]]=int(line[2])
+                bottriggers[line[0][0]]=True if line[3].replace("\\n",'\n')=='T' else False
     print("TRIGGERS")
     print(triggers)
                 
@@ -424,6 +426,9 @@ def inpsay():
 def stripleft(string, stuff):
     return string[string.find(stuff)+len(stuff):]
 
+def blacklisted(lmess):
+    return any([stuff in lmess for stuff in blacklist])
+
 def connect():
     global queue
     global ircsock
@@ -490,102 +495,104 @@ def readirc(queue):
     if mess.find("PING :") != -1: # if the server pings us then we've got to respond!
         ping(mess)
     if "GameSurge" not in mess and lmess.find(":saoirse!")!=0: 
-        if not shushed and not any([stuff in lmess for stuff in blacklist]):    
-            if "saoirse" in lmess:
-                if any([greeting in lmess for greeting in greetings]):
-                    sendmsg(_channel, random.choice(greetings).title()+"!")     
-                #lmess=stripleft(lmess,"saoirse")
-                #mess=stripleft(mess,"Saoirse")
-                print(lmess)
-                if "join" in lmess:
-                    tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
-                    channels.append(tojoin)
-                    joinchan(tojoin)
-                    sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
-                    return
-                elif "leave" in lmess:
-                    sendmsg(_channel, "Bye! o/")
-                    leavechan(_channel)
-                    return
-                elif "quit" in lmess:
-                    sendmsg(_channel, "Bye! o/")
-                    quitirc()
-                    return
-                elif "shush" in lmess:
-                    sendmsg(_channel,"OK, I'll shut up :(")
-                    shushed=True
-                    return
-                elif "initialise" in lmess or "initialize" in lmess:
-                    sendmsg(_channel,"OK, reinitialising...")
-                    initialise()
-                    sendmsg(_channel,"Done! Should work now.")
-                    return
-                elif "deignore" in lmess and ":dinosawer" in lmess:
-                    nick=lmess[lmess.find("deignore")+len("deignore"):].strip()
-                    blacklist.remove(":"+nick)
-                    writeblacklist()
-                elif "ignore" in lmess and ":dinosawer" in lmess:
-                    nick=lmess[lmess.find("ignore")+len("ignore"):].strip()
-                    if nick!="dinosawer":
-                        blacklist.append(":"+nick)
+        if not shushed:
+            if not blacklisted(lmess):    
+                if "saoirse" in lmess:
+                    if any([greeting in lmess for greeting in greetings]):
+                        sendmsg(_channel, random.choice(greetings).title()+"!")     
+                    #lmess=stripleft(lmess,"saoirse")
+                    #mess=stripleft(mess,"Saoirse")
+                    print(lmess)
+                    if "join" in lmess:
+                        tojoin=lmess[lmess.find("join"):].replace("join",'').strip()
+                        channels.append(tojoin)
+                        joinchan(tojoin)
+                        sendmsg(_channel, "To "+tojoin+" and beyond! /o/")
+                        return
+                    elif "leave" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        leavechan(_channel)
+                        return
+                    elif "quit" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        quitirc()
+                        return
+                    elif "shush" in lmess:
+                        sendmsg(_channel,"OK, I'll shut up :(")
+                        shushed=True
+                        return
+                    elif "initialise" in lmess or "initialize" in lmess:
+                        sendmsg(_channel,"OK, reinitialising...")
+                        initialise()
+                        sendmsg(_channel,"Done! Should work now.")
+                        return
+                    elif "deignore" in lmess and ":dinosawer" in lmess:
+                        nick=lmess[lmess.find("deignore")+len("deignore"):].strip()
+                        blacklist.remove(":"+nick)
                         writeblacklist()
-                #wikipedia search
-                else:
-                    for stuff in wikitriggers:
-                        if stuff in lmess:
-                            lmess=lmess[lmess.find(stuff):]
-                            wiki(_channel,stripleft(lmess,stuff),3)
-                            return
-                if "confuc" in lmess or "confusius" in lmess:
-                    confucius(_channel)
+                    elif "ignore" in lmess and ":dinosawer" in lmess:
+                        nick=lmess[lmess.find("ignore")+len("ignore"):].strip()
+                        if nick!="dinosawer":
+                            blacklist.append(":"+nick)
+                            writeblacklist()
+                    #wikipedia search
+                    else:
+                        for stuff in wikitriggers:
+                            if stuff in lmess:
+                                lmess=lmess[lmess.find(stuff):]
+                                wiki(_channel,stripleft(lmess,stuff),3)
+                                return
+                    if "confuc" in lmess or "confusius" in lmess:
+                        confucius(_channel)
+                        return
+                    else: sendmsg(_channel,"Pudding!")
+                #no-named things
+                if "rekt wiki" in lmess:
+                    rektwiki(_channel,lmess)
                     return
-                else: sendmsg(_channel,"Pudding!")
-            #no-named things
-            if "rekt wiki" in lmess:
-                rektwiki(_channel,lmess)
+                elif "TABLEFLIP" in mess:
+                    temp="︵ヽ(`Д´)ﾉ︵"
+                    for i in range(1,lmess.count('!')):
+                        temp+="  "
+                        temp="  "+temp
+                    temp+="┻━┻ "
+                    temp="┻━┻ "+temp
+                    sendmsg(_channel,temp) 
+                    return
+                elif "tableflip" in lmess:
+                    temp="(╯°□°）╯︵"
+                    for i in range(1,lmess.count('!')):
+                        temp+="  "
+                    temp+="┻━┻ "
+                    sendmsg(_channel,temp) 
+                    return
+                for key, value in emoticons.items():
+                    if key in lmess:
+                        sendmsg(_channel,value)
+                        return  
+                if re.search(regex1, lmess)!=None:
+                    sendmsg(_channel,"DOOOOMED!")
+                    return
+                if re.search(regex2, lmess)!=None:
+                    space(_channel)
+                    return
+                if "!procemo" in lmess:
+                    procemo(_channel)
                 return
-            elif "TABLEFLIP" in mess:
-                temp="︵ヽ(`Д´)ﾉ︵"
-                for i in range(1,lmess.count('!')):
-                    temp+="  "
-                    temp="  "+temp
-                temp+="┻━┻ "
-                temp="┻━┻ "+temp
-                sendmsg(_channel,temp) 
-                return
-            elif "tableflip" in lmess:
-                temp="(╯°□°）╯︵"
-                for i in range(1,lmess.count('!')):
-                    temp+="  "
-                temp+="┻━┻ "
-                sendmsg(_channel,temp) 
-                return
-            for key, value in emoticons.items():
-                if key in lmess:
-                    sendmsg(_channel,value)
-                    return  
-            if re.search(regex1, lmess)!=None:
-                sendmsg(_channel,"DOOOOMED!")
-                return
-            if re.search(regex2, lmess)!=None:
-                space(_channel)
-                return
+                if "!listemo" in lmess or "!emoticonlist" in lmess:
+                    listemo(_channel, mess)
+                    return
+                if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(_channel)+2:]))!=0:
+                    findtitle(_channel, mess)
+                    return
             for key, value in triggers.items():
                 if any([stuff in lmess for stuff in key]):
-                    if timers[key[0]]<=0:
+                    if timers[key[0]]<=0 and (not blacklisted(lmess) or bottriggers[key[0]]):
                         sleeping(0.6)
                         sendmsg(_channel, value)
                         timers[key[0]]=timervals[key[0]]
                         return
-            if "!procemo" in lmess:
-                procemo(_channel)
-                return
-            if "!listemo" in lmess or "!emoticonlist" in lmess:
-                listemo(_channel, mess)
-                return
-            if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', lmess[lmess.find(_channel)+2:]))!=0:
-                findtitle(_channel, mess)
-                return
+
         elif "speak" in lmess and "saoirse" in lmess:
             sendmsg(_channel,"Yay! Pudding!")
             shushed=False    
