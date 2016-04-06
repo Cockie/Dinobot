@@ -31,6 +31,10 @@ saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot
 tintin, : YAY TINTIN!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
+what is this madness, : madness?
+This
+is
+PUUDDIIIIIINNGGG!!!!  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands  
