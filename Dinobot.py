@@ -332,7 +332,7 @@ def listemo(_channel, mess):
     for key, value in emoticons.items():
         m += key + ": " + value + "     "
         i += 1
-        if i == 3:
+        if i == 5:
             pm(user, m)
             m = ""
             i = 0
