@@ -19,6 +19,8 @@ all hail, : All hail! /o/
 america, murika, : MURIKAH!!! /o/  
 blood, : B L O O D  
 c++, : Yay C++!  
+gives Saoirse flowers, : ...this is no pudding :(  
+gives Saoirse pudding, : Yay! (^-^)_🍮  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
 linux, : Yay Linux! \o/  
