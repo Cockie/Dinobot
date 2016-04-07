@@ -126,6 +126,7 @@ def initialise():
     print("EMOTICONS")
     print(emoticons)
     with open('triggers.txt', encoding='utf-8') as f:
+        triggers = OrderedDict()
         for line in f:
             line = line.strip('\n').strip(' ').split('|')
             line[0] = line[0].split('&')
