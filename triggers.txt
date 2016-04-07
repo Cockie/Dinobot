@@ -1,8 +1,8 @@
 saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5|F
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5|F
 joshpost|POSHJOST! \o/|5|T
-gives Saoirse flowers|...this is no pudding :(|100|T
-gives Saoirse pudding|Yay! (^-^)_🍮|100|T
+gives saoirse flowers|...this is no pudding :(|100|T
+gives saoirse pudding|Yay! (^-^)_🍮|100|T
 pudding|PUDDING!|10|F
 tintin|YAY TINTIN!|200|F
 america&murika|MURIKAH!!! /o/|200|F
