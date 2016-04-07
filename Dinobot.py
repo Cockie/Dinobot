@@ -16,13 +16,14 @@ import sys
 import random
 import re
 import subprocess
+from collections import OrderedDict
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
 wikitriggers = ["what is", "what's", "whats", "who's", "who is", "how do i"]
 blacklist = []
 timers = {}
-triggers = {}
+triggers = OrderedDict()
 bottriggers = {}
 timervals = {}
 shushed = False
