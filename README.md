@@ -14,6 +14,7 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
 doomed: DOOOOMED!  
 space: SPAAACE!  
+!discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
 \o/, : \o/  
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  

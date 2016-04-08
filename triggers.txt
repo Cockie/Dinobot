@@ -17,3 +17,4 @@ blood|B L O O D|200|F
 all hail|All hail! /o/|30|F
 what is this madness|madness?\nThis\nis\nPUUDDIIIIIINNGGG!!!!|200|F
 madness?|This is PUUDDIIIIIINNGGG!!!!|200|F
+!discord-invite|https://discord.gg/0jH4fqNh4KiWRpkl|20|F
