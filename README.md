@@ -15,6 +15,7 @@ Saoirse speak: she will start responding generally again
 doomed: DOOOOMED!  
 space: SPAAACE!  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
+!rubyreplace, : https://github.com/Cockie/RubyReplace/blob/master/nicenicks.py  
 \o/, : \o/  
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  
