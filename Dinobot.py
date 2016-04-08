@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Sat Sep 19 21:09:34 2015
 
@@ -36,14 +35,15 @@ eyes = []
 mouths = []
 emoticons = {}
 spacelist = []
-ircsock = 0
-# Some basic variables used to configure the bot        
+# Some basic variables used to configure the bot
+ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
+smartlander = False
 
 def stringify(t):
     res = ""
@@ -238,6 +238,12 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
     if delay:
         time_ = len(msg) / 50.0
         sleeping(1)
+
+    if smartlander:
+        print("smartlander is here")
+        print(msg)
+        msg = msg.replace('🍮',"༼ ༽")
+        print(msg)
     msg = msg.split('\n')
     for line in msg:
         ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
@@ -458,7 +464,6 @@ def blacklisted(lmess):
 def connect():
     global queue
     global ircsock
-    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Here we connect to the server using the port 6667
     connected = False
     while not connected:
@@ -514,6 +519,7 @@ def readirc():
     global broken
     global timers
     global queue
+    global smartlander
     mess = queue[0]  # removing any unnecessary linebreaks.
     print(mess)
     test = mess.strip('\r\n').strip().strip("'")
@@ -526,6 +532,13 @@ def readirc():
     # print(_channel)
     if mess.find("PING :") != -1:  # if the server pings us then we've got to respond!
         ping(mess)
+    if "+smartlander" in mess:
+        smartlander = True
+    elif ":smartlander" in mess:
+        if "QUIT" in mess:
+            smartlander = False
+        else:
+            smartlander = True
     if "GameSurge" not in mess and lmess.find(":saoirse!") != 0:
         if not shushed:
             if not blacklisted(lmess):
@@ -537,7 +550,7 @@ def readirc():
                     print(lmess)
                     if "join" in lmess:
                         tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
-                        channels.append(tojoin)
+                        channel.append(tojoin)
                         joinchan(tojoin)
                         sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
                         return
@@ -676,3 +689,4 @@ def main():
 _thread.start_new_thread(main, ())
 while online:
     inpsay()
+
