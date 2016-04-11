@@ -85,6 +85,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !shiny: °˖✧◝(⁰▿⁰)◜✧˖°  
 !shrug: ¯\_(ツ)_/¯  
 !squirrel: ʕ=˘ϖ˘=ʔ༄  
+!strong: ᕙ(⇀‸↼‶)ᕗ  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
 !walk: ᕕ( ᐛ )ᕗ  
 !welder: (ﾒ▼Д▼)┏※==☆  
