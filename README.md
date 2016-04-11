@@ -46,6 +46,7 @@ tableflip: (╯°□°）╯︵ ┻━┻
 TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻    
 !procemo: generates a procedural emoticon  
 !alizard: ᘛ⁐̤ᕐᕗ--°  
+!angry: ヽ(#`Д´)ﾉ  
 !awizard: (｡͡°□͡°)⊃━☆ﾟ.*･｡ﾟ  
 !aww: (｡◕‿‿◕｡)  
 !boo: 〜(・Д ・)〜  
@@ -91,5 +92,6 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !whistle: ♪(´ε｀)  
 !wink: (◕‿↼)  
 !yay: \(^.^)/  
+!yuno: ლ(ಠ益ಠლ)  
 !zzz: (ᴗ˳ᴗ)｡｡｡zzz  
 whyy: ¯\_(ツ)_/¯  
