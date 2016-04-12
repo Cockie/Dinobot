@@ -1,3 +1,4 @@
+saorise|It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>|200|F
 saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5|F
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5|F
 joshpost|POSHJOST! \o/|5|T
