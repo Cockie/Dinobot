@@ -5,3 +5,4 @@ shocky
 chanserv
 redhotbalrog
 saoirse
+sleepybalrog
