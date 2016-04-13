@@ -16,6 +16,8 @@ import random
 import re
 import subprocess
 from collections import OrderedDict
+import sys
+import readline
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -39,7 +41,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -443,7 +445,8 @@ def wiki(_channel, string, count):
 
 
 def inpsay():
-    cmd = sys.stdin.readline()
+    #cmd = sys.stdin.readline()
+    cmd = input('> ')
     if cmd != "":
         if cmd.startswith("/me"):
             string = "ACTION" + cmd[3:].strip('\n') + ""
@@ -677,7 +680,10 @@ def main():
             decrtimer(timer)
             while len(queue) != 0:
                 timer = time()
+                sys.stdout.write('\r' + ' ' * (len(readline.get_line_buffer()) + 2) + '\r')
                 readirc()
+                sys.stdout.write('> ' + readline.get_line_buffer())
+                sys.stdout.flush()
                 # print(timers)
                 del queue[0]
                 timer -= time()
