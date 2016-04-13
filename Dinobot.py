@@ -41,7 +41,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -258,6 +258,23 @@ def pm(name, msg):  # This is the send message function, it simply sends message
 
 def joinchan(chan):  # This function is used to join channels.
     ircsock.send(bytes("JOIN " + chan + "\n", 'UTF-8'))
+
+def printIRC(mess):
+    if "PING" in mess or "Prothid.NY.US.GameSurge.net" in mess:
+        return
+    usr = mess[mess.find(':'):mess.find('!')].strip(':')
+    try:
+        channel = '#'+mess.split('#')[1].split()[0]
+    except Exception:
+        channel = "PM"
+    try:
+        mess = mess.split('PRIVMSG')[1]
+    except Exception:
+        return
+    mess = mess[mess.find(':')+1:].strip('\n')
+
+    print(channel+'\t'+'<'+usr+'>'+'\t'+mess)
+
 
 
 def quitirc():  # This function is used to quit IRC entirely
@@ -524,7 +541,7 @@ def readirc():
     global queue
     global smartlander
     mess = queue[0]  # removing any unnecessary linebreaks.
-    print(mess)
+    printIRC(mess)
     test = mess.strip('\r\n').strip().strip("'")
     mess = test
     lmess = mess.lower()
@@ -550,7 +567,7 @@ def readirc():
                         sendmsg(_channel, random.choice(greetings).title() + "!")
                         # lmess=stripleft(lmess,"saoirse")
                     # mess=stripleft(mess,"Saoirse")
-                    print(lmess)
+                    #print(lmess)
                     if "join" in lmess:
                         tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
                         channel.append(tojoin)
