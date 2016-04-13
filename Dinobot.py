@@ -248,6 +248,7 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
         print(msg)
     msg = msg.split('\n')
     for line in msg:
+        print(chan + '\t' + '<' + botnick + '>' + '\t' + line.strip('\n'))
         ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
 
 
@@ -261,7 +262,30 @@ def joinchan(chan):  # This function is used to join channels.
 
 def printIRC(mess):
     #print(mess)
+    mess = mess.strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
+    if "NOTICE" in mess:
+        print("Notice from " + usr + ': ' + mess[mess.find("NOTICE ")+7:])
+        return 0
+    if "JOIN" in mess:
+        chan = '#' + mess.split('#')[1].split()[0]
+        print(chan+'\t'+usr+" joined "+chan)
+        return 0
+    if "PART" in mess:
+        chan = '#' + mess.split('#')[1].split()[0]
+        mess = mess.split('PART')[1]
+        mess = mess[mess.find(':') + 1:].strip('\n')
+        print(chan + '\t' + usr + " left " + chan+" ("+mess+")")
+        return 0
+    if "QUIT" in mess:
+        chan = '#' + mess.split('#')[1].split()[0]
+        mess = mess.split('QUIT')[1]
+        mess = mess[mess.find(':') + 1:].strip('\n')
+        print(chan + '\t' + usr + " quit "+"("+mess+")")
+        return 0
+    if "MODE" in mess:
+        return 0
+
     try:
         chan = '#'+mess.split('#')[1].split()[0]
     except Exception:
@@ -269,6 +293,7 @@ def printIRC(mess):
     try:
         mess = mess.split('PRIVMSG')[1]
     except Exception:
+        print(mess)
         return
     mess = mess[mess.find(':')+1:].strip('\n')
     if "ACTION" in mess:
@@ -473,7 +498,7 @@ def inpsay():
             # print(string)
             sendmsg(channel[0], string)
         elif cmd.startswith("/msg"):
-            pm(cmd.strip().split()[1], cmd.strip().split()[2])
+            pm(cmd.strip().split()[1], ' '.join(cmd.strip().split()[2:]))
         elif cmd.startswith("!"):
             queue.insert(0,":Dinosawer!Dinosawer@Dinosawer.user.gamesurge PRIVMSG "+channel[0]+" :"+cmd)
         else:
@@ -565,7 +590,6 @@ def readirc():
         _channel, user, mess=printIRC(mess)
     except Exception:
         #some weird message?
-        print(mess)
         return
     """test = mess.strip('\r\n').strip().strip("'")
     mess = test"""
