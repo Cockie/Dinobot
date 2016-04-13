@@ -42,7 +42,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -61,7 +61,7 @@ def readblacklist():
     blacklist = []
     with open('blacklist.txt') as f:
         for line in f:
-            blacklist.append(":" + line.strip())
+            blacklist.append(line.strip())
     print(blacklist)
 
 
@@ -69,7 +69,7 @@ def writeblacklist():
     global blacklist
     f = open('blacklist.txt', 'w')
     for nick in blacklist:
-        f.write(nick.strip(':') + '\n')
+        f.write(nick.strip() + '\n')
     f.close()
     print(blacklist)
 
@@ -285,6 +285,11 @@ def printIRC(mess):
         return 0
     if "MODE" in mess:
         return 0
+    if "NICK" in mess:
+        mess = mess.split('NICK')[1]
+        mess = mess[mess.find(':') + 1:].strip('\n')
+        print('\t' + '\t' + usr + " is now known as " + mess)
+        return 0
 
     try:
         chan = '#'+mess.split('#')[1].split()[0]
@@ -335,14 +340,14 @@ def rektwiki(_channel, mess):
     htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
     htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
     htmlstr = htmlstr[:htmlstr.find("\""):].replace("\"", '')
-    print(htmlstr + '\n')
+    #print(htmlstr + '\n')
     sendmsg(_channel, htmlstr)
 
 
 def findtitle(_channel, mess):
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess[mess.find(_channel) + 2:])
-    print(res)
+    #print(res)
     req = request.Request(
         res[0],
         data=None,
@@ -354,20 +359,20 @@ def findtitle(_channel, mess):
         r = request.urlopen(req, timeout=15)
     except Exception:
         return
-    print(r.geturl())
+    #print(r.geturl())
     htmlstr = r.read()
     try:
         htmlstr = htmlstr.decode()
     except Exception:
         htmlstr = str(htmlstr)
     htmlstr = htmlstr.replace('\t', '').replace('\n', '')
-    print(htmlstr)
+    #print(htmlstr)
     # htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
     # print(htmlstr)
     try:
         htmlstr = htmlstr[htmlstr.find("<title>"):].replace("<title>", '')
         htmlstr = htmlstr[:htmlstr.find("</title>"):].replace("</title>", '')
-        print(htmlstr + '\n')
+        #print(htmlstr + '\n')
     except Exception:
         return
     if htmlstr != "":
@@ -509,8 +514,9 @@ def stripleft(string, stuff):
     return string[string.find(stuff) + len(stuff):]
 
 
-def blacklisted(lmess):
-    return any([stuff in lmess for stuff in blacklist])
+def blacklisted(user):
+    global blacklist
+    return any([ stuff in user.lower() for stuff in blacklist])
 
 
 def connect():
@@ -572,6 +578,8 @@ def readirc():
     global timers
     global queue
     global botnick
+    global bottriggers
+    global triggers
     global smartlander
     mess = queue[0]  # removing any unnecessary linebreaks.
     if mess.find("PING :") != -1:  # if the server pings us then we've got to respond!
@@ -601,7 +609,7 @@ def readirc():
     # print(_channel)
     if "GameSurge" not in mess and user != botnick:
         if not shushed:
-            if not blacklisted(lmess):
+            if not blacklisted(user):
                 if "saoirse" in lmess:
                     if any([greeting in lmess for greeting in greetings]):
                         sendmsg(_channel, random.choice(greetings).title() + "!")
@@ -633,12 +641,12 @@ def readirc():
                         return
                     elif "deignore" in lmess and "Dinosawer" in user:
                         nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
-                        blacklist.remove(":" + nick)
+                        blacklist.remove(nick)
                         writeblacklist()
                     elif "ignore" in lmess and "Dinosawer" in user:
                         nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
                         if nick != "dinosawer":
-                            blacklist.append(":" + nick)
+                            blacklist.append(nick)
                             writeblacklist()
                     # wikipedia search
                     else:
@@ -695,7 +703,7 @@ def readirc():
                     return
             for key, value in triggers.items():
                 if any([stuff in lmess for stuff in key]):
-                    if timers[key[0]] <= 0 and (not blacklisted(lmess) or bottriggers[key[0]]):
+                    if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
                         sleeping(0.6)
                         sendmsg(_channel, value)
                         timers[key[0]] = timervals[key[0]]
