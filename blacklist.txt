@@ -4,3 +4,4 @@ jimmy
 shocky
 chanserv
 redhotbalrog
+saoirse
