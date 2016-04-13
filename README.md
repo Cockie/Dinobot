@@ -59,6 +59,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !dealwithit: (•_•)
 ( •_•)>⌐■-■
 (⌐■_■)  
+!dino: ─=≡Σ(((⊃ ﾟ▽ﾟ)⊃╔═⊱───✴  "BOOONSAAAIIIII!!!"  
 !drink: (^-^)_旦”"  
 !eyebrows: ( ͡° ͜ʖ ͡°)  
 !facepalm: (－‸ლ)  
