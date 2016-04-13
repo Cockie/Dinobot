@@ -32,6 +32,7 @@ pudding, : PUDDING!
 python, : Yay Python!  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
+saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
 tintin, : YAY TINTIN!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
