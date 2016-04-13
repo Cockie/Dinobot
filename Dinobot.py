@@ -18,6 +18,7 @@ import subprocess
 from collections import OrderedDict
 import sys
 import readline
+import select
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -228,7 +229,6 @@ def procemo(chan):
     else:
         test += eye
     test += random.choice(rights)
-    print(i)
     sendmsg(chan, test)
 
 
@@ -260,20 +260,22 @@ def joinchan(chan):  # This function is used to join channels.
     ircsock.send(bytes("JOIN " + chan + "\n", 'UTF-8'))
 
 def printIRC(mess):
-    if "PING" in mess or "Prothid.NY.US.GameSurge.net" in mess:
-        return
+    #print(mess)
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     try:
-        channel = '#'+mess.split('#')[1].split()[0]
+        chan = '#'+mess.split('#')[1].split()[0]
     except Exception:
-        channel = "PM"
+        chan = "PM"
     try:
         mess = mess.split('PRIVMSG')[1]
     except Exception:
         return
     mess = mess[mess.find(':')+1:].strip('\n')
-
-    print(channel+'\t'+'<'+usr+'>'+'\t'+mess)
+    if "ACTION" in mess:
+        print(chan + '\t' + '*' + usr +mess[1:len(mess)-2].strip().strip("ACTION"))
+    else:
+        print(chan+'\t'+'<'+usr+'>'+'\t'+mess)
+    return chan, usr, mess
 
 
 
@@ -351,9 +353,9 @@ def confucius(_channel):
     sendmsg(_channel, "Confucius says: " + random.choice(confus))
 
 
-def listemo(_channel, mess):
+def listemo(_channel, user, mess):
     sendmsg(_channel, "I'll pm you.")
-    user = mess[mess.find(":") + 1:mess.find("!")]
+    user = user.strip('>').strip('<')
     m = ""
     i = 0
     for key, value in emoticons.items():
@@ -463,12 +465,17 @@ def wiki(_channel, string, count):
 
 def inpsay():
     #cmd = sys.stdin.readline()
-    cmd = input('> ')
+    global queue
+    cmd = input('> ').strip()
     if cmd != "":
         if cmd.startswith("/me"):
             string = "ACTION" + cmd[3:].strip('\n') + ""
             # print(string)
             sendmsg(channel[0], string)
+        elif cmd.startswith("/msg"):
+            pm(cmd.strip().split()[1], cmd.strip().split()[2])
+        elif cmd.startswith("!"):
+            queue.insert(0,":Dinosawer!Dinosawer@Dinosawer.user.gamesurge PRIVMSG "+channel[0]+" :"+cmd)
         else:
             sendmsg(channel[0], cmd)
 
@@ -539,19 +546,14 @@ def readirc():
     global broken
     global timers
     global queue
+    global botnick
     global smartlander
     mess = queue[0]  # removing any unnecessary linebreaks.
-    printIRC(mess)
-    test = mess.strip('\r\n').strip().strip("'")
-    mess = test
-    lmess = mess.lower()
-    _channel = lmess[lmess.find("#"):]
-    _channel = _channel[:_channel.find(":")].strip()
-    regex1 = re.compile('do+omed')
-    regex2 = re.compile('spa+ce')
-    # print(_channel)
     if mess.find("PING :") != -1:  # if the server pings us then we've got to respond!
         ping(mess)
+        return
+    elif "Prothid.NY.US.GameSurge.net" in mess:
+        return
     if "+smartlander" in mess:
         smartlander = True
     elif ":smartlander" in mess:
@@ -559,7 +561,21 @@ def readirc():
             smartlander = False
         else:
             smartlander = True
-    if "GameSurge" not in mess and lmess.find(":saoirse!") != 0:
+    try:
+        _channel, user, mess=printIRC(mess)
+    except Exception:
+        #some weird message?
+        print(mess)
+        return
+    """test = mess.strip('\r\n').strip().strip("'")
+    mess = test"""
+    lmess = mess.lower()
+    """ _channel = lmess[lmess.find("#"):]
+    _channel = _channel[:_channel.find(":")].strip()"""
+    regex1 = re.compile('do+omed')
+    regex2 = re.compile('spa+ce')
+    # print(_channel)
+    if "GameSurge" not in mess and user != botnick:
         if not shushed:
             if not blacklisted(lmess):
                 if "saoirse" in lmess:
@@ -591,11 +607,11 @@ def readirc():
                         initialise()
                         sendmsg(_channel, "Done! Should work now.")
                         return
-                    elif "deignore" in lmess and ":dinosawer" in lmess:
+                    elif "deignore" in lmess and "Dinosawer" in user:
                         nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
                         blacklist.remove(":" + nick)
                         writeblacklist()
-                    elif "ignore" in lmess and ":dinosawer" in lmess:
+                    elif "ignore" in lmess and "Dinosawer" in user:
                         nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
                         if nick != "dinosawer":
                             blacklist.append(":" + nick)
@@ -646,7 +662,7 @@ def readirc():
                     procemo(_channel)
                     return
                 if "!listemo" in lmess or "!emoticonlist" in lmess:
-                    listemo(_channel, mess)
+                    listemo(_channel, user, mess)
                     return
                 if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(
                         re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
@@ -669,44 +685,48 @@ def readirc():
 
 
 def main():
+    global ircsock
+    #ircsock.setblocking(0)
     while online:  # Be careful with these! it might send you to an infinite loop
         timer = time()
         received = True
         # print("receiving...")
-        try:
-            ircmsg = ircsock.recv(2048)  # receive data from the server
-            received = True
-        except Exception:
-            received = False
-        if not received or len(ircmsg) == 0:
-            print("Disconnected!")
-            connect()
-        else:
+        ready = select.select([ircsock], [], [], 1)
+        if ready[0]:
             try:
-                buf = io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
+                ircmsg = ircsock.recv(2048)  # receive data from the server
+                received = True
             except Exception:
-                buf = io.StringIO("")
-            while True:
-                read = buf.readline()
-                if read != "":
-                    queue.append(read)
-                else:
-                    break
+                received = False
+            if not received or len(ircmsg) == 0:
+                print("Disconnected!")
+                connect()
+            else:
+                try:
+                    buf = io.StringIO(str(ircmsg, encoding='utf-8').strip('\r'))
+                except Exception:
+                    buf = io.StringIO("")
+                while True:
+                    read = buf.readline()
+                    if read != "":
+                        queue.append(read)
+                    else:
+                        break
+        timer -= time()
+        timer = -timer
+        decrtimer(timer)
+        while len(queue) != 0:
+            timer = time()
+            sys.stdout.write('\r' + ' ' * (len(readline.get_line_buffer()) + 2) + '\r')
+            readirc()
+            sys.stdout.write('> ' + readline.get_line_buffer())
+            sys.stdout.flush()
+            # print(timers)
+            del queue[0]
             timer -= time()
             timer = -timer
             decrtimer(timer)
-            while len(queue) != 0:
-                timer = time()
-                sys.stdout.write('\r' + ' ' * (len(readline.get_line_buffer()) + 2) + '\r')
-                readirc()
-                sys.stdout.write('> ' + readline.get_line_buffer())
-                sys.stdout.flush()
-                # print(timers)
-                del queue[0]
-                timer -= time()
-                timer = -timer
-                decrtimer(timer)
-            sleeping(0.100)
+        sleeping(0.100)
 
 
 _thread.start_new_thread(main, ())
