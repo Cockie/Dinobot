@@ -347,7 +347,7 @@ def rektwiki(_channel, mess):
 
 def findtitle(_channel, mess):
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                     mess[mess.find(_channel) + 2:])
+                     mess)
     #print(res)
     req = request.Request(
         res[0],
