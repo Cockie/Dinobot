@@ -20,6 +20,7 @@ from collections import OrderedDict
 import sys
 import readline
 import select
+import html
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -279,7 +280,6 @@ def printIRC(mess):
         print(chan + '\t' + usr + " left " + chan+" ("+mess+")")
         return 0
     if "QUIT" in mess:
-        chan = '#' + mess.split('#')[1].split()[0]
         mess = mess.split('QUIT')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
         print(chan + '\t' + usr + " quit "+"("+mess+")")
@@ -377,7 +377,7 @@ def findtitle(_channel, mess):
     except Exception:
         return
     if htmlstr != "":
-        sendmsg(_channel, htmlstr.strip())
+        sendmsg(_channel, html.unescape(htmlstr.strip()))
 
 
 def confucius(_channel):
@@ -699,7 +699,7 @@ def readirc():
                     return
                 if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(
                         re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                                   lmess[lmess.find(_channel) + 2:])) != 0:
+                                   lmess)) != 0:
                     findtitle(_channel, mess)
                     return
             for key, value in triggers.items():
