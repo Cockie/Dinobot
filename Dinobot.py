@@ -697,7 +697,8 @@ def readirc():
                 if "!listemo" in lmess or "!emoticonlist" in lmess:
                     listemo(_channel, user, mess)
                     return
-                if "http://www.gamesurge.net/cms/spamServ" not in lmess and "imgur" not in lmess and len(
+
+                if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
                         re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                                    lmess)) != 0:
                     findtitle(_channel, mess)
