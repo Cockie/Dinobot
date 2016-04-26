@@ -16,6 +16,7 @@ doomed: DOOOOMED!
 space: SPAAACE!  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
+!soon, : Soon™  
 \o/, : \o/  
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  

@@ -20,3 +20,4 @@ what is this madness|madness?\nThis\nis\nPUUDDIIIIIINNGGG!!!!|200|F
 madness?|This is PUUDDIIIIIINNGGG!!!!|200|F
 !discord-invite|https://discord.gg/0jH4fqNh4KiWRpkl|20|F
 !rubyreplace|https://github.com/Cockie/RubyReplace|5|F
+!soon|Soon™|2|F
