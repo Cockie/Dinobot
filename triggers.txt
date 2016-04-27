@@ -1,3 +1,5 @@
+saoirse make me pudding&saoirse make me a pudding&saoirse make me a pudding&saoirse, make me pudding&saoirse, make me a pudding&saoirse, make me a pudding|No! The pudding is mine!|10|F
+sudo saoirse make me pudding&sudo saoirse make me a pudding&sudo saoirse make me a pudding&sudo saoirse, make me pudding&saoirse, make me a pudding&sudo saoirse, make me a pudding|Okay, here you go! (^-^)_🍮|10|F
 saorise|It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>|200|F
 saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5|F
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5|F
@@ -21,7 +23,4 @@ madness?|This is PUUDDIIIIIINNGGG!!!!|200|F
 !discord-invite|https://discord.gg/0jH4fqNh4KiWRpkl|20|F
 !rubyreplace|https://github.com/Cockie/RubyReplace|5|F
 !soon|Soon™|2|F
-sudo saoirse make me some pudding&sudo saoirse make me pudding&sudo saoirse make me a pudding|Okay, here you go! (^-^)_🍮|10|F
- |10|F
-saoirse make me some pudding&saoirse make me pudding&saoirse make me a pudding|No! The pudding is mine!|10|F
 
