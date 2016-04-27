@@ -32,10 +32,10 @@ microsoft, windows, : ACTION shakes fist at Microsoft
 pudding, : PUDDING!  
 python, : Yay Python!  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
-saoirse make me pudding, saoirse make me a pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me a pudding, : No! The pudding is mine!  
+saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
-sudo saoirse make me pudding, sudo saoirse make me a pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, saoirse, make me a pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
+sudo saoirse make me pudding, sudo saoirse make me some pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, sudo saoirse, make me some pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
 tintin, : YAY TINTIN!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
