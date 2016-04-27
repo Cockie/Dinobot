@@ -33,7 +33,9 @@ pudding, : PUDDING!
 python, : Yay Python!  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
+saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
+saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
 saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
 sudo saoirse make me pudding, sudo saoirse make me some pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, sudo saoirse, make me some pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
 tintin, : YAY TINTIN!  
