@@ -337,7 +337,10 @@ def greet(_channel, mess):
 def rektwiki(_channel, mess):
     mess = mess[mess.find("rekt wiki"):]
     mess = mess.replace("rekt wiki", '').strip()
-    r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
+    try:
+        r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
+    except Exception:
+        return
     htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
     htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
     htmlstr = htmlstr[:htmlstr.find("\""):].replace("\"", '')
