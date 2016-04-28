@@ -24,6 +24,7 @@ blood, : B L O O D
 c++, : Yay C++!  
 gives saoirse flowers, : ...this is no pudding :(  
 gives saoirse pudding, : Yay! (^-^)_🍮  
+hail hydra, : Hail Hydra! o/  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
 linux, : Yay Linux! \o/  

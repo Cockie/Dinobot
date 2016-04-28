@@ -18,6 +18,7 @@ c++|Yay C++!|500|F
 linux|Yay Linux! \o/|500|F
 what is love|Oh baby, don't hurt me\nDon't hurt me no more|10|F
 hail satan|All hail the dark lord!! /o/ His victory is certain!! /o/|10|F
+hail hydra|Hail Hydra! o/|10|F
 blood|B L O O D|200|F
 all hail|All hail! /o/|30|F
 what is this madness|madness?\nThis\nis\nPUUDDIIIIIINNGGG!!!!|200|F
