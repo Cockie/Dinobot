@@ -32,6 +32,7 @@ madness?, : This is PUUDDIIIIIINNGGG!!!!
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
 python, : Yay Python!  
+saoirse do a barrel roll, saoirse, do a barrel roll, : 三(‘ω’)三( ε: )三(.ω.)三( :3 )三(‘ω’)三( ε: )三(.ω.)三( :3 )  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
 saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
