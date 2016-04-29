@@ -83,6 +83,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !lenny: ( ͡° ͜ʖ ͡°)  
 !lizard: ᘛ⁐̤ᕐᕗ--°  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!moustache: ƪ(˘︷ ˘)و  
 !muhaha: ψ(｀∇´)ψ  
 !ohno:  ヽ（゜ロ゜；）ノ  
 !ohyes: ໒( ͡ᵔ ▾ ͡ᵔ )७  
