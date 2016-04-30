@@ -536,7 +536,7 @@ def blacklisted(user):
 
 def logslastn(chan, n):
     mess=""
-    lines = tailer.tail(open(chan+".txt"),n)
+    lines = tailer.tail(open(chan+".txt",errors='ignore'),n)
     for line in lines:
         mess+=line+'\n'
 
