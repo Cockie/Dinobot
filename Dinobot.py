@@ -769,6 +769,12 @@ def readirc():
                             n = float(n)
                             sendmsg(_channel, logslasth(_channel, n))
                             return
+                        elif n.endswith('m'):
+                            n=n.replace('m','')
+                            print(n)
+                            n = float(n)/60
+                            sendmsg(_channel, logslasth(_channel, n))
+                            return
                         else:
                             n=int(n)
                             if n>logmax:
