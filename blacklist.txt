@@ -6,3 +6,5 @@ chanserv
 redhotbalrog
 saoirse
 sleepybalrog
+bfett
+bmrx
