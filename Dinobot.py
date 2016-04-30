@@ -24,6 +24,7 @@ import readline
 import select
 import html
 import tailer
+import datetime
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -47,7 +48,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -559,6 +560,49 @@ def logslastn(chan, n):
     #print(the_page)
     return(the_page)
 
+def logslasth(chan, h):
+    mess=""
+    lines = tailer.tail(open(chan+".txt",errors='ignore'),7000)
+    lines.reverse()
+    n = datetime.datetime.now()
+    for line in lines:
+        line = line.strip('\n')
+        test = line[line.find('[')+1:line.find(']')]
+        test = test.split(' ')
+        test[0] = test[0].split('/')
+        test[1] = test[1].split(':')
+        day = int(test[0][0])
+        month = int(test[0][1])
+        year = int(test[0][2])
+        hour = int(test[1][0])
+        minute = int(test[1][1])
+        sec = int(test[1][2])
+        ti = datetime.datetime(year, month, day, hour, minute, sec)
+        ti = n -  ti
+        if ti.total_seconds()> h*3600:
+            break
+        else:
+            mess=line+'\n'+mess
+
+
+    url = 'http://pastebin.com/api/api_post.php'
+    payload = {"api_option": "paste",\
+               "api_dev_key": "ae7566ad9d35a376849f31a49f709bd6",\
+               "api_paste_code": mess,\
+               "api_paste_expire_date": "1H",\
+               "api_paste_private": 0,\
+               "api_paste_name": "logs",\
+               "api_paste_format": "text",\
+               "api_user_key": ''}
+    #headers = {'content-type': 'application/json'}
+    data = parse.urlencode(payload)
+    data = data.encode('utf-8')
+    #req = request.Request(url, data, headers)
+    response = request.urlopen(url, data)
+    the_page = response.read().decode('utf-8')
+    #print(the_page)
+    return(the_page)
+
 
 def connect():
     global queue
@@ -704,16 +748,24 @@ def readirc():
                 # no-named things
                 if "!logs" in lmess:
                     try:
-                        n = lmess[lmess.find("!logs"):].strip().split(' ')[1]
-                        n=int(n)
-                        if n>7000:
-                            sendmsg(_channel, "Sorry, won't do more than 7000! ^.^")
-                            n = 7000
-                    except Exception:
+                        n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
+                        if n.endswith('h'):
+                            n=n.replace('h','')
+                            print(n)
+                            n = float(n)
+                            sendmsg(_channel, logslasth(_channel, n))
+                            return
+                        else:
+                            n=int(n)
+                            if n>7000:
+                                sendmsg(_channel, "Sorry, won't do more than 7000! ^.^")
+                                n = 7000
+                            sendmsg(_channel, logslastn(_channel, n))
+                            return
+                    except Exception as e:
+                        print(e.args)
                         sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                         return
-                    sendmsg(_channel, logslastn(_channel, n))
-                    return
                 if "rekt wiki" in lmess:
                     rektwiki(_channel, lmess)
                     return
