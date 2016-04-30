@@ -617,6 +617,50 @@ def logslasth(chan, h):
     #print(the_page)
     return(the_page)
 
+def logslastseen(chan, user):
+    mess=""
+    lines = tailer.tail(open(chan+".txt",errors='ignore'),logmax)
+    lines.reverse()
+    n = datetime.datetime.now()
+    try:
+        user=user[0:4]
+    except Exception:
+        pass
+    print(user)
+    pinged = False
+    for line in lines:
+        line = line.strip('\n').strip()
+        if line != '':
+            print(line)
+            if user in line and "ping timeout" in line.lower() and "quit" in line.lower():
+                pinged = True
+            if pinged:
+                if "<"+user in line:
+                    mess = line + '\n' + mess
+                    break
+                else:
+                    mess = line + '\n' + mess
+            else:
+                if user in line and ("quit" in line.lower() or "left" in line):
+                    mess=line+'\n'+mess
+                    break
+                else:
+                    mess = line + '\n' + mess
+
+    url = "http://paste.ee/api"
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
+               "description": "logs",\
+               "paste": mess,\
+               "expire": "15",\
+               "format": "simple"}
+    #headers = {'content-type': 'application/json'}
+    data = parse.urlencode(payload)
+    data = data.encode('utf-8')
+    #req = request.Request(url, data, headers)
+    response = request.urlopen(url, data)
+    the_page = response.read().decode('utf-8')
+    #print(the_page)
+    return(the_page)
 
 def connect():
     global queue
@@ -786,6 +830,9 @@ def readirc():
                         print(e.args)
                         sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                         return
+                if "!loglast" in lmess:
+                    sendmsg(_channel, logslastseen(_channel, user))
+                    return
                 if "rekt wiki" in lmess:
                     rektwiki(_channel, lmess)
                     return
