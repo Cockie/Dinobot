@@ -32,6 +32,7 @@ madness?, : This is PUUDDIIIIIINNGGG!!!!
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
 python, : Yay Python!  
+saoirse do a barrel roll, saoirse, do a barrel roll, : 三(‘ω’)三( ε: )三(.ω.)三( :3 )三(‘ω’)三( ε: )三(.ω.)三( :3 )  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
 saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
 saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
@@ -83,6 +84,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !lenny: ( ͡° ͜ʖ ͡°)  
 !lizard: ᘛ⁐̤ᕐᕗ--°  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
+!moustache: ƪ(˘︷ ˘)و  
 !muhaha: ψ(｀∇´)ψ  
 !ohno:  ヽ（゜ロ゜；）ノ  
 !ohyes: ໒( ͡ᵔ ▾ ͡ᵔ )७  
@@ -91,6 +93,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !orly: (¬.¬)  
 !panic: ｡ﾟ(ﾟ `Д)ﾉ｡ﾟヽ(   )ﾉﾟ｡ヽ(Д´ ﾟ)ﾉﾟ｡｡ﾟヽ(ﾟ`Д´ﾟ)ﾉﾟ｡  
 !party: ♪└(°∇°)┐♪└(°∇°)┘♪┌(°∇°)┘♪  
+!pingpong: (｡･ω･)ρ┳┷┳ﾟσ(･ω･*)  
 !pudding: (^-^)_🍮  
 !run: ヽ(ﾟДﾟ)ﾉ  
 !scared: ヽ(ﾟДﾟ)ﾉ  
@@ -100,6 +103,8 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !squirrel: ʕ=˘ϖ˘=ʔ༄  
 !strong: ᕙ(⇀‸↼‶)ᕗ  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
+!thumbsup: (　^ω^）b  
+!thumbup: (　^ω^）b  
 !walk: ᕕ( ᐛ )ᕗ  
 !welder: (ﾒ▼Д▼)┏※==☆  
 !whee: ─=≡Σ(((つ◕ل͜◕)つ  
