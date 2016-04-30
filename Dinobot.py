@@ -250,7 +250,7 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
         print(msg)
     msg = msg.split('\n')
     for line in msg:
-        print(chan + '\t' + '<' + botnick + '>' + '\t' + line.strip('\n'))
+        printIRC(":"+botnick+'!'+ " PRIVMSG "+chan+" :"+line+'\n')
         ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
 
 
@@ -262,34 +262,43 @@ def pm(name, msg):  # This is the send message function, it simply sends message
 def joinchan(chan):  # This function is used to join channels.
     ircsock.send(bytes("JOIN " + chan + "\n", 'UTF-8'))
 
+def fileprint(chan, str):
+    with open(chan+".txt",'a') as f:
+        f.write(str.replace(chan,'').strip().strip('\n')+'\n')
+    print(str)
+
 def printIRC(mess):
     #print(mess)
+    timestr = "["+strftime("%d/%m/%Y %H:%M:%S")+"] "
     mess = mess.strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     if "NOTICE" in mess:
-        print("Notice from " + usr + ': ' + mess[mess.find("NOTICE ")+7:])
+        print(timestr +"Notice from " + usr + ': ' + mess[mess.find("NOTICE ")+7:])
         return 0
     if "JOIN" in mess:
         chan = '#' + mess.split('#')[1].split()[0]
-        print(chan+'\t'+usr+" joined "+chan)
+        fileprint(chan,timestr +chan+'\t'+usr+" joined "+chan)
         return 0
     if "PART" in mess:
         chan = '#' + mess.split('#')[1].split()[0]
         mess = mess.split('PART')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        print(chan + '\t' + usr + " left " + chan+" ("+mess+")")
+        fileprint(chan, timestr +chan + '\t' + usr + " left " + chan+" ("+mess+")")
         return 0
     if "QUIT" in mess:
         mess = mess.split('QUIT')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        print(chan + '\t' + usr + " quit "+"("+mess+")")
+        fileprint(chan, timestr +chan + '\t' + usr + " quit "+"("+mess+")")
         return 0
     if "MODE" in mess:
         return 0
     if "NICK" in mess:
         mess = mess.split('NICK')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        print('\t' + '\t' + usr + " is now known as " + mess)
+        for chan in channel:
+            fileprint(chan, timestr +'\t' + '\t' + usr + " is now known as " + mess)
+        return 0
+    if "CTCP" in mess:
         return 0
 
     try:
@@ -303,9 +312,9 @@ def printIRC(mess):
         return
     mess = mess[mess.find(':')+1:].strip('\n')
     if "ACTION" in mess:
-        print(chan + '\t' + '*' + usr +mess[1:len(mess)-2].strip().strip("ACTION"))
+        fileprint(chan, timestr +chan + '\t' + '*' + usr +mess[1:len(mess)-2].strip().strip("ACTION"))
     else:
-        print(chan+'\t'+'<'+usr+'>'+'\t'+mess)
+        fileprint(chan, timestr +chan+'\t'+'<'+usr+'>'+'\t'+mess)
     return chan, usr, mess
 
 
