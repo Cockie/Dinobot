@@ -11,6 +11,8 @@ import io
 from time import *
 import wikipedia
 from urllib import request
+from urllib import parse
+from urllib import error
 import _thread
 import sys
 import random
@@ -21,6 +23,7 @@ import sys
 import readline
 import select
 import html
+import tailer
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -270,7 +273,7 @@ def fileprint(chan, str):
 def printIRC(mess):
     #print(mess)
     timestr = "["+strftime("%d/%m/%Y %H:%M:%S")+"] "
-    mess = mess.strip('\n')
+    mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     if "NOTICE" in mess:
         print(timestr +"Notice from " + usr + ': ' + mess[mess.find("NOTICE ")+7:])
@@ -531,6 +534,31 @@ def blacklisted(user):
     global blacklist
     return any([ stuff in user.lower() for stuff in blacklist])
 
+def logslastn(chan, n):
+    mess=""
+    lines = tailer.tail(open(chan+".txt"),n)
+    for line in lines:
+        mess+=line+'\n'
+
+
+    url = 'http://pastebin.com/api/api_post.php'
+    payload = {"api_option": "paste",\
+               "api_dev_key": "ae7566ad9d35a376849f31a49f709bd6",\
+               "api_paste_code": mess,\
+               "api_paste_expire_date": "1H",\
+               "api_paste_private": 0,\
+               "api_paste_name": "logs",\
+               "api_paste_format": "text",\
+               "api_user_key": ''}
+    #headers = {'content-type': 'application/json'}
+    data = parse.urlencode(payload)
+    data = data.encode('utf-8')
+    #req = request.Request(url, data, headers)
+    response = request.urlopen(url, data)
+    the_page = response.read().decode('utf-8')
+    #print(the_page)
+    return(the_page)
+
 
 def connect():
     global queue
@@ -674,6 +702,15 @@ def readirc():
                     else:
                         sendmsg(_channel, "Pudding!")
                 # no-named things
+                if "!logs" in lmess:
+                    try:
+                        n = lmess[lmess.find("!logs"):].strip().split(' ')[1]
+                        n=int(n)
+                    except Exception:
+                        sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                        return
+                    sendmsg(_channel, logslastn(_channel, n))
+                    return
                 if "rekt wiki" in lmess:
                     rektwiki(_channel, lmess)
                     return
