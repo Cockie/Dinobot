@@ -48,7 +48,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse2"  # Your bots nick
+botnick = "DebugSaoirse"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -566,23 +566,24 @@ def logslasth(chan, h):
     lines.reverse()
     n = datetime.datetime.now()
     for line in lines:
-        line = line.strip('\n')
-        test = line[line.find('[')+1:line.find(']')]
-        test = test.split(' ')
-        test[0] = test[0].split('/')
-        test[1] = test[1].split(':')
-        day = int(test[0][0])
-        month = int(test[0][1])
-        year = int(test[0][2])
-        hour = int(test[1][0])
-        minute = int(test[1][1])
-        sec = int(test[1][2])
-        ti = datetime.datetime(year, month, day, hour, minute, sec)
-        ti = n -  ti
-        if ti.total_seconds()> h*3600:
-            break
-        else:
-            mess=line+'\n'+mess
+        line = line.strip('\n').strip()
+        if line != '':
+            test = line[line.find('[')+1:line.find(']')]
+            test = test.split(' ')
+            test[0] = test[0].split('/')
+            test[1] = test[1].split(':')
+            day = int(test[0][0])
+            month = int(test[0][1])
+            year = int(test[0][2])
+            hour = int(test[1][0])
+            minute = int(test[1][1])
+            sec = int(test[1][2])
+            ti = datetime.datetime(year, month, day, hour, minute, sec)
+            ti = n -  ti
+            if ti.total_seconds()> h*3600:
+                break
+            else:
+                mess=line+'\n'+mess
 
 
     url = 'http://pastebin.com/api/api_post.php'
