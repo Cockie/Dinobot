@@ -759,38 +759,39 @@ def readirc():
                         # lmess=stripleft(lmess,"saoirse")
                     # mess=stripleft(mess,"Saoirse")
                     #print(lmess)
-                    if "join" in lmess:
-                        tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
-                        channel.append(tojoin)
-                        joinchan(tojoin)
-                        sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
-                        return
-                    elif "leave" in lmess:
-                        sendmsg(_channel, "Bye! o/")
-                        leavechan(_channel)
-                        return
-                    elif "quit" in lmess:
-                        sendmsg(_channel, "Bye! o/")
-                        quitirc()
-                        return
+                    if "Dinosawer" in user:
+                        if "join" in lmess:
+                            tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
+                            channel.append(tojoin)
+                            joinchan(tojoin)
+                            sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
+                            return
+                        elif "leave" in lmess:
+                            sendmsg(_channel, "Bye! o/")
+                            leavechan(_channel)
+                            return
+                        elif "quit" in lmess:
+                            sendmsg(_channel, "Bye! o/")
+                            quitirc()
+                            return
+                        elif "initialise" in lmess or "initialize" in lmess:
+                            sendmsg(_channel, "OK, reinitialising...")
+                            initialise()
+                            sendmsg(_channel, "Done! Should work now.")
+                            return
+                        elif "deignore" in lmess and "Dinosawer" in user:
+                            nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
+                            blacklist.remove(nick)
+                            writeblacklist()
+                        elif "ignore" in lmess and "Dinosawer" in user:
+                            nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
+                            if nick != "dinosawer":
+                                blacklist.append(nick)
+                                writeblacklist()
                     elif "shush" in lmess:
                         sendmsg(_channel, "OK, I'll shut up :(")
                         shushed = True
                         return
-                    elif "initialise" in lmess or "initialize" in lmess:
-                        sendmsg(_channel, "OK, reinitialising...")
-                        initialise()
-                        sendmsg(_channel, "Done! Should work now.")
-                        return
-                    elif "deignore" in lmess and "Dinosawer" in user:
-                        nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
-                        blacklist.remove(nick)
-                        writeblacklist()
-                    elif "ignore" in lmess and "Dinosawer" in user:
-                        nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
-                        if nick != "dinosawer":
-                            blacklist.append(nick)
-                            writeblacklist()
                     # wikipedia search
                     else:
                         for stuff in wikitriggers:
