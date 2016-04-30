@@ -1,7 +1,8 @@
 # Dinobot
 Saoirse: an LT IRC bot  
 Code on github: https://github.com/Cockie/Dinobot/blob/master/Dinobot.py  
-Commands:  
+Commands:
+!logs <integer> pastes the last <integer> lines of chat logs to pastebin and returns a link
 Saoirse: if no other command is found, she will reply with “Pudding!”  
 Saoirse join <channel>: she will join a channel  
 Saoirse leave: she will leave the current channel  
