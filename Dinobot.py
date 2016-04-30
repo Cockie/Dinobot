@@ -706,6 +706,9 @@ def readirc():
                     try:
                         n = lmess[lmess.find("!logs"):].strip().split(' ')[1]
                         n=int(n)
+                        if n>7000:
+                            sendmsg(_channel, "Sorry, won't do more than 7000! ^.^")
+                            n = 7000
                     except Exception:
                         sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                         return
