@@ -53,6 +53,7 @@ username = ""
 password = ""
 auth = True
 smartlander = False
+logmax = 20000
 
 def stringify(t):
     res = ""
@@ -542,7 +543,7 @@ def logslastn(chan, n):
         mess+=line+'\n'
 
 
-    url = 'http://pastebin.com/api/api_post.php'
+    '''url = 'http://pastebin.com/api/api_post.php'
     payload = {"api_option": "paste",\
                "api_dev_key": "ae7566ad9d35a376849f31a49f709bd6",\
                "api_paste_code": mess,\
@@ -550,7 +551,13 @@ def logslastn(chan, n):
                "api_paste_private": 0,\
                "api_paste_name": "logs",\
                "api_paste_format": "text",\
-               "api_user_key": ''}
+               "api_user_key": ''}'''
+    url = "http://paste.ee/api"
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
+               "description": "logs",\
+               "paste": mess,\
+               "expire": "15",\
+               "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
@@ -562,7 +569,7 @@ def logslastn(chan, n):
 
 def logslasth(chan, h):
     mess=""
-    lines = tailer.tail(open(chan+".txt",errors='ignore'),7000)
+    lines = tailer.tail(open(chan+".txt",errors='ignore'),logmax)
     lines.reverse()
     n = datetime.datetime.now()
     for line in lines:
@@ -586,7 +593,7 @@ def logslasth(chan, h):
                 mess=line+'\n'+mess
 
 
-    url = 'http://pastebin.com/api/api_post.php'
+    '''url = 'http://pastebin.com/api/api_post.php'
     payload = {"api_option": "paste",\
                "api_dev_key": "ae7566ad9d35a376849f31a49f709bd6",\
                "api_paste_code": mess,\
@@ -594,7 +601,13 @@ def logslasth(chan, h):
                "api_paste_private": 0,\
                "api_paste_name": "logs",\
                "api_paste_format": "text",\
-               "api_user_key": ''}
+               "api_user_key": ''}'''
+    url = "http://paste.ee/api"
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
+               "description": "logs",\
+               "paste": mess,\
+               "expire": "15",\
+               "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
@@ -758,9 +771,9 @@ def readirc():
                             return
                         else:
                             n=int(n)
-                            if n>7000:
-                                sendmsg(_channel, "Sorry, won't do more than 7000! ^.^")
-                                n = 7000
+                            if n>logmax:
+                                sendmsg(_channel, "Sorry, won't do more than "+str(logmax)+" ^.^")
+                                n = logmax
                             sendmsg(_channel, logslastn(_channel, n))
                             return
                     except Exception as e:
