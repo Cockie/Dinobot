@@ -556,7 +556,6 @@ def logslastn(chan, n):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
@@ -606,7 +605,6 @@ def logslasth(chan, h):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
@@ -651,7 +649,6 @@ def logslastseen(chan, user):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
