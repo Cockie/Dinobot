@@ -554,7 +554,7 @@ def logslastn(chan, n):
                "api_user_key": ''}'''
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs",\
+               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
                "expire": "15",\
                "format": "simple"}
@@ -604,7 +604,7 @@ def logslasth(chan, h):
                "api_user_key": ''}'''
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs",\
+               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
                "expire": "15",\
                "format": "simple"}
@@ -649,7 +649,7 @@ def logslastseen(chan, user):
 
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs",\
+               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
                "expire": "15",\
                "format": "simple"}
