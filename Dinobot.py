@@ -339,7 +339,7 @@ def space(_channel):
     if timers['space'] <= 0:
         sleeping(0.6)
         sendmsg(_channel, random.choice(spacelist))
-        timers['space'] = 200
+        timers['space'] = 300
 
 
 def greet(_channel, mess):
