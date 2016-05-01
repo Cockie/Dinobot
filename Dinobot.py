@@ -317,7 +317,7 @@ def printIRC(mess):
         return
     mess = mess[mess.find(':')+1:].strip('\n')
     if "ACTION" in mess:
-        fileprint(chan, timestr +chan + '\t' + '*' + usr +mess[1:len(mess)-2].strip().strip("ACTION"))
+        fileprint(chan, timestr +chan + '\t' + '*' + usr +mess[1:len(mess)-1].strip().strip("ACTION"))
     else:
         fileprint(chan, timestr +chan+'\t'+'<'+usr+'>'+'\t'+mess)
     return chan, usr, mess
@@ -556,7 +556,7 @@ def logslastn(chan, n):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": "15",\
+               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
@@ -606,7 +606,7 @@ def logslasth(chan, h):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": "15",\
+               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
@@ -651,7 +651,7 @@ def logslastseen(chan, user):
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
                "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
                "paste": mess,\
-               "expire": "15",\
+               "expire": 15,\
                "format": "simple"}
     #headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
