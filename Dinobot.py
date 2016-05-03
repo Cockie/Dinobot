@@ -48,7 +48,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 auth = True
@@ -349,8 +349,10 @@ def greet(_channel, mess):
 
 
 def rektwiki(_channel, mess):
-    mess = mess[mess.find("rekt wiki"):]
-    mess = mess.replace("rekt wiki", '').strip()
+    if "rekt wiki" in mess:
+        mess = mess[mess.find("rekt wiki"):]
+        mess = mess.replace("rekt wiki", '')
+    mess=mess.strip()
     try:
         r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
     except Exception:
@@ -807,13 +809,11 @@ def readirc():
                         n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
                         if n.endswith('h'):
                             n=n.replace('h','')
-                            print(n)
                             n = float(n)
                             sendmsg(_channel, logslasth(_channel, n))
                             return
                         elif n.endswith('m'):
                             n=n.replace('m','')
-                            print(n)
                             n = float(n)/60
                             sendmsg(_channel, logslasth(_channel, n))
                             return
@@ -834,6 +834,11 @@ def readirc():
                 if "rekt wiki" in lmess:
                     rektwiki(_channel, lmess)
                     return
+                if "[[[" in lmess:
+                    try:
+                        rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[','').replace(']',''))
+                    except Exception:
+                        pass
                 elif "TABLEFLIP" in mess:
                     temp = "︵ヽ(`Д´)ﾉ︵"
                     for i in range(1, lmess.count('!')):
