@@ -25,6 +25,7 @@ import select
 import html
 import tailer
 import datetime
+import requests
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -51,9 +52,12 @@ channel = []
 botnick = "Saoirse"  # Your bots nick
 username = ""
 password = ""
+forumusername = ""
+forumpw = ""
 auth = True
 smartlander = False
 logmax = 20000
+session = requests.Session()
 
 def stringify(t):
     res = ""
@@ -95,12 +99,18 @@ def initialise():
     global spacelist
     global username
     global password
+    global forumusername
+    global forumpw
     global auth
+    global session
+
+
 
     with open('space.txt') as f:
         for line in f:
             spacelist.append(line.strip().replace('"', ''))
     timers['space'] = 0
+    timers['shushed'] = 0
 
     with open('confucius.txt') as f:
         for line in f:
@@ -170,8 +180,19 @@ def initialise():
     with open('auth.txt') as f:
         username = f.readline().strip().replace('\n', '')
         password = f.readline().strip().replace('\n', '')
+        forumusername = f.readline().strip().replace('\n', '')
+        forumpw = f.readline().strip().replace('\n', '')
         if username == "" or password == "":
             auth = False
+    head = {'User-Agent': 'Chrome/35.0.1916.47'}
+    if forumusername!="" and forumpw!="":
+        url = "http://forums.ltheory.com/ucp.php?mode=login"
+        payload = {"username": forumusername,\
+                   "password": forumpw,\
+                    'redirect':'index.php',\
+                   'sid':'',\
+                   'login':'Login'}
+        p = session.post(url, headers = head, data=payload)
 
     readblacklist()
 
@@ -365,22 +386,16 @@ def rektwiki(_channel, mess):
 
 
 def findtitle(_channel, mess):
+    global session
+    head = {'User-Agent': 'Chrome/35.0.1916.47'}
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
-    #print(res)
-    req = request.Request(
-        res[0],
-        data=None,
-        headers={
-            'User-Agent': 'Chrome/35.0.1916.47'
-        }
-    )
     try:
-        r = request.urlopen(req, timeout=15)
+        r = session.get(res[0], headers = head,timeout=15)
     except Exception:
         return
     #print(r.geturl())
-    htmlstr = r.read()
+    htmlstr = r.text
     try:
         htmlstr = htmlstr.decode()
     except Exception:
@@ -750,133 +765,140 @@ def readirc():
     regex2 = re.compile('spa+ce')
     # print(_channel)
     if "GameSurge" not in mess and user != botnick:
-        if not shushed:
-            if not blacklisted(user):
-                if "saoirse" in lmess:
-                    if any([greeting in lmess for greeting in greetings]):
-                        sendmsg(_channel, random.choice(greetings).title() + "!")
-                        # lmess=stripleft(lmess,"saoirse")
-                    # mess=stripleft(mess,"Saoirse")
-                    #print(lmess)
-                    if "Dinosawer" in user:
-                        if "join" in lmess:
-                            tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
-                            channel.append(tojoin)
-                            joinchan(tojoin)
-                            sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
-                            return
-                        elif "leave" in lmess:
-                            sendmsg(_channel, "Bye! o/")
-                            leavechan(_channel)
-                            return
-                        elif "quit" in lmess:
-                            sendmsg(_channel, "Bye! o/")
-                            quitirc()
-                            return
-                        elif "initialise" in lmess or "initialize" in lmess:
-                            sendmsg(_channel, "OK, reinitialising...")
-                            initialise()
-                            sendmsg(_channel, "Done! Should work now.")
-                            return
-                        elif "deignore" in lmess and "Dinosawer" in user:
-                            nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
-                            blacklist.remove(nick)
+        if not blacklisted(user):
+            if "saoirse" in lmess:
+                if any([greeting in lmess for greeting in greetings]):
+                    sendmsg(_channel, random.choice(greetings).title() + "!")
+                    # lmess=stripleft(lmess,"saoirse")
+                # mess=stripleft(mess,"Saoirse")
+                #print(lmess)
+                if "Dinosawer" in user:
+                    if "join" in lmess:
+                        tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
+                        channel.append(tojoin)
+                        joinchan(tojoin)
+                        sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
+                        return
+                    elif "leave" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        leavechan(_channel)
+                        return
+                    elif "quit" in lmess:
+                        sendmsg(_channel, "Nope!")
+                        return
+                    elif "initialise" in lmess or "initialize" in lmess:
+                        sendmsg(_channel, "OK, reinitialising...")
+                        initialise()
+                        sendmsg(_channel, "Done! Should work now.")
+                        return
+                    elif "deignore" in lmess and "Dinosawer" in user:
+                        nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
+                        blacklist.remove(nick)
+                        writeblacklist()
+                        return
+                    elif "ignore" in lmess and "Dinosawer" in user:
+                        nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
+                        if nick != "dinosawer":
+                            blacklist.append(nick)
                             writeblacklist()
-                        elif "ignore" in lmess and "Dinosawer" in user:
-                            nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
-                            if nick != "dinosawer":
-                                blacklist.append(nick)
-                                writeblacklist()
-                    elif "shush" in lmess:
-                        sendmsg(_channel, "OK, I'll shut up :(")
-                        shushed = True
+                            return
+                if "shush" in lmess:
+                    sendmsg(_channel, "OK, I'll shut up :(")
+                    shushed = True
+                    timers['shushed'] =1800
+                    return
+                elif "speak" in lmess:
+                    sendmsg(_channel, "Yay! Pudding!")
+                    shushed = False
+                    timers['shushed'] = 0
+                    return
+                # wikipedia search
+                else:
+                    for stuff in wikitriggers:
+                        if stuff in lmess:
+                            lmess = lmess[lmess.find(stuff):]
+                            wiki(_channel, stripleft(lmess, stuff), 3)
+                            return
+                if "confuc" in lmess or "confusius" in lmess:
+                    confucius(_channel)
+                    return
+                else:
+                    sendmsg(_channel, "Pudding!")
+            # no-named things
+            if "!logs" in lmess:
+                try:
+                    n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
+                    if n.endswith('h'):
+                        n=n.replace('h','')
+                        n = float(n)
+                        sendmsg(_channel, logslasth(_channel, n))
                         return
-                    # wikipedia search
+                    elif n.endswith('m'):
+                        n=n.replace('m','')
+                        n = float(n)/60
+                        sendmsg(_channel, logslasth(_channel, n))
+                        return
                     else:
-                        for stuff in wikitriggers:
-                            if stuff in lmess:
-                                lmess = lmess[lmess.find(stuff):]
-                                wiki(_channel, stripleft(lmess, stuff), 3)
-                                return
-                    if "confuc" in lmess or "confusius" in lmess:
-                        confucius(_channel)
+                        n=int(n)
+                        if n>logmax:
+                            sendmsg(_channel, "Sorry, won't do more than "+str(logmax)+" ^.^")
+                            n = logmax
+                        sendmsg(_channel, logslastn(_channel, n))
                         return
-                    else:
-                        sendmsg(_channel, "Pudding!")
-                # no-named things
-                if "!logs" in lmess:
-                    try:
-                        n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
-                        if n.endswith('h'):
-                            n=n.replace('h','')
-                            n = float(n)
-                            sendmsg(_channel, logslasth(_channel, n))
-                            return
-                        elif n.endswith('m'):
-                            n=n.replace('m','')
-                            n = float(n)/60
-                            sendmsg(_channel, logslasth(_channel, n))
-                            return
-                        else:
-                            n=int(n)
-                            if n>logmax:
-                                sendmsg(_channel, "Sorry, won't do more than "+str(logmax)+" ^.^")
-                                n = logmax
-                            sendmsg(_channel, logslastn(_channel, n))
-                            return
-                    except Exception as e:
-                        print(e.args)
-                        sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                        return
-                if "!loglast" in lmess:
-                    sendmsg(_channel, logslastseen(_channel, user))
+                except Exception as e:
+                    print(e.args)
+                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                     return
-                if "rekt wiki" in lmess:
-                    rektwiki(_channel, lmess)
+            if "!loglast" in lmess:
+                sendmsg(_channel, logslastseen(_channel, user))
+                return
+            if "rekt wiki" in lmess:
+                rektwiki(_channel, lmess)
+                return
+            if "[[[" in lmess:
+                try:
+                    rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[','').replace(']',''))
+                except Exception:
+                    pass
+            elif "TABLEFLIP" in mess:
+                temp = "︵ヽ(`Д´)ﾉ︵"
+                for i in range(1, lmess.count('!')):
+                    temp += "  "
+                    temp = "  " + temp
+                temp += "┻━┻ "
+                temp = "┻━┻ " + temp
+                sendmsg(_channel, temp)
+                return
+            elif "tableflip" in lmess:
+                temp = "(╯°□°）╯︵"
+                for i in range(1, lmess.count('!')):
+                    temp += "  "
+                temp += "┻━┻ "
+                sendmsg(_channel, temp)
+                return
+            for key, value in emoticons.items():
+                if key in lmess:
+                    sendmsg(_channel, value)
                     return
-                if "[[[" in lmess:
-                    try:
-                        rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[','').replace(']',''))
-                    except Exception:
-                        pass
-                elif "TABLEFLIP" in mess:
-                    temp = "︵ヽ(`Д´)ﾉ︵"
-                    for i in range(1, lmess.count('!')):
-                        temp += "  "
-                        temp = "  " + temp
-                    temp += "┻━┻ "
-                    temp = "┻━┻ " + temp
-                    sendmsg(_channel, temp)
-                    return
-                elif "tableflip" in lmess:
-                    temp = "(╯°□°）╯︵"
-                    for i in range(1, lmess.count('!')):
-                        temp += "  "
-                    temp += "┻━┻ "
-                    sendmsg(_channel, temp)
-                    return
-                for key, value in emoticons.items():
-                    if key in lmess:
-                        sendmsg(_channel, value)
-                        return
-                if re.search(regex1, lmess) is not None:
-                    sendmsg(_channel, "DOOOOMED!")
-                    return
-                if re.search(regex2, lmess) is not None:
-                    space(_channel)
-                    return
-                if "!procemo" in lmess:
-                    procemo(_channel)
-                    return
-                if "!listemo" in lmess or "!emoticonlist" in lmess:
-                    listemo(_channel, user, mess)
-                    return
+            if not shushed and re.search(regex1, lmess) is not None:
+                sendmsg(_channel, "DOOOOMED!")
+                return
+            if not shushed and re.search(regex2, lmess) is not None:
+                space(_channel)
+                return
+            if "!procemo" in lmess:
+                procemo(_channel)
+                return
+            if "!listemo" in lmess or "!emoticonlist" in lmess:
+                listemo(_channel, user, mess)
+                return
 
-                if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
-                        re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                                   lmess)) != 0:
-                    findtitle(_channel, mess)
-                    return
+            if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
+                    re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+                               lmess)) != 0:
+                findtitle(_channel, mess)
+                return
+        if not shushed:
             for key, value in triggers.items():
                 if any([stuff in lmess for stuff in key]):
                     if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
@@ -884,16 +906,13 @@ def readirc():
                         sendmsg(_channel, value)
                         timers[key[0]] = timervals[key[0]]
                         return
-
-        elif "speak" in lmess and "saoirse" in lmess:
-            sendmsg(_channel, "Yay! Pudding!")
-            shushed = False
-            return
     return
 
 
 def main():
     global ircsock
+    global timers
+    global shushed
     #ircsock.setblocking(0)
     while online:  # Be careful with these! it might send you to an infinite loop
         timer = time()
@@ -923,6 +942,8 @@ def main():
         timer -= time()
         timer = -timer
         decrtimer(timer)
+        if timers['shushed'] ==0:
+            shushed = False
         while len(queue) != 0:
             timer = time()
             sys.stdout.write('\r' + ' ' * (len(readline.get_line_buffer()) + 2) + '\r')
