@@ -1,3 +1,7 @@
+saoirse quit&saoirse, quit|Nope!|1|F
+saoirse leave&saoirse, leave|Nu-uh!|1|F
+kick saoirse|I have a black belt in pudding-fu, nobody kicks me!|1|F
+pwn saoirse|Why would you want me gone? You meanie! :'(|1|F
 saoirse do a barrel roll&saoirse, do a barrel roll|三(‘ω’)三( ε: )三(.ω.)三( :3 )三(‘ω’)三( ε: )三(.ω.)三( :3 )|5|F
 sudo saoirse make me pudding&sudo saoirse make me some pudding&sudo saoirse make me a pudding&sudo saoirse, make me pudding&sudo saoirse, make me some pudding&sudo saoirse, make me a pudding|Okay, here you go! (^-^)_🍮|10|F
 saoirse make me pudding&saoirse make me some pudding&saoirse make me a pudding&saoirse, make me pudding&saoirse, make me a pudding&saoirse, make me some pudding|No! The pudding is mine!|10|F

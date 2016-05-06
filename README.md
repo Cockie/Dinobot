@@ -3,16 +3,15 @@ Saoirse: an LT IRC bot
 Code on github: https://github.com/Cockie/Dinobot/blob/master/Dinobot.py  
 Commands:
 !logs <integer> pastes the last <integer> lines of chat logs to pastebin and returns a link
-Saoirse: if no other command is found, she will reply with “Pudding!”  
-Saoirse join <channel>: she will join a channel  
-Saoirse leave: she will leave the current channel  
-Saoirse initialise: she re-reads her settings files (for adding triggers and emoticons)  
+!logs <float>h or !logs<float>m: pastes the last <float> hours or minutes of logs and returns a link
+!loglast: she returns the logs since the lat time you quit, or if you pinged out, since the last time you spoke. Experimental, might explode.
+Saoirse: if no other command is found, she will reply with “Pudding!”
 Saoirse confucius: she cites Confucius  
 hello/hi/hey/greetings Saoirse: she will say hi back  
 Saoirse what’s/what is/who is/who’s/how do I/whats <search term>: She will perform a wikipedia search, and will give info and a link to the wikipedia page.  
-Saoirse shush: she will only reply if you include her name from now on  
+Saoirse shush: she will stop responding to triggers for the next half hour (emoticons and commands still work)
 Saoirse speak: she will start responding generally again  
-(Saoirse) rekt wiki <search terms>: she will search the REKT wiki for the most appropriate page  
+(Saoirse) rekt wiki <search terms> or [[[search term]]]: she will search the REKT wiki for the most appropriate page
 doomed: DOOOOMED!  
 space: SPAAACE!  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
@@ -28,15 +27,19 @@ gives saoirse pudding, : Yay! (^-^)_🍮
 hail hydra, : Hail Hydra! o/  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
+kick saoirse, : I have a black belt in pudding-fu, nobody kicks me!  
 linux, : Yay Linux! \o/  
 madness?, : This is PUUDDIIIIIINNGGG!!!!  
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
+pwn saoirse, : Why would you want me gone? You meanie! :'(  
 python, : Yay Python!  
 saoirse do a barrel roll, saoirse, do a barrel roll, : 三(‘ω’)三( ε: )三(.ω.)三( :3 )三(‘ω’)三( ε: )三(.ω.)三( :3 )  
 saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
+saoirse leave, saoirse, leave, : Nu-uh!  
 saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
 saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
+saoirse quit, saoirse, quit, : Nope!  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
 saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
