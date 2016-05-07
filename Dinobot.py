@@ -388,6 +388,14 @@ def rektwiki(_channel, mess):
 def findtitle(_channel, mess):
     global session
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
+    if forumusername!="" and forumpw!="":
+        url = "http://forums.ltheory.com/ucp.php?mode=login"
+        payload = {"username": forumusername,\
+                   "password": forumpw,\
+                    'redirect':'index.php',\
+                   'sid':'',\
+                   'login':'Login'}
+        p = session.post(url, headers = head, data=payload)
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
     try:
