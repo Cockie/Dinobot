@@ -402,7 +402,7 @@ def findtitle(_channel, mess):
                     'redirect':'index.php',\
                    'sid':'',\
                    'login':'Login'}
-        p = session.post(url, headers = head, data=payload)
+        p = session.post(url, headers = head, data=payload, timeout=5)
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
     try:
