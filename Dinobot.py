@@ -265,6 +265,7 @@ def ping(mess):  # This is our first function! It will respond to server Pings.
 
 
 def sendmsg(chan, msg, delay=True):  # This is the send message function, it simply sends messages to the channel.
+    global connected
     if delay:
         time_ = len(msg) / 50.0
         sleeping(1)
@@ -277,12 +278,18 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
     msg = msg.split('\n')
     for line in msg:
         printIRC(":"+botnick+'!'+ " PRIVMSG "+chan+" :"+line+'\n')
-        ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
+        try:
+            ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
+        except Exception:
+            connected = False
 
 
 def pm(name, msg):  # This is the send message function, it simply sends messages to the channel.
     print("PM'd " + name + ": " + msg)
-    ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
+    try:
+        ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
+    except Exception:
+        connected = False
 
 
 def joinchan(chan):  # This function is used to join channels.
