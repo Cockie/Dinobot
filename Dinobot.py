@@ -394,17 +394,20 @@ def rektwiki(_channel, mess):
 
 def findtitle(_channel, mess):
     global session
-    head = {'User-Agent': 'Chrome/35.0.1916.47'}
-    if forumusername!="" and forumpw!="":
-        url = "http://forums.ltheory.com/ucp.php?mode=login"
-        payload = {"username": forumusername,\
-                   "password": forumpw,\
-                    'redirect':'index.php',\
-                   'sid':'',\
-                   'login':'Login'}
-        p = session.post(url, headers = head, data=payload, timeout=5)
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
+
+    if "ltheory" in res[0]:
+        head = {'User-Agent': 'Chrome/35.0.1916.47'}
+        if forumusername!="" and forumpw!="":
+            url = "http://forums.ltheory.com/ucp.php?mode=login"
+            payload = {"username": forumusername,\
+                       "password": forumpw,\
+                        'redirect':'index.php',\
+                       'sid':'',\
+                       'login':'Login'}
+            p = session.post(url, headers = head, data=payload, timeout=5)
+
     try:
         r = session.get(res[0], headers = head,timeout=15)
     except Exception:
@@ -421,7 +424,7 @@ def findtitle(_channel, mess):
     # print(htmlstr)
     try:
         htmlstr = htmlstr[htmlstr.find("<title>"):].replace("<title>", '')
-        htmlstr = htmlstr[:htmlstr.find("</title>"):].replace("</title>", '')
+        htmlstr = htmlstr[:htmlstr.find("</title>"):].replace("</title>", '').strip('\n').strip()
         #print(htmlstr + '\n')
     except Exception:
         return
