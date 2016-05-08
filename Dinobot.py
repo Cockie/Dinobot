@@ -49,7 +49,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -396,27 +396,28 @@ def findtitle(_channel, mess):
     global session
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
+    head = {'User-Agent': 'Chrome/35.0.1916.47'}
 
-    if "ltheory" in res[0]:
-        head = {'User-Agent': 'Chrome/35.0.1916.47'}
-        if forumusername!="" and forumpw!="":
-            url = "http://forums.ltheory.com/ucp.php?mode=login"
-            payload = {"username": forumusername,\
-                       "password": forumpw,\
-                        'redirect':'index.php',\
-                       'sid':'',\
-                       'login':'Login'}
-            p = session.post(url, headers = head, data=payload, timeout=5)
+
+    if forumusername!="" and forumpw!="":
+        url = "http://forums.ltheory.com/ucp.php?mode=login"
+        payload = {"username": forumusername,\
+                   "password": forumpw,\
+                    'redirect':'index.php',\
+                   'sid':'',\
+                   'login':'Login'}
+        p = session.post(url, headers = head, data=payload, timeout=5)
 
     try:
         r = session.get(res[0], headers = head,timeout=15)
-    except Exception:
+    except Exception as e:
+        print(e)
         return
     #print(r.geturl())
     htmlstr = r.text
     try:
         htmlstr = htmlstr.decode()
-    except Exception:
+    except Exception as e:
         htmlstr = str(htmlstr)
     htmlstr = htmlstr.replace('\t', '').replace('\n', '')
     #print(htmlstr)
@@ -425,7 +426,7 @@ def findtitle(_channel, mess):
     try:
         htmlstr = htmlstr[htmlstr.find("<title>"):].replace("<title>", '')
         htmlstr = htmlstr[:htmlstr.find("</title>"):].replace("</title>", '').strip('\n').strip()
-        #print(htmlstr + '\n')
+        print(htmlstr)
     except Exception:
         return
     if htmlstr != "":
