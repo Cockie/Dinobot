@@ -42,6 +42,7 @@ saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ
 saoirse quit, saoirse, quit, : Nope!  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
+saoirse what do you look like, saoirse, what do you look like, : http://i.imgur.com/kda3ckO.png  
 saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
 sudo saoirse make me pudding, sudo saoirse make me some pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, sudo saoirse, make me some pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
 tintin, : YAY TINTIN!  
