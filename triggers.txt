@@ -1,5 +1,5 @@
 saoirse what do you look like&saoirse, what do you look like|http://i.imgur.com/kda3ckO.png|5|F
-saoirse quilt&qaoirse, quilt|^AACTION shakes fist at Microsoft^A|5|F
+saoirse quilt&saoirse, quilt|^AACTION shakes fist at Microsoft^A|5|F
 saoirse quit&saoirse, quit|Nope!|1|F
 saoirse leave&saoirse, leave|Nu-uh!|1|F
 kick saoirse|I have a black belt in pudding-fu, nobody kicks me!|1|F

@@ -39,7 +39,7 @@ saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/C
 saoirse leave, saoirse, leave, : Nu-uh!  
 saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
 saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
-saoirse quilt, qaoirse, quilt, : ^AACTION shakes fist at Microsoft^A  
+saoirse quilt, saoirse, quilt, : ^AACTION shakes fist at Microsoft^A  
 saoirse quit, saoirse, quit, : Nope!  
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
