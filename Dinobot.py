@@ -406,7 +406,10 @@ def findtitle(_channel, mess):
                     'redirect':'index.php',\
                    'sid':'',\
                    'login':'Login'}
-        p = session.post(url, headers = head, data=payload, timeout=5)
+        try:
+            p = session.post(url, headers = head, data=payload, timeout=5)
+        except Exception:
+            pass
 
     try:
         r = session.get(res[0], headers = head,timeout=15)
