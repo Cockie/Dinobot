@@ -192,7 +192,10 @@ def initialise():
                     'redirect':'index.php',\
                    'sid':'',\
                    'login':'Login'}
-        p = session.post(url, headers = head, data=payload, timeout = 15)
+        try:
+            p = session.post(url, headers = head, data=payload, timeout = 15)
+        except Exception:
+            pass
 
     readblacklist()
 
