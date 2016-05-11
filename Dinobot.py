@@ -413,14 +413,23 @@ def findtitle(_channel, mess):
             p = session.post(url, headers=head, data=payload, timeout=5)
         except Exception:
             pass
-
-    try:
-        r = session.get(res[0], headers=head, timeout=15)
-    except Exception as e:
-        print(e)
-        return
+    if "ltheory" in res[0]:
+        try:
+            r = session.get(res[0], headers=head, timeout=15)
+        except Exception as e:
+            print(e)
+            return
+        htmlstr = r.text
+    else:
+        req = request.Request(res[0], data=None, headers=head)
+        try:
+            r = request.urlopen(req, timeout=15)
+        except Exception:
+            return
+        # print(r.geturl())
+        htmlstr = r.read()
     # print(r.geturl())
-    htmlstr = r.text
+
     try:
         htmlstr = htmlstr.decode()
     except Exception as e:
