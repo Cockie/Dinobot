@@ -4,7 +4,6 @@ Created on Sat Sep 19 21:09:34 2015
 @author: yorick
 """
 
-
 # Import some necessary libraries.
 import socket
 import io
@@ -59,6 +58,7 @@ smartlander = False
 logmax = 20000
 session = requests.Session()
 
+
 def stringify(t):
     res = ""
     for stuff in t:
@@ -103,8 +103,6 @@ def initialise():
     global forumpw
     global auth
     global session
-
-
 
     with open('space.txt') as f:
         for line in f:
@@ -185,15 +183,15 @@ def initialise():
         if username == "" or password == "":
             auth = False
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
-    if forumusername!="" and forumpw!="":
+    if forumusername != "" and forumpw != "":
         url = "http://forums.ltheory.com/ucp.php?mode=login"
-        payload = {"username": forumusername,\
-                   "password": forumpw,\
-                    'redirect':'index.php',\
-                   'sid':'',\
-                   'login':'Login'}
+        payload = {"username": forumusername, \
+                   "password": forumpw, \
+                   'redirect': 'index.php', \
+                   'sid': '', \
+                   'login': 'Login'}
         try:
-            p = session.post(url, headers = head, data=payload, timeout = 15)
+            p = session.post(url, headers=head, data=payload, timeout=15)
         except Exception:
             pass
 
@@ -276,18 +274,20 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
     if smartlander:
         print("smartlander is here")
         print(msg)
-        msg = msg.replace('🍮',"༼ ༽")
+        msg = msg.replace('🍮', "༼ ༽")
         print(msg)
     msg = msg.split('\n')
     for line in msg:
-        printIRC(":"+botnick+'!'+ " PRIVMSG "+chan+" :"+line+'\n')
+        printIRC(":" + botnick + '!' + " PRIVMSG " + chan + " :" + line + '\n')
         try:
             ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
-        except Exception:
+        except Exception as e:
+            print(e.__cause__)
             connected = False
 
 
 def pm(name, msg):  # This is the send message function, it simply sends messages to the channel.
+    global connected
     print("PM'd " + name + ": " + msg)
     try:
         ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
@@ -298,33 +298,35 @@ def pm(name, msg):  # This is the send message function, it simply sends message
 def joinchan(chan):  # This function is used to join channels.
     ircsock.send(bytes("JOIN " + chan + "\n", 'UTF-8'))
 
-def fileprint(chan, str):
-    with open(chan+".txt",'a') as f:
-        f.write(str.replace(chan,'').strip().strip('\n')+'\n')
-    print(str)
+
+def fileprint(chan, stri):
+    with open(chan + ".txt", 'a') as f:
+        f.write(stri.replace(chan, '').strip().strip('\n') + '\n')
+    print(stri)
+
 
 def printIRC(mess):
-    #print(mess)
-    timestr = "["+strftime("%d/%m/%Y %H:%M:%S")+"] "
+    # print(mess)
+    timestr = "[" + strftime("%d/%m/%Y %H:%M:%S") + "] "
     mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     if "NOTICE" in mess:
-        print(timestr +"Notice from " + usr + ': ' + mess[mess.find("NOTICE ")+7:])
+        print(timestr + "Notice from " + usr + ': ' + mess[mess.find("NOTICE ") + 7:])
         return 0
     if "JOIN" in mess:
         chan = '#' + mess.split('#')[1].split()[0]
-        fileprint(chan,timestr +chan+'\t'+usr+" joined "+chan)
+        fileprint(chan, timestr + chan + '\t' + usr + " joined " + chan)
         return 0
     if "PART" in mess:
         chan = '#' + mess.split('#')[1].split()[0]
         mess = mess.split('PART')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        fileprint(chan, timestr +chan + '\t' + usr + " left " + chan+" ("+mess+")")
+        fileprint(chan, timestr + chan + '\t' + usr + " left " + chan + " (" + mess + ")")
         return 0
     if "QUIT" in mess:
         mess = mess.split('QUIT')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        fileprint(chan, timestr +chan + '\t' + usr + " quit "+"("+mess+")")
+        fileprint(chan, timestr + chan + '\t' + usr + " quit " + "(" + mess + ")")
         return 0
     if "MODE" in mess:
         return 0
@@ -332,13 +334,13 @@ def printIRC(mess):
         mess = mess.split('NICK')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
         for chan in channel:
-            fileprint(chan, timestr +'\t' + '\t' + usr + " is now known as " + mess)
+            fileprint(chan, timestr + '\t' + '\t' + usr + " is now known as " + mess)
         return 0
     if "CTCP" in mess:
         return 0
 
     try:
-        chan = '#'+mess.split('#')[1].split()[0]
+        chan = '#' + mess.split('#')[1].split()[0]
     except Exception:
         chan = "PM"
     try:
@@ -346,13 +348,12 @@ def printIRC(mess):
     except Exception:
         print(mess)
         return
-    mess = mess[mess.find(':')+1:].strip('\n')
+    mess = mess[mess.find(':') + 1:].strip('\n')
     if "ACTION" in mess:
-        fileprint(chan, timestr +chan + '\t' + '*' + usr +mess[1:len(mess)-1].strip().strip("ACTION"))
+        fileprint(chan, timestr + chan + '\t' + '*' + usr + mess[1:len(mess) - 1].strip().strip("ACTION"))
     else:
-        fileprint(chan, timestr +chan+'\t'+'<'+usr+'>'+'\t'+mess)
+        fileprint(chan, timestr + chan + '\t' + '<' + usr + '>' + '\t' + mess)
     return chan, usr, mess
-
 
 
 def quitirc():  # This function is used to quit IRC entirely
@@ -383,7 +384,7 @@ def rektwiki(_channel, mess):
     if "rekt wiki" in mess:
         mess = mess[mess.find("rekt wiki"):]
         mess = mess.replace("rekt wiki", '')
-    mess=mess.strip()
+    mess = mess.strip()
     try:
         r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
     except Exception:
@@ -391,7 +392,7 @@ def rektwiki(_channel, mess):
     htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
     htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
     htmlstr = htmlstr[:htmlstr.find("\""):].replace("\"", '')
-    #print(htmlstr + '\n')
+    # print(htmlstr + '\n')
     sendmsg(_channel, htmlstr)
 
 
@@ -401,32 +402,31 @@ def findtitle(_channel, mess):
                      mess)
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
 
-
-    if forumusername!="" and forumpw!="":
+    if forumusername != "" and forumpw != "":
         url = "http://forums.ltheory.com/ucp.php?mode=login"
-        payload = {"username": forumusername,\
-                   "password": forumpw,\
-                    'redirect':'index.php',\
-                   'sid':'',\
-                   'login':'Login'}
+        payload = {"username": forumusername, \
+                   "password": forumpw, \
+                   'redirect': 'index.php', \
+                   'sid': '', \
+                   'login': 'Login'}
         try:
-            p = session.post(url, headers = head, data=payload, timeout=5)
+            p = session.post(url, headers=head, data=payload, timeout=5)
         except Exception:
             pass
 
     try:
-        r = session.get(res[0], headers = head,timeout=15)
+        r = session.get(res[0], headers=head, timeout=15)
     except Exception as e:
         print(e)
         return
-    #print(r.geturl())
+    # print(r.geturl())
     htmlstr = r.text
     try:
         htmlstr = htmlstr.decode()
     except Exception as e:
         htmlstr = str(htmlstr)
     htmlstr = htmlstr.replace('\t', '').replace('\n', '')
-    #print(htmlstr)
+    # print(htmlstr)
     # htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
     # print(htmlstr)
     try:
@@ -554,7 +554,7 @@ def wiki(_channel, string, count):
 
 
 def inpsay():
-    #cmd = sys.stdin.readline()
+    # cmd = sys.stdin.readline()
     global queue
     cmd = input('> ').strip()
     if cmd != "":
@@ -565,7 +565,7 @@ def inpsay():
         elif cmd.startswith("/msg"):
             pm(cmd.strip().split()[1], ' '.join(cmd.strip().split()[2:]))
         elif cmd.startswith("!"):
-            queue.insert(0,":Dinosawer!Dinosawer@Dinosawer.user.gamesurge PRIVMSG "+channel[0]+" :"+cmd)
+            queue.insert(0, ":Dinosawer!Dinosawer@Dinosawer.user.gamesurge PRIVMSG " + channel[0] + " :" + cmd)
         else:
             sendmsg(channel[0], cmd)
 
@@ -576,14 +576,14 @@ def stripleft(string, stuff):
 
 def blacklisted(user):
     global blacklist
-    return any([ stuff in user.lower() for stuff in blacklist])
+    return any([stuff in user.lower() for stuff in blacklist])
+
 
 def logslastn(chan, n):
-    mess=""
-    lines = tailer.tail(open(chan+".txt",errors='ignore'),n)
+    mess = ""
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), n)
     for line in lines:
-        mess+=line+'\n'
-
+        mess += line + '\n'
 
     '''url = 'http://pastebin.com/api/api_post.php'
     payload = {"api_option": "paste",\
@@ -595,28 +595,29 @@ def logslastn(chan, n):
                "api_paste_format": "text",\
                "api_user_key": ''}'''
     url = "http://paste.ee/api"
-    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
-               "paste": mess,\
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
+               "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
+               "paste": mess, \
                "format": "simple"}
-    #headers = {'content-type': 'application/json'}
+    # headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
-    #req = request.Request(url, data, headers)
+    # req = request.Request(url, data, headers)
     response = request.urlopen(url, data)
     the_page = response.read().decode('utf-8')
-    #print(the_page)
-    return(the_page)
+    # print(the_page)
+    return (the_page)
+
 
 def logslasth(chan, h):
-    mess=""
-    lines = tailer.tail(open(chan+".txt",errors='ignore'),logmax)
+    mess = ""
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
     lines.reverse()
     n = datetime.datetime.now()
     for line in lines:
         line = line.strip('\n').strip()
         if line != '':
-            test = line[line.find('[')+1:line.find(']')]
+            test = line[line.find('[') + 1:line.find(']')]
             test = test.split(' ')
             test[0] = test[0].split('/')
             test[1] = test[1].split(':')
@@ -627,12 +628,11 @@ def logslasth(chan, h):
             minute = int(test[1][1])
             sec = int(test[1][2])
             ti = datetime.datetime(year, month, day, hour, minute, sec)
-            ti = n -  ti
-            if ti.total_seconds()> h*3600:
+            ti = n - ti
+            if ti.total_seconds() > h * 3600:
                 break
             else:
-                mess=line+'\n'+mess
-
+                mess = line + '\n' + mess
 
     '''url = 'http://pastebin.com/api/api_post.php'
     payload = {"api_option": "paste",\
@@ -644,26 +644,27 @@ def logslasth(chan, h):
                "api_paste_format": "text",\
                "api_user_key": ''}'''
     url = "http://paste.ee/api"
-    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
-               "paste": mess,\
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
+               "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
+               "paste": mess, \
                "format": "simple"}
-    #headers = {'content-type': 'application/json'}
+    # headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
-    #req = request.Request(url, data, headers)
+    # req = request.Request(url, data, headers)
     response = request.urlopen(url, data)
     the_page = response.read().decode('utf-8')
-    #print(the_page)
-    return(the_page)
+    # print(the_page)
+    return (the_page)
+
 
 def logslastseen(chan, user):
-    mess=""
-    lines = tailer.tail(open(chan+".txt",errors='ignore'),logmax)
+    mess = ""
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
     lines.reverse()
     n = datetime.datetime.now()
     try:
-        user=user[0:4]
+        user = user[0:4]
     except Exception:
         pass
     print(user)
@@ -675,42 +676,46 @@ def logslastseen(chan, user):
             if user in line and "ping timeout" in line.lower() and "quit" in line.lower():
                 pinged = True
             if pinged:
-                if "<"+user in line:
+                if "<" + user in line:
                     mess = line + '\n' + mess
                     break
                 else:
                     mess = line + '\n' + mess
             else:
                 if user in line and ("quit" in line.lower() or "left" in line):
-                    mess=line+'\n'+mess
+                    mess = line + '\n' + mess
                     break
                 else:
                     mess = line + '\n' + mess
 
     url = "http://paste.ee/api"
-    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb",\
-               "description": "logs"+"["+strftime("%d/%m/%Y %H:%M:%S")+"]",\
-               "paste": mess,\
+    payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
+               "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
+               "paste": mess, \
                "format": "simple"}
-    #headers = {'content-type': 'application/json'}
+    # headers = {'content-type': 'application/json'}
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
-    #req = request.Request(url, data, headers)
+    # req = request.Request(url, data, headers)
     response = request.urlopen(url, data)
     the_page = response.read().decode('utf-8')
-    #print(the_page)
-    return(the_page)
+    # print(the_page)
+    return (the_page)
+
 
 def connect():
     global queue
     global ircsock
+    global connected
     # Here we connect to the server using the port 6667
     connected = False
     while not connected:
         try:
+            print("Trying to connect...")
             ircsock.connect((server, 6667))
             connected = True
-        except Exception:
+        except Exception as e:
+            print(e.__cause__)
             connected = False
             sleeping(5)
     ircsock.settimeout(180)
@@ -777,9 +782,9 @@ def readirc():
         else:
             smartlander = True
     try:
-        _channel, user, mess=printIRC(mess)
+        _channel, user, mess = printIRC(mess)
     except Exception:
-        #some weird message?
+        # some weird message?
         return
     """test = mess.strip('\r\n').strip().strip("'")
     mess = test"""
@@ -796,7 +801,7 @@ def readirc():
                     sendmsg(_channel, random.choice(greetings).title() + "!")
                     # lmess=stripleft(lmess,"saoirse")
                 # mess=stripleft(mess,"Saoirse")
-                #print(lmess)
+                # print(lmess)
                 if "Dinosawer" in user:
                     if "join" in lmess:
                         tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
@@ -830,7 +835,7 @@ def readirc():
                 if "shush" in lmess:
                     sendmsg(_channel, "OK, I'll shut up :(")
                     shushed = True
-                    timers['shushed'] =1800
+                    timers['shushed'] = 1800
                     return
                 elif "speak" in lmess:
                     sendmsg(_channel, "Yay! Pudding!")
@@ -854,19 +859,19 @@ def readirc():
                 try:
                     n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
                     if n.endswith('h'):
-                        n=n.replace('h','')
+                        n = n.replace('h', '')
                         n = float(n)
                         sendmsg(_channel, logslasth(_channel, n))
                         return
                     elif n.endswith('m'):
-                        n=n.replace('m','')
-                        n = float(n)/60
+                        n = n.replace('m', '')
+                        n = float(n) / 60
                         sendmsg(_channel, logslasth(_channel, n))
                         return
                     else:
-                        n=int(n)
-                        if n>logmax:
-                            sendmsg(_channel, "Sorry, won't do more than "+str(logmax)+" ^.^")
+                        n = int(n)
+                        if n > logmax:
+                            sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
                             n = logmax
                         sendmsg(_channel, logslastn(_channel, n))
                         return
@@ -882,7 +887,7 @@ def readirc():
                 return
             if "[[[" in lmess:
                 try:
-                    rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[','').replace(']',''))
+                    rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
                 except Exception:
                     pass
             elif "TABLEFLIP" in mess:
@@ -938,7 +943,7 @@ def main():
     global ircsock
     global timers
     global shushed
-    #ircsock.setblocking(0)
+    # ircsock.setblocking(0)
     while online:  # Be careful with these! it might send you to an infinite loop
         timer = time()
         received = True
@@ -967,7 +972,7 @@ def main():
         timer -= time()
         timer = -timer
         decrtimer(timer)
-        if timers['shushed'] ==0:
+        if timers['shushed'] == 0:
             shushed = False
         while len(queue) != 0:
             timer = time()
@@ -986,4 +991,3 @@ def main():
 _thread.start_new_thread(main, ())
 while online:
     inpsay()
-
