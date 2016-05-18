@@ -15,7 +15,7 @@ Saoirse speak: she will start responding generally again
 doomed: DOOOOMED!  
 space: SPAAACE!  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
-!oh,you, : Oh, you! http://i.imgur.com/0F8Njoz.jpg  
+!oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
 !soon, : Soon™ http://i.imgur.com/g6ICwYO.jpg  
 \o/, : \o/  
