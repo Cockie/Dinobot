@@ -14,6 +14,7 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms> or [[[search term]]]: she will search the REKT wiki for the most appropriate page
 doomed: DOOOOMED!  
 space: SPAAACE!  
+!burn, : Apply cold water to burned area http://i.imgur.com/YhlseLP.jpg  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
 !oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
