@@ -19,6 +19,7 @@ space: SPAAACE!
 !oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
 !soon, : Soon™ http://i.imgur.com/g6ICwYO.jpg  
+!whoosh, : http://i.imgur.com/axJmn.gifv  
 \o/, : \o/  
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  
