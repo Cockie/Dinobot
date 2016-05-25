@@ -71,6 +71,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !bored: (￣Д￣)＝３  
 !bow: (シ_ _)シ  
 !cat: (=^・ω・^=)  
+!cha0zz: (－‸ლ) "Idiot, idiots everywhere."  
 !creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !dance: （〜^∇^)〜  
