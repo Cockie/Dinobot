@@ -14,9 +14,12 @@ Saoirse speak: she will start responding generally again
 (Saoirse) rekt wiki <search terms> or [[[search term]]]: she will search the REKT wiki for the most appropriate page
 doomed: DOOOOMED!  
 space: SPAAACE!  
+!burn, : Apply cold water to burned area http://i.imgur.com/YhlseLP.jpg  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
+!oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
 !soon, : Soon™ http://i.imgur.com/g6ICwYO.jpg  
+!whoosh, : http://i.imgur.com/axJmn.gifv  
 \o/, : \o/  
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  
@@ -44,6 +47,7 @@ saoirse quit, saoirse, quit, : Nope!
 saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
 saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
 saoirse what do you look like, saoirse, what do you look like, : http://i.imgur.com/kda3ckO.png  
+saoirse, music, saoirse music, : https://youtu.be/dQw4w9WgXcQ  
 saorise, : It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>  
 sudo saoirse make me pudding, sudo saoirse make me some pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, sudo saoirse, make me some pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
 tintin, : YAY TINTIN!  
@@ -67,6 +71,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !bored: (￣Д￣)＝３  
 !bow: (シ_ _)シ  
 !cat: (=^・ω・^=)  
+!cha0zz: (－‸ლ) "Idiot, idiots everywhere."  
 !creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !dance: （〜^∇^)〜  
