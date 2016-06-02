@@ -53,7 +53,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -88,9 +88,6 @@ def writeblacklist():
     for nick in blacklist:
         f.write(nick.strip() + '\n')
     f.close()
-
-
-
 
 
 def initialise():
@@ -426,9 +423,10 @@ def setrekturl(_channel, mess):
     f = open('rekt.txt', 'w')
     f.write(newurl)
     rekturl = newurl
-    sendmsg(_channel, "Okay, "+newurl+" is saved as the new update! ^.^")
+    sendmsg(_channel, "Okay, " + newurl + " is saved as the new update! ^.^")
 
-def rektposts(_channel):
+
+def rektposts(user):
     url = rekturl
     if 'start' not in url:
         url = url.replace('#', '&start=0#')
@@ -500,7 +498,7 @@ def rektposts(_channel):
                 prevhtmlstr = htmlstr
         else:
             prevhtmlstr = htmlstr
-        for i in range(0,4):
+        for i in range(0, 4):
             try:
                 parsed_html.blockquote.decompose()
             except Exception:
@@ -546,17 +544,17 @@ def rektposts(_channel):
     for key, value in nicks.items():
         if not value:
             notposted.append(key)
-    if len(notposted)==0:
+    if len(notposted) == 0:
         sendmsg(_channel, "Everyone has posted, update time! ^.^")
-    elif len(notposted)==1:
-        sendmsg(_channel, "Only "+notposted[0]+" hasn't posted yet.")
+    elif len(notposted) == 1:
+        sendmsg(_channel, "Only " + notposted[0] + " hasn't posted yet.")
     else:
         topost = ""
-        for i in range(0,len(notposted)-1):
-            topost+=notposted[i]+", "
+        for i in range(0, len(notposted) - 1):
+            topost += notposted[i] + ", "
         topost = topost.strip(', ')
-        topost+= " and "+notposted[len(notposted)-1]
-        sendmsg(_channel, topost + " haven't posted yet.")
+        topost += " and " + notposted[len(notposted) - 1]
+        pm(user, topost + " haven't posted yet.")
 
 
 def findtitle(_channel, mess):
@@ -1005,7 +1003,7 @@ def readirc():
                             writeblacklist()
                             return
                 if "rekt" in lmess and "post" in lmess:
-                    rektposts(_channel)
+                    rektposts(user)
                     return
                 if "set rekt update" in lmess:
                     setrekturl(_channel, lmess)
