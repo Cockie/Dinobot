@@ -26,6 +26,11 @@ import tailer
 import datetime
 import requests
 
+try:
+    from BeautifulSoup import BeautifulSoup
+except ImportError:
+    from bs4 import BeautifulSoup
+
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
 wikitriggers = ["what is", "what's", "whats", "who's", "who is", "how do i"]
@@ -48,7 +53,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -57,6 +62,7 @@ auth = True
 smartlander = False
 logmax = 20000
 session = requests.Session()
+rekturl = ""
 
 
 def stringify(t):
@@ -82,7 +88,9 @@ def writeblacklist():
     for nick in blacklist:
         f.write(nick.strip() + '\n')
     f.close()
-    print(blacklist)
+
+
+
 
 
 def initialise():
@@ -103,7 +111,11 @@ def initialise():
     global forumpw
     global auth
     global session
-
+    global rekturl
+    with open('rekt.txt') as f:
+        line = f.readline()
+        line = line.strip('\n').strip()
+        rekturl = line
     with open('space.txt') as f:
         for line in f:
             spacelist.append(line.strip().replace('"', ''))
@@ -394,6 +406,157 @@ def rektwiki(_channel, mess):
     htmlstr = htmlstr[:htmlstr.find("\""):].replace("\"", '')
     # print(htmlstr + '\n')
     sendmsg(_channel, htmlstr)
+
+
+def removeTags(mess):
+    mess = mess.replace('<span style="text-decoration: underline">', '')
+    mess = mess.replace('<span style="font-weight: bold">', '')
+    mess = mess.replace('<span style="font-style: italic">', '')
+    mess = mess.replace('</span>', '')
+    return mess
+
+
+def splitInLines(mess):
+    return mess.replace('<br/>', '\n')
+
+
+def setrekturl(_channel, mess):
+    global rekturl
+    newurl = mess[mess.find("update") + 6:].strip('\n').strip()
+    f = open('rekt.txt', 'w')
+    f.write(newurl)
+    rekturl = newurl
+    sendmsg(_channel, "Okay, "+newurl+" is saved as the new update! ^.^")
+
+def rektposts(_channel):
+    url = rekturl
+    if 'start' not in url:
+        url = url.replace('#', '&start=0#')
+    nicks = {}
+    with open('charnames.txt') as f:
+        for line in f:
+            line = line.split('&')
+            nicks[line[0]] = False
+    head = {'User-Agent': 'Chrome/35.0.1916.47'}
+    loggedin = False
+    if forumusername != "" and forumpw != "":
+        lurl = "http://forums.ltheory.com/ucp.php?mode=login"
+        payload = {"username": forumusername, \
+                   "password": forumpw, \
+                   'redirect': 'index.php', \
+                   'sid': '', \
+                   'login': 'Login'}
+        try:
+            p = session.post(lurl, headers=head, data=payload, timeout=5)
+            loggedin = True
+        except Exception:
+            loggedin = False
+    htmlstr = ""
+    prevhtmlstr = ""
+    keepgoing = True
+    chars = {}
+    while keepgoing:
+        if loggedin:
+            try:
+                r = session.get(url, headers=head, timeout=15)
+            except Exception as e:
+                print(e)
+                return
+            htmlstr = r.text
+        else:
+            req = request.Request(url, data=None, headers=head)
+            try:
+                r = request.urlopen(req, timeout=15)
+            except Exception:
+                return
+            # print(r.geturl())
+            htmlstr = r.read()
+
+        try:
+            htmlstr = htmlstr.decode()
+        except Exception as e:
+            htmlstr = str(htmlstr)
+
+        # make new url for next attempt
+        try:
+            startIndicator = int(url[url.find('start=') + 6:url.find('#')])
+        except Exception:
+            sendmsg(_channel, "Something went wrong. The update url is probably wrong. Sorry!")
+        newstart = startIndicator + 15
+        url = url.replace('start=' + str(startIndicator), 'start=' + str(newstart))
+
+        # parse html
+        parsed_html = BeautifulSoup(htmlstr)
+
+        prev_parsed_html = BeautifulSoup(prevhtmlstr)
+        if prevhtmlstr != "":
+            if parsed_html.body.find('div', attrs={'class': 'content'}).text == prev_parsed_html.body.find('div',
+                                                                                                           attrs={
+                                                                                                               'class': 'content'}).text:
+                # we reached the end of the thread
+                keepgoing = False
+                break
+            else:
+                prevhtmlstr = htmlstr
+        else:
+            prevhtmlstr = htmlstr
+        for i in range(0,4):
+            try:
+                parsed_html.blockquote.decompose()
+            except Exception:
+                pass
+
+        links = [str(tag.find_all('a')[0]) for tag in parsed_html.body.find_all('p', attrs={'class': 'author'})]
+        auths = [tag.find_all('a')[1].text for tag in parsed_html.body.find_all('p', attrs={'class': 'author'})]
+        posts = parsed_html.body.find_all('div', attrs={'class': 'content'})
+
+        # find actual starting post
+        startat = 0
+        for i, link in enumerate(links):
+            links[i] = link[link.find('"'):link.find('">')].replace(link[link.find('&amp'):link.find('#')], '').strip(
+                '"').strip('.')
+            if links[i][links[i].find('#'):] == url[url.find('#'):]:
+                startat = i
+        # cut of unneeded parts of the array
+        links = links[startat:]
+        auths = auths[startat:]
+        posts = posts[startat:]
+
+        commanding = False
+        # pars posts
+        for j, stuff in enumerate(posts):
+            # check if char is in
+
+            for underlined in stuff.find_all('span', attrs={'style': "text-decoration: underline"}):
+                underlined = removeTags(str(underlined))
+                underlined = splitInLines(underlined)
+                underlined = underlined.splitlines()
+                for i, line in enumerate(underlined):
+                    line = line.replace('\n', '').strip()
+                    if line is not "":
+                        if line.startswith('"'):
+                            commanding = True
+                        if commanding:
+                            pass
+                        else:
+                            nicks[auths[j]] = True
+                        if line.endswith('"'):
+                            commanding = False
+    notposted = []
+    for key, value in nicks.items():
+        if not value:
+            notposted.append(key)
+    if len(notposted)==0:
+        sendmsg(_channel, "Everyone has posted, update time! ^.^")
+    elif len(notposted)==1:
+        sendmsg(_channel, "Only "+notposted[0]+" hasn't posted yet.")
+    else:
+        topost = ""
+        for i in range(0,len(notposted)-1):
+            topost+=notposted[i]+", "
+        topost = topost.strip(', ')
+        topost+= " and "+notposted[len(notposted)-1]
+        sendmsg(_channel, topost + " haven't posted yet.")
 
 
 def findtitle(_channel, mess):
@@ -841,6 +1004,12 @@ def readirc():
                             blacklist.append(nick)
                             writeblacklist()
                             return
+                if "rekt" in lmess and "post" in lmess:
+                    rektposts(_channel)
+                    return
+                if "set rekt update" in lmess:
+                    setrekturl(_channel, lmess)
+                    return
                 if "shush" in lmess:
                     sendmsg(_channel, "OK, I'll shut up :(")
                     shushed = True
