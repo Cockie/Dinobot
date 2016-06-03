@@ -545,9 +545,9 @@ def rektposts(user):
         if not value:
             notposted.append(key)
     if len(notposted) == 0:
-        sendmsg(_channel, "Everyone has posted, update time! ^.^")
+        pm(user, "Everyone has posted, update time! ^.^")
     elif len(notposted) == 1:
-        sendmsg(_channel, "Only " + notposted[0] + " hasn't posted yet.")
+        pm(user, "Only " + notposted[0] + " hasn't posted yet.")
     else:
         topost = ""
         for i in range(0, len(notposted) - 1):
