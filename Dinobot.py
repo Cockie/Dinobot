@@ -865,7 +865,7 @@ def logslastseen(chan, user):
     for line in lines:
         line = line.strip('\n').strip()
         if line != '':
-            print(line)
+            #print(line)
             if user in line and "ping timeout" in line.lower() and "quit" in line.lower() and '<' not in line.lower() and '*' not in line.lower():
                 pinged = True
             if pinged:
