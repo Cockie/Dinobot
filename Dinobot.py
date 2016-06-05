@@ -1055,29 +1055,29 @@ def readirc():
                     sendmsg(_channel, "Pudding!")
             # no-named things
             if "!logs" in lmess:
-                #try:
-                n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
-                if n.endswith('h'):
-                    n = n.replace('h', '')
-                    n = float(n)
-                    sendmsg(_channel, logslasth(_channel, n))
+                try:
+                    n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
+                    if n.endswith('h'):
+                        n = n.replace('h', '')
+                        n = float(n)
+                        sendmsg(_channel, logslasth(_channel, n))
+                        return
+                    elif n.endswith('m'):
+                        n = n.replace('m', '')
+                        n = float(n) / 60
+                        sendmsg(_channel, logslasth(_channel, n))
+                        return
+                    else:
+                        n = int(n)
+                        if n > logmax:
+                            sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
+                            n = logmax
+                        sendmsg(_channel, logslastn(_channel, n))
+                        return
+                except Exception as e:
+                    print(e.__context__)
+                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                     return
-                elif n.endswith('m'):
-                    n = n.replace('m', '')
-                    n = float(n) / 60
-                    sendmsg(_channel, logslasth(_channel, n))
-                    return
-                else:
-                    n = int(n)
-                    if n > logmax:
-                        sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
-                        n = logmax
-                    sendmsg(_channel, logslastn(_channel, n))
-                    return
-                #except Exception as e:
-                   # print(e.__context__)
-                    #sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                    #return
             if "!loglast" in lmess:
                 sendmsg(_channel, logslastseen(_channel, user))
                 return
