@@ -866,7 +866,7 @@ def logslastseen(chan, user):
         line = line.strip('\n').strip()
         if line != '':
             print(line)
-            if user in line and "ping timeout" in line.lower() and "quit" in line.lower():
+            if user in line and "ping timeout" in line.lower() and "quit" in line.lower() and '<' not in line.lower() and '*' not in line.lower():
                 pinged = True
             if pinged:
                 if "<" + user in line:
@@ -875,7 +875,7 @@ def logslastseen(chan, user):
                 else:
                     mess = line + '\n' + mess
             else:
-                if user in line and ("quit" in line.lower() or "left" in line):
+                if user in line and ("quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
                     mess = line + '\n' + mess
                     break
                 else:
