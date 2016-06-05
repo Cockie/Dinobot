@@ -860,7 +860,7 @@ def logslastseen(chan, user):
         user = user[0:4]
     except Exception:
         pass
-    print(user)
+    #print(user)
     pinged = False
     for line in lines:
         line = line.strip('\n').strip()
@@ -880,7 +880,7 @@ def logslastseen(chan, user):
                     break
                 else:
                     mess = line + '\n' + mess
-    print(mess)
+    #print(mess)
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
@@ -892,7 +892,7 @@ def logslastseen(chan, user):
     # req = request.Request(url, data, headers)
     response = request.urlopen(url, data)
     the_page = response.read().decode('utf-8')
-    print(the_page)
+    #print(the_page)
     return (the_page)
 
 
