@@ -335,7 +335,8 @@ def printIRC(mess):
     if "QUIT" in mess:
         mess = mess.split('QUIT')[1]
         mess = mess[mess.find(':') + 1:].strip('\n')
-        fileprint(channel[0], timestr + channel[0] + '\t' + usr + " quit " + "(" + mess + ")")
+        for chan in channel:
+            fileprint(chan, timestr + chan + '\t' + usr + " quit " + "(" + mess + ")")
         return 0
     if "MODE" in mess:
         return 0
