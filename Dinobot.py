@@ -427,7 +427,7 @@ def setrekturl(_channel, mess):
     sendmsg(_channel, "Okay, " + newurl + " is saved as the new update! ^.^")
 
 
-def rektposts(user):
+def rektposts(user, channel):
     url = rekturl
     if 'start' not in url:
         url = url.replace('#', '&start=0#')
@@ -480,7 +480,7 @@ def rektposts(user):
         try:
             startIndicator = int(url[url.find('start=') + 6:url.find('#')])
         except Exception:
-            sendmsg(_channel, "Something went wrong. The update url is probably wrong. Sorry!")
+            sendmsg(channel, "Something went wrong. The update url is probably wrong. Sorry!")
         newstart = startIndicator + 15
         url = url.replace('start=' + str(startIndicator), 'start=' + str(newstart))
 
@@ -546,9 +546,9 @@ def rektposts(user):
         if not value:
             notposted.append(key)
     if len(notposted) == 0:
-        pm(user, "Everyone has posted, update time! ^.^")
+        sendmsg(channel, "Everyone has posted, update time! ^.^")
     elif len(notposted) == 1:
-        pm(user, "Only " + notposted[0] + " hasn't posted yet.")
+        sendmsg(channel, "Only " + notposted[0] + " hasn't posted yet.")
     else:
         topost = ""
         for i in range(0, len(notposted) - 1):
@@ -1026,7 +1026,7 @@ def readirc():
                             writeblacklist()
                             return
                 if "rekt" in lmess and "post" in lmess:
-                    rektposts(user)
+                    rektposts(user, _channel)
                     return
                 if "set rekt update" in lmess:
                     setrekturl(_channel, lmess)
