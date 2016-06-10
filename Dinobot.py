@@ -521,11 +521,11 @@ def rektposts(user, channel):
         auths = auths[startat:]
         posts = posts[startat:]
 
-        commanding = False
+
         # pars posts
         for j, stuff in enumerate(posts):
             # check if char is in
-
+            commanding = False
             for underlined in stuff.find_all('span', attrs={'style': "text-decoration: underline"}):
                 underlined = removeTags(str(underlined))
                 underlined = splitInLines(underlined)
