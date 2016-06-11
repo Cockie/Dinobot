@@ -799,7 +799,7 @@ def logslasth(chan, h):
     ti = datetime.datetime(year, month, day, hour, minute, sec)
     ti = n - ti
     mess = ""
-    if ti.total_seconds() > h * 3600:
+    if ti.total_seconds() < h * 3600:
         for line in lines:
             mess += line + '\n'
     else:
