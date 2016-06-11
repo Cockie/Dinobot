@@ -2,6 +2,7 @@
 Saoirse: an LT IRC bot  
 Code on github: https://github.com/Cockie/Dinobot/blob/master/Dinobot.py  
 Commands:
+Saoirse rekt post [or anything containing those three words]: she tells you (generally in PM) who hasn't posted and action post yet since the last update
 !logs <integer> pastes the last <integer> lines of chat logs to pastebin and returns a link
 !logs <float>h or !logs<float>m: pastes the last <float> hours or minutes of logs and returns a link
 !loglast: she returns the logs since the lat time you quit, or if you pinged out, since the last time you spoke. Experimental, might explode.
