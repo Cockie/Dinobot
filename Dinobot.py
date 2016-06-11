@@ -801,7 +801,7 @@ def logslasth(chan, h):
     mess = ""
     if ti.total_seconds() > h * 3600:
         for line in lines:
-            mess = +line + '\n'
+            mess += line + '\n'
     else:
         lines.reverse()
         for line in lines:
@@ -1075,7 +1075,7 @@ def readirc():
                         sendmsg(_channel, logslastn(_channel, n))
                         return
                 except Exception as e:
-                    print(e.__context__)
+                    print(e)
                     sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                     return
             if "!loglast" in lmess:
