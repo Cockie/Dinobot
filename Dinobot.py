@@ -926,7 +926,7 @@ def connect():
             else:
                 break
         mess = queue[0]  # removing any unnecessary linebreaks.
-        mess = mess.strip('\n\r').strip()
+        mess = mess.strip().strip('\n\r').strip()
         print(mess) # Here we print what's coming from the server
         if mess.find("Found your hostname") != -1 or mess.find("No ident response") != -1:
             sent = "NICK " + botnick + "\n" + "USER " + botnick + " " + botnick + " " + botnick + " :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
