@@ -51,7 +51,7 @@ emoticons = {}
 spacelist = []
 # Some basic variables used to configure the bot
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server = "irc.web.gamesurge.net"  # Server
+server = "burstfire.uk.eu.gamesurge.net"  # Server
 channel = []
 botnick = "Saoirse"  # Your bots nick
 username = ""
@@ -934,7 +934,7 @@ def connect():
             print(sent)
         if mess.find("Welcome to the GameSurge IRC") != -1:  # if the server pings us then we've got to respond!
             break
-        if mess.find("PING :") != -1:  # if the server pings us then we've got to respond!
+        if "PING" in mess or "PONG" in mess:  # if the server pings us then we've got to respond!
             ping(mess)
         if len(queue) != 0:
             del queue[0]
