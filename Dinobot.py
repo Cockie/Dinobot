@@ -927,7 +927,7 @@ def connect():
                 break
         mess = queue[0]  # removing any unnecessary linebreaks.
         mess = mess.strip('\n\r').strip()
-        # print(mess) # Here we print what's coming from the server
+        print(mess) # Here we print what's coming from the server
         if mess.find("Found your hostname") != -1 or mess.find("No ident response") != -1:
             sent = "NICK " + botnick + "\n" + "USER " + botnick + " " + botnick + " " + botnick + " :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
             ircsock.send(bytes(sent, 'UTF-8'))  # here we actually assign the nick to the bot
