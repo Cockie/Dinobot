@@ -920,7 +920,7 @@ def connect():
         ircmsg = ircsock.recv(2048)  # receive data from the server
         buf = io.StringIO(str(ircmsg))
         while True:
-            read = buf.readline()
+            read = str(buf.readline())
             if read != "":
                 read = read.split('\r\n')
                 for stuff in read:
