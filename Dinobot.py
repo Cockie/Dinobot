@@ -922,7 +922,9 @@ def connect():
         while True:
             read = buf.readline()
             if read != "":
-                queue.append(read)
+                read = read.split('\r\n')
+                for stuff in read:
+                    queue.append(stuff)
             else:
                 break
         mess = queue[0]  # removing any unnecessary linebreaks.
