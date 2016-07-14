@@ -128,7 +128,7 @@ def initialise():
             confus.append(line)
 
     test = "#LEFTS"
-    with open('procemo.txt') as f:
+    with open('procemo.txt', encoding='utf-8') as f:
         for line in f:
             line = line.strip('\n').strip(' ')
             if line == '':
@@ -153,8 +153,8 @@ def initialise():
                 pass
             else:
                 emoticons[line[0]] = line[1].replace("\\n", '\n')
-    print("EMOTICONS")
-    print(emoticons)
+    #print("EMOTICONS")
+    #print(emoticons)
     with open('triggers.txt', encoding='utf-8') as f:
         triggers = OrderedDict()
         for line in f:
@@ -167,27 +167,27 @@ def initialise():
                 timers[line[0][0]] = 0
                 timervals[line[0][0]] = int(line[2])
                 bottriggers[line[0][0]] = True if line[3].replace("\\n", '\n') == 'T' else False
-    print("TRIGGERS")
-    print(triggers)
+    #print("TRIGGERS")
+    #print(triggers)
 
     with open('README.md', 'w') as f:
-        with open('read1.txt') as f1:
+        with open('read1.txt',encoding='utf-8') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(triggers):
                 f.write(stringify(key) + ": " + triggers[key] + "  \n")
         f.write("  \n")
-        with open('read2.txt') as f1:
+        with open('read2.txt',encoding='utf-8') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(emoticons):
                 f.write(key + ": " + emoticons[key] + "  \n")
 
-    with open('autojoin.txt') as f:
+    with open('autojoin.txt',encoding='utf-8') as f:
         for line in f:
             channel.append(line.strip().replace('\n', ''))
 
-    with open('auth.txt') as f:
+    with open('auth.txt',encoding='utf-8') as f:
         username = f.readline().strip().replace('\n', '')
         password = f.readline().strip().replace('\n', '')
         forumusername = f.readline().strip().replace('\n', '')
