@@ -25,6 +25,9 @@ import html
 import tailer
 import datetime
 import requests
+import sys  
+from importlib import reload
+reload(sys)  
 
 try:
     from BeautifulSoup import BeautifulSoup
@@ -51,7 +54,7 @@ emoticons = {}
 spacelist = []
 # Some basic variables used to configure the bot
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server = "burstfire.uk.eu.gamesurge.net"  # Server
+server = "irc.web.gamesurge.net"  # Server
 channel = []
 botnick = "Saoirse"  # Your bots nick
 username = ""
