@@ -25,10 +25,6 @@ import html
 import tailer
 import datetime
 import requests
-import sys  
-from importlib import reload
-reload(sys)  
-
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -128,7 +124,7 @@ def initialise():
             confus.append(line)
 
     test = "#LEFTS"
-    with open('procemo.txt', encoding='utf-8') as f:
+    with open('procemo.txt') as f:
         for line in f:
             line = line.strip('\n').strip(' ')
             if line == '':
@@ -145,7 +141,7 @@ def initialise():
                 elif test == "#MOUTHS":
                     mouths.append(line)
 
-    with open('emoticons.txt', encoding='utf-8') as f:
+    with open('emoticons.txt') as f:
         for line in f:
             # print(line)
             line = line.strip('\n').strip(' ').split('&')
@@ -155,7 +151,7 @@ def initialise():
                 emoticons[line[0]] = line[1].replace("\\n", '\n')
     #print("EMOTICONS")
     #print(emoticons)
-    with open('triggers.txt', encoding='utf-8') as f:
+    with open('triggers.txt') as f:
         triggers = OrderedDict()
         for line in f:
             line = line.strip('\n').strip(' ').split('|')
@@ -171,23 +167,23 @@ def initialise():
     #print(triggers)
 
     with open('README.md', 'w') as f:
-        with open('read1.txt',encoding='utf-8') as f1:
+        with open('read1.txt') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(triggers):
                 f.write(stringify(key) + ": " + triggers[key] + "  \n")
         f.write("  \n")
-        with open('read2.txt',encoding='utf-8') as f1:
+        with open('read2.txt') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(emoticons):
                 f.write(key + ": " + emoticons[key] + "  \n")
 
-    with open('autojoin.txt',encoding='utf-8') as f:
+    with open('autojoin.txt') as f:
         for line in f:
             channel.append(line.strip().replace('\n', ''))
 
-    with open('auth.txt',encoding='utf-8') as f:
+    with open('auth.txt') as f:
         username = f.readline().strip().replace('\n', '')
         password = f.readline().strip().replace('\n', '')
         forumusername = f.readline().strip().replace('\n', '')
