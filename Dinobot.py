@@ -559,6 +559,7 @@ def rektposts(user, channel):
 
 def findtitle(_channel, mess):
     global session
+    print("Finding title")
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
@@ -582,31 +583,46 @@ def findtitle(_channel, mess):
             return
         htmlstr = r.text
     else:
-        req = request.Request(res[0], data=None, headers=head)
+        r = requests.head(url=res[0])
+        if not r.headers['content-type'].startswith("text"):
+            return
         try:
-            r = request.urlopen(req, timeout=15)
+            r = requests.get(res[0], data=None, headers=head, timeout = 15, stream = True)
         except Exception:
             return
         # print(r.geturl())
-        htmlstr = r.read()
+        i = 0
+        htmlstr = ""
+        
+        for chunk in r.iter_content(chunk_size = 1024):
+            htmlstr += chunk.decode()
+            if "</title>" in htmlstr:
+                break
+            if i>15:
+                break
+            i+=1
+        #print(htmlstr)
     # print(r.geturl())
 
     try:
         htmlstr = htmlstr.decode()
     except Exception as e:
         htmlstr = str(htmlstr)
-    htmlstr = htmlstr.replace('\t', '').replace('\n', '')
+    parsed_html = BeautifulSoup(htmlstr)
+    try:
+        title = parsed_html.title.text
+    except Exception:
+        return
+    title = title.replace("",'')
+    title = title.replace("\n",' ').replace('\r',' ')
     # print(htmlstr)
     # htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
     # print(htmlstr)
-    try:
-        htmlstr = htmlstr[htmlstr.find("<title>"):].replace("<title>", '')
-        htmlstr = htmlstr[:htmlstr.find("</title>"):].replace("</title>", '').strip('\n').strip()
-        print(htmlstr)
-    except Exception:
-        return
+    #print(title)
+    if len(title)>400:
+        title = title[0:400]+"..."
     if htmlstr != "":
-        sendmsg(_channel, html.unescape(htmlstr.strip()))
+        sendmsg(_channel, title)
 
 
 def confucius(_channel):
@@ -1090,6 +1106,11 @@ def readirc():
                     rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
                 except Exception:
                     pass
+            if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
+                    re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+                               lmess)) != 0:
+                findtitle(_channel, mess)
+                return
             elif "TABLEFLIP" in mess:
                 temp = "︵ヽ(`Д´)ﾉ︵"
                 for i in range(1, lmess.count('!')):
@@ -1123,11 +1144,7 @@ def readirc():
                 listemo(_channel, user, mess)
                 return
 
-            if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
-                    re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                               lmess)) != 0:
-                findtitle(_channel, mess)
-                return
+
         if not shushed:
             for key, value in triggers.items():
                 if any([stuff in lmess for stuff in key]):
