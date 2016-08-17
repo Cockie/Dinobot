@@ -799,6 +799,8 @@ def logslasth(chan, h):
     mess = ""
     lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
     n = datetime.datetime.now()
+    #for some reason the first element is borked
+    del lines[0]
     line = lines[0]
     #for people who ask ridiculous amounts of lines
     test = line[line.find('[') + 1:line.find(']')]
