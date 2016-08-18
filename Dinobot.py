@@ -52,7 +52,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -584,6 +584,7 @@ def findtitle(_channel, mess):
         htmlstr = r.text
     else:
         r = requests.head(url=res[0])
+        #print(r.headers['content-type'])
         if not r.headers['content-type'].startswith("text"):
             return
         try:
@@ -593,14 +594,16 @@ def findtitle(_channel, mess):
         # print(r.geturl())
         i = 0
         htmlstr = ""
-        
-        for chunk in r.iter_content(chunk_size = 1024):
-            htmlstr += chunk.decode()
-            if "</title>" in htmlstr:
-                break
-            if i>15:
-                break
-            i+=1
+        try:
+            for chunk in r.iter_content(chunk_size = 1024):
+                htmlstr += chunk.decode()
+                if "</title>" in htmlstr:
+                    break
+                if i>15:
+                    break
+                i+=1
+        except Exception:
+            return
         #print(htmlstr)
     # print(r.geturl())
 
@@ -797,7 +800,10 @@ def logslastn(chan, n):
 
 def logslasth(chan, h):
     mess = ""
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
+    amlines = 60*h*5
+    if amlines > logmax:
+        amlines = logmax
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
     n = datetime.datetime.now()
     #for some reason the first element is borked
     del lines[0]
