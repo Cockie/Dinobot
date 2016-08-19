@@ -817,7 +817,7 @@ def logslasth(chan, h):
     amlines = 60*round(h)*5
     if amlines > logmax:
         amlines = logmax
-    print(amlines)
+    #print(amlines)
     lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
     n = datetime.datetime.now()
     #for some reason the first element is borked
@@ -834,7 +834,7 @@ def logslasth(chan, h):
         lines.reverse()
         for line in lines:
             line = line.strip('\n').strip()
-            print(line)
+            #print(line)
             if line != '':
                 try:
                     ti = getdate(line)
@@ -845,7 +845,7 @@ def logslasth(chan, h):
                         mess = line + '\n' + mess
                 except Exception:
                     pass
-    print("yay")
+    #print("yay")
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
@@ -855,10 +855,10 @@ def logslasth(chan, h):
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
     # req = request.Request(url, data, headers)
-    print("sending")
+    #print("sending")
     response = request.urlopen(url, data, timeout = 10)
     the_page = response.read().decode('utf-8')
-    print("yay")
+    #print("yay")
     # print(the_page)
     return (the_page)
 
