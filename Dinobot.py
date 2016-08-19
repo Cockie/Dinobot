@@ -25,6 +25,7 @@ import html
 import tailer
 import datetime
 import requests
+import traceback
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -88,6 +89,15 @@ def writeblacklist():
         f.write(nick.strip() + '\n')
     f.close()
 
+def logerror(error):
+    message = str(error) + '\n' + traceback.format_exc()
+    message = message.splitlines()
+    f = open('error.txt', 'a')
+    f.write("[" + strftime("%d/%m/%Y %H:%M:%S") + "] " + '\n')
+    for line in message:
+        f.write(line.strip('\n') + '\n')
+    f.write("------------------------------")
+    f.close()
 
 def initialise():
     global spacelist
@@ -200,8 +210,8 @@ def initialise():
                    'login': 'Login'}
         try:
             p = session.post(url, headers=head, data=payload, timeout=15)
-        except Exception:
-            pass
+        except Exception as e:
+            logerror(e)
 
     readblacklist()
 
@@ -290,7 +300,7 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
         try:
             ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
         except Exception as e:
-            print(e.__cause__)
+            logerror(e)
             connected = False
 
 
@@ -299,7 +309,8 @@ def pm(name, msg):  # This is the send message function, it simply sends message
     print("PM'd " + name + ": " + msg)
     try:
         ircsock.send(bytes("PRIVMSG " + name + " :" + msg + "\n", 'UTF-8'))
-    except Exception:
+    except Exception as e:
+        logerror(e)
         connected = False
 
 
@@ -354,8 +365,8 @@ def printIRC(mess):
         chan = "PM"
     try:
         mess = mess.split('PRIVMSG')[1]
-    except Exception:
-        print(mess)
+    except Exception as e:
+        logerror(e)
         return
     mess = mess[mess.find(':') + 1:].strip('\n')
     if "ACTION" in mess:
@@ -396,7 +407,8 @@ def rektwiki(_channel, mess):
     mess = mess.strip()
     try:
         r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
-    except Exception:
+    except Exception as e:
+        logerror(e)
         return
     htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
     htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
@@ -447,7 +459,8 @@ def rektposts(user, channel):
         try:
             p = session.post(lurl, headers=head, data=payload, timeout=5)
             loggedin = True
-        except Exception:
+        except Exception as e:
+            logerror(e)
             loggedin = False
     htmlstr = ""
     prevhtmlstr = ""
@@ -458,28 +471,30 @@ def rektposts(user, channel):
             try:
                 r = session.get(url, headers=head, timeout=15)
             except Exception as e:
-                print(e)
+                logerror(e)
                 return
             htmlstr = r.text
         else:
             req = request.Request(url, data=None, headers=head)
             try:
                 r = request.urlopen(req, timeout=15)
-            except Exception:
+            except Exception as e:
+                logerror(e)
                 return
             # print(r.geturl())
             htmlstr = r.read()
 
         try:
             htmlstr = htmlstr.decode()
-        except Exception as e:
+        except Exception:
             htmlstr = str(htmlstr)
 
         # make new url for next attempt
         try:
             startIndicator = int(url[url.find('start=') + 6:url.find('#')])
-        except Exception:
+        except Exception as e:
             sendmsg(channel, "Something went wrong. The update url is probably wrong. Sorry!")
+            logerror(e)
         newstart = startIndicator + 15
         url = url.replace('start=' + str(startIndicator), 'start=' + str(newstart))
 
@@ -573,13 +588,14 @@ def findtitle(_channel, mess):
                    'login': 'Login'}
         try:
             p = session.post(url, headers=head, data=payload, timeout=5)
-        except Exception:
+        except Exception as e:
+            logerror(e)
             pass
     if "ltheory" in res[0]:
         try:
             r = session.get(res[0], headers=head, timeout=15)
         except Exception as e:
-            print(e)
+            logerror(e)
             return
         htmlstr = r.text
     else:
@@ -589,7 +605,8 @@ def findtitle(_channel, mess):
             return
         try:
             r = requests.get(res[0], data=None, headers=head, timeout = 15, stream = True)
-        except Exception:
+        except Exception as e:
+            logerror(e)
             return
         # print(r.geturl())
         i = 0
@@ -602,7 +619,8 @@ def findtitle(_channel, mess):
                 if i>15:
                     break
                 i+=1
-        except Exception:
+        except Exception as e:
+            logerror(e)
             return
         #print(htmlstr)
     # print(r.geturl())
@@ -614,7 +632,8 @@ def findtitle(_channel, mess):
     parsed_html = BeautifulSoup(htmlstr)
     try:
         title = parsed_html.title.text
-    except Exception:
+    except Exception as e:
+        logerror(e)
         return
     title = title.replace("",'')
     title = title.replace("\n",' ').replace('\r',' ')
@@ -726,13 +745,13 @@ def wiki(_channel, string, count):
             else:
                 message = "https://en.wikipedia.org/wiki/" + pageresult.replace(' ', '_')
         except Exception as e:
-            print(e)
+            logerror(e)
             message = "Something went wrong. It's the fault of the python library makers!"
             sendmsg(_channel, message, delay=False)
             return
     buf = io.StringIO(str(message))
     read = buf.readline()
-    print(read)
+    #print(read)
     testbool = False
     while read != "":
         sendmsg(_channel, read.strip().replace('\n', ''), delay=testbool)
@@ -817,6 +836,8 @@ def logslasth(chan, h):
     amlines = 60*round(h)*5
     if amlines > logmax:
         amlines = logmax
+    if amlines < 50:
+        amlines = 50
     #print(amlines)
     lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
     n = datetime.datetime.now()
@@ -920,7 +941,7 @@ def connect():
             ircsock.connect((server, 6667))
             connected = True
         except Exception as e:
-            print(e.__cause__)
+            logerror(e)
             connected = False
             sleeping(5)
     ircsock.settimeout(180)
@@ -990,8 +1011,16 @@ def readirc():
             smartlander = True
     try:
         _channel, user, mess = printIRC(mess)
-    except Exception:
+    except Exception as e:
         # some weird message?
+        #print(mess)
+        f = open('error.txt')
+        try:
+            f.write(str(mess) + '\n')
+        except Exception:
+            pass
+        f.close()
+        logerror(e)
         return
     """test = mess.strip('\r\n').strip().strip("'")
     mess = test"""
@@ -1075,8 +1104,9 @@ def readirc():
                         try:
                             n = n.replace('h', '')
                             n = float(n)
-                        except Exception as e:
-                            print(e)
+                            if n<0:
+                                raise ValueError('negative value')
+                        except Exception:
                             sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                             return
                         sendmsg(_channel, logslasth(_channel, n))
@@ -1085,8 +1115,9 @@ def readirc():
                         try:
                             n = n.replace('m', '')
                             n = float(n) / 60
-                        except Exception as e:
-                            print(e)
+                            if n<0:
+                                raise ValueError('negative value')
+                        except Exception:
                             sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                             return
                         sendmsg(_channel, logslasth(_channel, n))
@@ -1094,8 +1125,9 @@ def readirc():
                     else:
                         try:
                             n = int(n)
-                        except Exception as e:
-                            print(e)
+                            if n<0:
+                                raise ValueError('negative value')
+                        except Exception:
                             sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                             return
                         if n > logmax:
@@ -1105,6 +1137,8 @@ def readirc():
                         return
                 except Exception as e:
                     sendmsg(_channel, "Something went wrong. Tell Dinosawer: "+str(e)+'"')
+                    logerror(e)
+                    return
                     
 
             if "!loglast" in lmess:
@@ -1116,8 +1150,9 @@ def readirc():
             if "[[[" in lmess:
                 try:
                     rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
-                except Exception:
-                    pass
+                except Exception as e:
+                    logerror(e)
+                    return
             if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
                     re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                                lmess)) != 0:
