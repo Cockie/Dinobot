@@ -52,7 +52,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse2"  # Your bots nick
+botnick = "Saoirse"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -792,23 +792,12 @@ def logslastn(chan, n):
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
     # req = request.Request(url, data, headers)
-    response = request.urlopen(url, data)
+    response = request.urlopen(url, data,timeout = 10)
     the_page = response.read().decode('utf-8')
     # print(the_page)
     return (the_page)
 
-
-def logslasth(chan, h):
-    mess = ""
-    amlines = 60*h*5
-    if amlines > logmax:
-        amlines = logmax
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
-    n = datetime.datetime.now()
-    #for some reason the first element is borked
-    del lines[0]
-    line = lines[0]
-    #for people who ask ridiculous amounts of lines
+def getdate(line):
     test = line[line.find('[') + 1:line.find(']')]
     test = test.split(' ')
     test[0] = test[0].split('/')
@@ -820,6 +809,22 @@ def logslasth(chan, h):
     minute = int(test[1][1])
     sec = int(test[1][2])
     ti = datetime.datetime(year, month, day, hour, minute, sec)
+    return ti
+
+def logslasth(chan, h):
+    mess = ""
+    
+    amlines = 60*round(h)*5
+    if amlines > logmax:
+        amlines = logmax
+    print(amlines)
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
+    n = datetime.datetime.now()
+    #for some reason the first element is borked
+    del lines[0]
+    line = lines[0]
+    #for people who ask ridiculous amounts of lines
+    ti = getdate(line)
     ti = n - ti
     mess = ""
     if ti.total_seconds() < h * 3600:
@@ -829,36 +834,18 @@ def logslasth(chan, h):
         lines.reverse()
         for line in lines:
             line = line.strip('\n').strip()
+            print(line)
             if line != '':
                 try:
-                    test = line[line.find('[') + 1:line.find(']')]
-                    test = test.split(' ')
-                    test[0] = test[0].split('/')
-                    test[1] = test[1].split(':')
-                    day = int(test[0][0])
-                    month = int(test[0][1])
-                    year = int(test[0][2])
-                    hour = int(test[1][0])
-                    minute = int(test[1][1])
-                    sec = int(test[1][2])
-                    ti = datetime.datetime(year, month, day, hour, minute, sec)
+                    ti = getdate(line)
                     ti = n - ti
-                    if ti.total_seconds() > h * 3600:
+                    if ti.total_seconds() > round(h * 3600):
                         break
                     else:
                         mess = line + '\n' + mess
                 except Exception:
                     pass
-
-    '''url = 'http://pastebin.com/api/api_post.php'
-    payload = {"api_option": "paste",\
-               "api_dev_key": "ae7566ad9d35a376849f31a49f709bd6",\
-               "api_paste_code": mess,\
-               "api_paste_expire_date": "1H",\
-               "api_paste_private": 0,\
-               "api_paste_name": "logs",\
-               "api_paste_format": "text",\
-               "api_user_key": ''}'''
+    print("yay")
     url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
@@ -868,8 +855,10 @@ def logslasth(chan, h):
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
     # req = request.Request(url, data, headers)
-    response = request.urlopen(url, data)
+    print("sending")
+    response = request.urlopen(url, data, timeout = 10)
     the_page = response.read().decode('utf-8')
+    print("yay")
     # print(the_page)
     return (the_page)
 
@@ -913,7 +902,7 @@ def logslastseen(chan, user):
     data = parse.urlencode(payload)
     data = data.encode('utf-8')
     # req = request.Request(url, data, headers)
-    response = request.urlopen(url, data)
+    response = request.urlopen(url, data, timeout = 10)
     the_page = response.read().decode('utf-8')
     #print(the_page)
     return (the_page)
@@ -1083,26 +1072,41 @@ def readirc():
                 try:
                     n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
                     if n.endswith('h'):
-                        n = n.replace('h', '')
-                        n = float(n)
+                        try:
+                            n = n.replace('h', '')
+                            n = float(n)
+                        except Exception as e:
+                            print(e)
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
                         sendmsg(_channel, logslasth(_channel, n))
                         return
                     elif n.endswith('m'):
-                        n = n.replace('m', '')
-                        n = float(n) / 60
+                        try:
+                            n = n.replace('m', '')
+                            n = float(n) / 60
+                        except Exception as e:
+                            print(e)
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
                         sendmsg(_channel, logslasth(_channel, n))
                         return
                     else:
-                        n = int(n)
+                        try:
+                            n = int(n)
+                        except Exception as e:
+                            print(e)
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
                         if n > logmax:
                             sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
                             n = logmax
                         sendmsg(_channel, logslastn(_channel, n))
                         return
                 except Exception as e:
-                    print(e)
-                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                    return
+                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: "+str(e)+'"')
+                    
+
             if "!loglast" in lmess:
                 sendmsg(_channel, logslastseen(_channel, user))
                 return
