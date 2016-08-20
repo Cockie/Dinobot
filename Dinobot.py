@@ -636,7 +636,7 @@ def findtitle(_channel, mess):
         logerror(e)
         return
     title = title.replace("",'')
-    title = title.replace("\n",' ').replace('\r',' ')
+    title = title.replace("\n",' ').replace('\r',' ').strip()
     # print(htmlstr)
     # htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
     # print(htmlstr)
