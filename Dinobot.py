@@ -676,25 +676,29 @@ def wiki(_channel, string, count):
         string = string[3:]
     elif string.startswith("the "):
         string = string[4:]
-    print(string)
+    #print(string)
     try:
         message = wikipedia.summary(string, sentences=count).replace('. ', ".\n")
         pageresult = wikipedia.page(string).url.replace('Https://en.wikipedia.org/wiki/', '').replace(
             'https://en.wikipedia.org/wiki/', '')
     except Exception:
         res = wikipedia.search(string)
-        print(res)
+        #print(res)
         temppage = 0
         pageresult = 0
         ref = 0
         counter = 0
         maxres = 5
         test = wikipedia.suggest(string)
-        print(test)
+        #print(test)
+        if len(res) == 0:
+            message = "I found nothing, sorry!"
+            sendmsg(_channel, message, delay=False)
+            return
         if test is None or test.lower().replace(' ', '') != string.replace(' ', ''):
             for stuff in res:
-                print(stuff.lower().replace(' ', ''))
-                print(string.replace(' ', ''))
+                #print(stuff.lower().replace(' ', ''))
+                #print(string.replace(' ', ''))
                 if stuff.lower().replace(' ', '') == string.replace(' ', ''):  # exact match
                     pageresult = stuff
                     break
@@ -727,7 +731,7 @@ def wiki(_channel, string, count):
                         break
         else:
             pageresult = test
-            print(pageresult)
+            #print(pageresult)
         try:
             message = wikipedia.summary(pageresult, sentences=count).replace('. ', ".\n")
         except wikipedia.exceptions.DisambiguationError as e:
@@ -758,6 +762,7 @@ def wiki(_channel, string, count):
         read = buf.readline()
         testbool = True
     if count != 1:
+        #print(pageresult)
         sendmsg(_channel, "https://en.wikipedia.org/wiki/" + pageresult.replace(' ', '_'))
 
 
