@@ -56,7 +56,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse"  # Your bots nick
+botnick = "Saoirse2"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -361,7 +361,7 @@ def printIRC(mess):
     mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     if usr == "Ruby":
-        usr = mess.[mess.find('<'):mess.find('>')].strip('<')
+        usr = mess[mess.find('<'):mess.find('>')].strip('<')
         mess = mess.replace('<'+usr+'>','')
     if "NOTICE" in mess:
         print(timestr + "Notice from " + usr + ': ' + mess[mess.find("NOTICE ") + 7:])
