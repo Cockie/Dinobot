@@ -1076,8 +1076,9 @@ def readirc():
         garbleduser = user
     # print(_channel)
     if "GameSurge" not in mess and user != botnick:
-        if not blacklisted(user):
-            if any([nick in lmess for nick in botnicks]):
+        
+        if any([nick in lmess for nick in botnicks]):
+            if not blacklisted(user):
                 if any([greeting in lmess for greeting in greetings]):
                     sendmsg(_channel, random.choice(greetings).title() + "!")
                     # lmess=stripleft(lmess,"saoirse")
@@ -1140,16 +1141,17 @@ def readirc():
                 if "confuc" in lmess or "confusius" in lmess:
                     confucius(_channel)
                     return
-                for key, value in namedtriggers.items():
-                    if any([stuff in lmess for stuff in key]):
-                        if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
-                            sleeping(0.6)
-                            sendmsg(_channel, value, nick=garbleduser)
-                            timers[key[0]] = timervals[key[0]]
-                            return
-                else:
-                    idleresponse(_channel, garbleduser)
+            for key, value in namedtriggers.items():
+                if any([stuff in lmess for stuff in key]):
+                    if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
+                        sleeping(0.6)
+                        sendmsg(_channel, value, nick=garbleduser)
+                        timers[key[0]] = timervals[key[0]]
+                        return
+            if not blacklisted(user):
+                idleresponse(_channel, garbleduser)
             # no-named things
+        if not blacklisted(user):
             if "!logs" in lmess:
                 try:
                     n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
