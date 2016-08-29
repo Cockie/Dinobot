@@ -12,7 +12,6 @@ sudo saoirse make me pudding&sudo saoirse make me some pudding&sudo saoirse make
 saoirse make me pudding&saoirse make me some pudding&saoirse make me a pudding&saoirse, make me pudding&saoirse, make me a pudding&saoirse, make me some pudding|No! The pudding is mine!|10|F
 saoirse no take pudding&saoirse, no take pudding|No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡|5|F
 saoirse take pudding&saoirse, take pudding|YAAAAY PUDDING!! (^-^)_🍮|5|F
-saorise|It's SAOIRSE! S A O I R S E! I before R! Is it really that hard to press tab? >.>|200|F
 saoirse help&help saoirse&saoirse, help|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5|F
 saoirse source&saoirse, source|https://github.com/Cockie/Dinobot|5|F
 joshpost|POSHJOST! \o/|5|T
