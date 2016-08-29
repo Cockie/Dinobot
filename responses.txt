@@ -1,0 +1,7 @@
+Pudding!
+Pudding, %USER%, pudding!
+ACTION looks up from her pudding at %USER% 
+What is it, %USER%?
+Hey %USER%! Have you heard of our Lord and Saviour Pudding?
+Hmm?
+ACTION gives %USER% pudding and a spoon 

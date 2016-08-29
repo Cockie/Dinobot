@@ -34,10 +34,13 @@ except ImportError:
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
 wikitriggers = ["what is", "what's", "whats", "who's", "who is", "how do i"]
+botnicks = ["saoirse", "saorise"]
 blacklist = []
 timers = {}
 triggers = OrderedDict()
-bottriggers = {}
+namedtriggers = OrderedDict()
+bottriggers = OrderedDict()
+botnamedtriggers = OrderedDict()
 timervals = {}
 shushed = False
 online = True
@@ -63,6 +66,7 @@ smartlander = False
 logmax = 10000
 session = requests.Session()
 rekturl = ""
+idleresponses = []
 
 
 def stringify(t):
@@ -98,11 +102,22 @@ def logerror(error):
         f.write(line.strip('\n') + '\n')
     f.write("------------------------------")
     f.close()
+    
+def misspell(text, number):
+    for i in range(0,number):
+        ran = random.randint(0,len(text)-2)
+        t = list(text)
+        t[ran], t[ran+1] = t[ran+1], t[ran]
+        text = ''.join(t)
+    return text
 
 def initialise():
     global spacelist
     global timers
     global triggers
+    global bottriggers
+    global namedtriggers
+    global botnamedtriggers
     global timervals
     global confus
     global eyes
@@ -118,6 +133,7 @@ def initialise():
     global auth
     global session
     global rekturl
+    global idleresponses
     with open('rekt.txt') as f:
         line = f.readline()
         line = line.strip('\n').strip()
@@ -132,7 +148,9 @@ def initialise():
         for line in f:
             line = line[line.find('.') + 1:].strip()
             confus.append(line)
-
+    with open('responses.txt') as f:
+        for line in f:
+            idleresponses.append(line.strip('\n').strip())
     test = "#LEFTS"
     with open('procemo.txt') as f:
         for line in f:
@@ -173,6 +191,18 @@ def initialise():
                 timers[line[0][0]] = 0
                 timervals[line[0][0]] = int(line[2])
                 bottriggers[line[0][0]] = True if line[3].replace("\\n", '\n') == 'T' else False
+    with open('namecommands.txt') as f:
+        namedtriggers = OrderedDict()
+        for line in f:
+            line = line.strip('\n').strip(' ').split('|')
+            line[0] = line[0].split('&')
+            if line[0][0] == '':
+                pass
+            else:
+                namedtriggers[tuple(line[0])] = line[1].replace("\\n", '\n')
+                timers[line[0][0]] = 0
+                timervals[line[0][0]] = int(line[2])
+                botnamedtriggers[line[0][0]] = True if line[3].replace("\\n", '\n') == 'T' else False
     #print("TRIGGERS")
     #print(triggers)
 
@@ -283,7 +313,7 @@ def ping(mess):  # This is our first function! It will respond to server Pings.
     ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
 
 
-def sendmsg(chan, msg, delay=True):  # This is the send message function, it simply sends messages to the channel.
+def sendmsg(chan, msg, delay=True, nick=""):  # This is the send message function, it simply sends messages to the channel.
     global connected
     if delay:
         time_ = len(msg) / 50.0
@@ -294,7 +324,8 @@ def sendmsg(chan, msg, delay=True):  # This is the send message function, it sim
         print(msg)
         msg = msg.replace('🍮', "༼ ༽")
         print(msg)
-    msg = msg.split('\n')
+    msg = msg.replace('%USER%', nick)
+    msg = msg.split('\n')   
     for line in msg:
         printIRC(":" + botnick + '!' + " PRIVMSG " + chan + " :" + line + '\n')
         try:
@@ -399,6 +430,10 @@ def greet(_channel, mess):
     sendmsg(_channel, "Hey " + usr + "!")
     sendmsg(_channel, "o/")
 
+def idleresponse(_channel, _nick):
+    global idleresponses
+    response = random.choice(idleresponses)
+    sendmsg(_channel, response, nick=_nick)
 
 def rektwiki(_channel, mess):
     if "rekt wiki" in mess:
@@ -998,6 +1033,7 @@ def readirc():
     global timers
     global queue
     global botnick
+    global botnicks
     global bottriggers
     global triggers
     global smartlander
@@ -1034,10 +1070,14 @@ def readirc():
     _channel = _channel[:_channel.find(":")].strip()"""
     regex1 = re.compile('do+omed')
     regex2 = re.compile('spa+ce')
+    if 'saorise' in lmess:
+        garbleduser = misspell(user, 2)
+    else:
+        garbleduser = user
     # print(_channel)
     if "GameSurge" not in mess and user != botnick:
         if not blacklisted(user):
-            if "saoirse" in lmess:
+            if any([nick in lmess for nick in botnicks]):
                 if any([greeting in lmess for greeting in greetings]):
                     sendmsg(_channel, random.choice(greetings).title() + "!")
                     # lmess=stripleft(lmess,"saoirse")
@@ -1074,6 +1114,7 @@ def readirc():
                             writeblacklist()
                             return
                 if "rekt" in lmess and "post" in lmess:
+                    sendmsg(_channel, "A minute, %USER%, I'll check...", nick=garbleduser)
                     rektposts(user, _channel)
                     return
                 if "set rekt update" in lmess:
@@ -1099,8 +1140,15 @@ def readirc():
                 if "confuc" in lmess or "confusius" in lmess:
                     confucius(_channel)
                     return
+                for key, value in namedtriggers.items():
+                    if any([stuff in lmess for stuff in key]):
+                        if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
+                            sleeping(0.6)
+                            sendmsg(_channel, value, nick=garbleduser)
+                            timers[key[0]] = timervals[key[0]]
+                            return
                 else:
-                    sendmsg(_channel, "Pudding!")
+                    idleresponse(_channel, garbleduser)
             # no-named things
             if "!logs" in lmess:
                 try:
@@ -1141,7 +1189,7 @@ def readirc():
                         sendmsg(_channel, logslastn(_channel, n))
                         return
                 except Exception as e:
-                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: "+str(e)+'"')
+                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
                     logerror(e)
                     return
                     
@@ -1202,7 +1250,7 @@ def readirc():
                 if any([stuff in lmess for stuff in key]):
                     if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
                         sleeping(0.6)
-                        sendmsg(_channel, value)
+                        sendmsg(_channel, value, nick=garbleduser)
                         timers[key[0]] = timervals[key[0]]
                         return
     return
