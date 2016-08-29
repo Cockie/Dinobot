@@ -360,6 +360,9 @@ def printIRC(mess):
     timestr = "[" + strftime("%d/%m/%Y %H:%M:%S") + "] "
     mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
+    if usr == "Ruby":
+        usr = mess.[mess.find('<'):mess.find('>')].strip('<')
+        mess = mess.replace('<'+usr+'>','')
     if "NOTICE" in mess:
         print(timestr + "Notice from " + usr + ': ' + mess[mess.find("NOTICE ") + 7:])
         return 0
@@ -1071,7 +1074,7 @@ def readirc():
     regex1 = re.compile('do+omed')
     regex2 = re.compile('spa+ce')
     if 'saorise' in lmess:
-        garbleduser = misspell(user, 2)
+        garbleduser = misspell(user, 3)
     else:
         garbleduser = user
     # print(_channel)
