@@ -27,31 +27,14 @@ all hail, : All hail! /o/
 america, murika, : MURIKAH!!! /o/  
 blood, : B L O O D  
 c++, : Yay C++!  
-gives saoirse flowers, : ...this is no pudding :(  
-gives saoirse pudding, : Yay! (^-^)_🍮  
-gives the pudding to saoirse, : Yay! Thanks Taiya! (^-^)_🍮  
 hail hydra, : Hail Hydra! o/  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
 joshpost, : POSHJOST! \o/  
-kick saoirse, : I have a black belt in pudding-fu, nobody kicks me!  
 linux, : Yay Linux! \o/  
 madness?, : This is PUUDDIIIIIINNGGG!!!!  
 microsoft, windows, : ACTION shakes fist at Microsoft  
 pudding, : PUDDING!  
-pwn saoirse, : Why would you want me gone? You meanie! :'(  
 python, : Yay Python!  
-saoirse do a barrel roll, saoirse, do a barrel roll, : 三(‘ω’)三( ε: )三(.ω.)三( :3 )三(‘ω’)三( ε: )三(.ω.)三( :3 )  
-saoirse help, help saoirse, saoirse, help, : https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md  
-saoirse leave, saoirse, leave, : Nu-uh!  
-saoirse make me pudding, saoirse make me some pudding, saoirse make me a pudding, saoirse, make me pudding, saoirse, make me a pudding, saoirse, make me some pudding, : No! The pudding is mine!  
-saoirse no take pudding, saoirse, no take pudding, : No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
-saoirse quilt, saoirse, quilt, : ACTION quilts a blanket  
-saoirse quit, saoirse, quit, : Nope!  
-saoirse source, saoirse, source, : https://github.com/Cockie/Dinobot  
-saoirse take pudding, saoirse, take pudding, : YAAAAY PUDDING!! (^-^)_🍮  
-saoirse what do you look like, saoirse, what do you look like, : http://i.imgur.com/kda3ckO.png  
-saoirse, music, saoirse music, : https://youtu.be/dQw4w9WgXcQ  
-sudo saoirse make me pudding, sudo saoirse make me some pudding, sudo saoirse make me a pudding, sudo saoirse, make me pudding, sudo saoirse, make me some pudding, sudo saoirse, make me a pudding, : Okay, here you go! (^-^)_🍮  
 tintin, : YAY TINTIN!  
 what is love, : Oh baby, don't hurt me
 Don't hurt me no more  
