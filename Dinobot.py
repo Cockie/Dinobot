@@ -56,7 +56,7 @@ spacelist = []
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.web.gamesurge.net"  # Server
 channel = []
-botnick = "Saoirse2"  # Your bots nick
+botnick = "Saoirse"  # Your bots nick
 username = ""
 password = ""
 forumusername = ""
@@ -1214,7 +1214,10 @@ def readirc():
             if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
                     re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                                lmess)) != 0:
-                findtitle(_channel, mess)
+                try:
+                    findtitle(_channel, mess)
+                except Exception as e:
+                    logerror(e)
                 return
             elif "TABLEFLIP" in mess:
                 temp = "︵ヽ(`Д´)ﾉ︵"
@@ -1299,7 +1302,10 @@ def main():
         while len(queue) != 0:
             timer = time()
             sys.stdout.write('\r' + ' ' * (len(readline.get_line_buffer()) + 2) + '\r')
-            readirc()
+            try:
+                readirc()
+            except Exception as e:
+                logerror(e)
             sys.stdout.write('> ' + readline.get_line_buffer())
             sys.stdout.flush()
             # print(timers)
