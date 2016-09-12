@@ -26,6 +26,8 @@ import tailer
 import datetime
 import requests
 import traceback
+import praw
+
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -67,6 +69,7 @@ logmax = 10000
 session = requests.Session()
 rekturl = ""
 idleresponses = []
+redditreader = 0
 
 
 def stringify(t):
@@ -134,6 +137,7 @@ def initialise():
     global session
     global rekturl
     global idleresponses
+    global redditreader
     with open('rekt.txt') as f:
         line = f.readline()
         line = line.strip('\n').strip()
@@ -245,6 +249,17 @@ def initialise():
 
     readblacklist()
 
+    user_agent = "Saoirse v4.0 by /u/Dinosawer"
+    #redditreader = praw.Reddit(user_agent=user_agent)
+    #redditreader.set_oauth_app_info('fkSuMRqgYeFVFw', 'nbqOSEW8CNnRICxrzMuo8YQdTws', 'https://github.com/Cockie/Dinobot', )
+    #redditreader.refresh_access_information(REFRESH_TOKEN)
+    redditreader = praw.Reddit(
+        user_agent="Saoirse v4.0 by /u/Dinosawer",
+        client_id='fkSuMRqgYeFVFw',
+        client_secret='nbqOSEW8CNnRICxrzMuo8YQdTws',
+    )
+    #for submission in redditreader.subreddit('redditdev').random():
+        #print(submission.title)
     push = False
     strout = "Automatic update"
     output = subprocess.check_output(["git", "diff", "README.md"])
@@ -980,6 +995,16 @@ def logslastseen(chan, user):
     #print(the_page)
     return (the_page)
 
+def kitten(_channel, gif = False):
+    global redditreader
+    if gif:
+        sub = redditreader.subreddit('CatGifs')
+    else:
+        sub = redditreader.subreddit('cats')
+
+    response = sub.random().url
+    sendmsg(_channel, response)
+
 
 def connect():
     global queue
@@ -998,7 +1023,7 @@ def connect():
             sleeping(5)
     ircsock.settimeout(180)
     ircsock.send(bytes(
-        "USER " + botnick + " " + botnick + " " + botnick + " :This is a result of a tutorial covered on http://shellium.org/wiki.\n",
+        "USER " + botnick + " " + botnick + " " + botnick + " :v4.0 An IRC bot by Dinosawer.\n",
         'UTF-8'))  # user authentication
     ircsock.send(bytes("NICK " + botnick + "\n", 'UTF-8'))  # here we actually assign the nick to the bot
     while 1:  # Be careful with these! it might send you to an infinite loop
@@ -1016,7 +1041,7 @@ def connect():
         mess = mess.strip().strip('\n\r').strip('\r\n').strip()
         print(mess) # Here we print what's coming from the server
         if mess.find("Found your hostname") != -1 or mess.find("No ident response") != -1:
-            sent = "NICK " + botnick + "\n" + "USER " + botnick + " " + botnick + " " + botnick + " :This is a result of a tutoral covered on http://shellium.org/wiki.\n"
+            sent = "NICK " + botnick + "\n" + "USER " + botnick + " " + botnick + " " + botnick + " :v4.0 An IRC bot by Dinosawer.\n"
             ircsock.send(bytes(sent, 'UTF-8'))  # here we actually assign the nick to the bot
             print(sent)
         if mess.find("Welcome to the GameSurge IRC") != -1:  # if the server pings us then we've got to respond!
@@ -1073,7 +1098,7 @@ def readirc():
         except Exception:
             pass
         f.close()
-        logerror(e)
+        #logerror(e)
         return
     """test = mess.strip('\r\n').strip().strip("'")
     mess = test"""
@@ -1228,6 +1253,10 @@ def readirc():
                 except Exception as e:
                     logerror(e)
                 return
+            if 'kitten.gif' in lmess:
+                kitten(_channel, gif = True)
+            if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
+                kitten(_channel, gif=False)
             elif "TABLEFLIP" in mess:
                 temp = "︵ヽ(`Д´)ﾉ︵"
                 for i in range(1, lmess.count('!')):
