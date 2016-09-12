@@ -360,9 +360,21 @@ def printIRC(mess):
     timestr = "[" + strftime("%d/%m/%Y %H:%M:%S") + "] "
     mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
-    if usr == "Ruby":
-        usr = mess[mess.find('<'):mess.find('>')].strip('<')
-        mess = mess.replace('<'+usr+'>','')
+    if usr == "cord":
+        print(mess)
+        try:
+            if ':* ' in mess:
+                mess = mess.replace(':* ', ':ACTION')+' '
+                usr = mess[mess.find(''):mess.find('')].strip('')
+            else:
+                usr = mess[mess.find('<'):mess.find('>')].strip('<')
+            usr = usr.replace('','').replace('','').strip()
+            print(usr)
+            mess = mess.replace('<'+usr+'>','').replace(''+usr+'','')
+            print(mess)
+ 
+        except Exception:
+            pass
     if "NOTICE" in mess:
         print(timestr + "Notice from " + usr + ': ' + mess[mess.find("NOTICE ") + 7:])
         return 0
