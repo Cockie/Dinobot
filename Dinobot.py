@@ -1003,25 +1003,51 @@ def kitten(_channel, gif = False):
         sub = redditreader.subreddit('cats')
 
     response = sub.random().url
-    sendmsg(_channel, response)
+    if 'reddit.com' in response:
+        kitten(_channel, gif)
+    else:
+        sendmsg(_channel, response)
     
 def puppy(_channel):
     global redditreader
     sub = redditreader.subreddit('puppies')
     response = sub.random().url
-    sendmsg(_channel, response)
+    response = sub.random().url
+    if 'reddit.com' in response:
+        puppy(_channel)
+    else:
+        sendmsg(_channel, response)
 
 def duck(_channel):
     global redditreader
     sub = redditreader.subreddit('babyduckgifs')
     response = sub.random().url
-    sendmsg(_channel, response)
+    if 'reddit.com' in response:
+        duck(_channel)
+    else:
+        sendmsg(_channel, response)
     
 def squirrel(_channel):
     global redditreader
-    sub = redditreader.subreddit('squirrelgifs')
+    sub = redditreader.subreddit('squirrels')
     response = sub.random().url
-    sendmsg(_channel, response)
+    if 'reddit.com' in response:
+        squirrel(_channel)
+    else:
+        sendmsg(_channel, response)
+        
+def awwim(_channel):
+    global redditreader
+    test = random.choice([True, False])
+    if test:
+        sub = redditreader.subreddit('aww')
+    else:
+        sub = redditreader.subreddit('eyebleach')
+    response = sub.random().url
+    if 'reddit.com' in response:
+        awwim(_channel)
+    else:
+        sendmsg(_channel, response)
     
 
 def connect():
@@ -1282,6 +1308,9 @@ def readirc():
                 return
             if '!squirrel' in lmess:
                 squirrel(_channel)
+                return
+            if '!awwim' in lmess:
+                awwim(_channel)
                 return
             if 'kitten.gif' in lmess:
                 kitten(_channel, gif = True)
