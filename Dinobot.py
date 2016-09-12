@@ -1036,6 +1036,15 @@ def squirrel(_channel):
     else:
         sendmsg(_channel, response)
         
+def goat(_channel):
+    global redditreader
+    sub = redditreader.subreddit('goats')
+    response = sub.random().url
+    if 'reddit.com' in response:
+        goat(_channel)
+    else:
+        sendmsg(_channel, response)
+        
 def awwim(_channel):
     global redditreader
     test = random.choice([True, False])
@@ -1308,6 +1317,9 @@ def readirc():
                 return
             if '!squirrel' in lmess:
                 squirrel(_channel)
+                return
+            if '!goat' in lmess:
+                goat(_channel)
                 return
             if '!awwim' in lmess:
                 awwim(_channel)
