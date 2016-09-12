@@ -57,6 +57,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !bow: (シ_ _)シ  
 !cat: (=^・ω・^=)  
 !cha0zz: (－‸ლ) "Idiot, idiots everywhere."  
+!cheers: ⊂( °∇°)つ旦”☆”旦⊂(°∇° )つ  
 !creeper: ʘ‿ʘ  
 !cry: ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡  
 !dance: （〜^∇^)〜  
