@@ -1253,10 +1253,14 @@ def readirc():
                 except Exception as e:
                     logerror(e)
                 return
+            if '!kitten' in lmess:
+                kitten(_channel, gif=random.choice([True, False]))
             if 'kitten.gif' in lmess:
                 kitten(_channel, gif = True)
+                return
             if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
                 kitten(_channel, gif=False)
+                return
             elif "TABLEFLIP" in mess:
                 temp = "︵ヽ(`Д´)ﾉ︵"
                 for i in range(1, lmess.count('!')):
