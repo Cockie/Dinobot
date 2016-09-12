@@ -561,9 +561,9 @@ def rektposts(user, channel):
         url = url.replace('start=' + str(startIndicator), 'start=' + str(newstart))
 
         # parse html
-        parsed_html = BeautifulSoup(htmlstr)
+        parsed_html = BeautifulSoup(htmlstr,"html5lib")
 
-        prev_parsed_html = BeautifulSoup(prevhtmlstr)
+        prev_parsed_html = BeautifulSoup(prevhtmlstr,"html5lib")
         if prevhtmlstr != "":
             if parsed_html.body.find('div', attrs={'class': 'content'}).text == prev_parsed_html.body.find('div',
                                                                                                            attrs={
@@ -636,7 +636,7 @@ def rektposts(user, channel):
 
 def findtitle(_channel, mess):
     global session
-    print("Finding title")
+    #print("Finding title")
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
@@ -691,7 +691,7 @@ def findtitle(_channel, mess):
         htmlstr = htmlstr.decode()
     except Exception as e:
         htmlstr = str(htmlstr)
-    parsed_html = BeautifulSoup(htmlstr)
+    parsed_html = BeautifulSoup(htmlstr,"html5lib")
     try:
         title = parsed_html.title.text
     except Exception as e:
