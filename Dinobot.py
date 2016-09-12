@@ -1004,7 +1004,25 @@ def kitten(_channel, gif = False):
 
     response = sub.random().url
     sendmsg(_channel, response)
+    
+def puppy(_channel):
+    global redditreader
+    sub = redditreader.subreddit('puppies')
+    response = sub.random().url
+    sendmsg(_channel, response)
 
+def duck(_channel):
+    global redditreader
+    sub = redditreader.subreddit('babyduckgifs')
+    response = sub.random().url
+    sendmsg(_channel, response)
+    
+def squirrel(_channel):
+    global redditreader
+    sub = redditreader.subreddit('squirrelgifs')
+    response = sub.random().url
+    sendmsg(_channel, response)
+    
 
 def connect():
     global queue
@@ -1255,6 +1273,16 @@ def readirc():
                 return
             if '!kitten' in lmess:
                 kitten(_channel, gif=random.choice([True, False]))
+                return
+            if '!puppy' in lmess:
+                puppy(_channel)
+                return
+            if '!duck' in lmess:
+                duck(_channel)
+                return
+            if '!squirrel' in lmess:
+                squirrel(_channel)
+                return
             if 'kitten.gif' in lmess:
                 kitten(_channel, gif = True)
                 return
