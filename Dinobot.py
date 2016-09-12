@@ -361,7 +361,6 @@ def printIRC(mess):
     mess = mess.strip().strip('\n')
     usr = mess[mess.find(':'):mess.find('!')].strip(':')
     if usr == "cord":
-        print(mess)
         try:
             if ':* ' in mess:
                 mess = mess.replace(':* ', ':ACTION')+' '
@@ -369,9 +368,7 @@ def printIRC(mess):
             else:
                 usr = mess[mess.find('<'):mess.find('>')].strip('<')
             usr = usr.replace('','').replace('','').strip()
-            print(usr)
             mess = mess.replace('<'+usr+'>','').replace(''+usr+'','')
-            print(mess)
  
         except Exception:
             pass
