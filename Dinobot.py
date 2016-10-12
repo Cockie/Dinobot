@@ -28,6 +28,9 @@ import requests
 import traceback
 import praw
 
+import simplegist_fix
+
+
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -934,7 +937,7 @@ def logslasth(chan, h):
                 except Exception:
                     pass
     #print("yay")
-    url = "http://paste.ee/api"
+    '''url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
                "paste": mess, \
@@ -945,10 +948,12 @@ def logslasth(chan, h):
     # req = request.Request(url, data, headers)
     #print("sending")
     response = request.urlopen(url, data, timeout = 100)
-    the_page = response.read().decode('utf-8')
+    the_page = response.read().decode('utf-8')'''
+    GHgist = simplegist_fix.Simplegist(username='Cockie', api_token='4485dfef5a0f1395fd2b3668fdbb279d717da10b')
+    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
     #print("yay")
-    # print(the_page)
-    return (the_page)
+    #print(the_page)
+    return (the_page['Gist-Link'])
 
 
 def logslastseen(chan, user):
@@ -981,7 +986,7 @@ def logslastseen(chan, user):
                 else:
                     mess = line + '\n' + mess
     #print(mess)
-    url = "http://paste.ee/api"
+    '''url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
                "paste": mess, \
@@ -991,9 +996,11 @@ def logslastseen(chan, user):
     data = data.encode('utf-8')
     # req = request.Request(url, data, headers)
     response = request.urlopen(url, data, timeout = 100)
-    the_page = response.read().decode('utf-8')
+    the_page = response.read().decode('utf-8')'''
+    GHgist = simplegist_fix.Simplegist(username='Cockie', api_token='4485dfef5a0f1395fd2b3668fdbb279d717da10b')
+    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
     #print(the_page)
-    return (the_page)
+    return (the_page['Gist-Link'])
 
 def kitten(_channel, gif = False):
     global redditreader
