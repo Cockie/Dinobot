@@ -949,7 +949,7 @@ def logslasth(chan, h):
     #print("sending")
     response = request.urlopen(url, data, timeout = 100)
     the_page = response.read().decode('utf-8')'''
-    GHgist = simplegist_fix.Simplegist(username='Cockie', api_token='4485dfef5a0f1395fd2b3668fdbb279d717da10b')
+    GHgist = simplegist_fix.Simplegist()
     the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
     #print("yay")
     #print(the_page)
@@ -997,7 +997,7 @@ def logslastseen(chan, user):
     # req = request.Request(url, data, headers)
     response = request.urlopen(url, data, timeout = 100)
     the_page = response.read().decode('utf-8')'''
-    GHgist = simplegist_fix.Simplegist(username='Cockie', api_token='4485dfef5a0f1395fd2b3668fdbb279d717da10b')
+    GHgist = simplegist_fix.Simplegist()
     the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
     #print(the_page)
     return (the_page['Gist-Link'])
