@@ -856,6 +856,12 @@ def blacklisted(user):
     global blacklist
     return any([stuff in user.lower() for stuff in blacklist])
 
+def postlog(mess):
+    GHgist = simplegist_fix.Simplegist()
+    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
+    #print("yay")
+    #print(the_page)
+    return (the_page['Gist-Link'])
 
 def logslastn(chan, n):
     mess = ""
@@ -872,7 +878,7 @@ def logslastn(chan, n):
                "api_paste_name": "logs",\
                "api_paste_format": "text",\
                "api_user_key": ''}'''
-    url = "http://paste.ee/api"
+    '''url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
                "paste": mess, \
@@ -884,7 +890,8 @@ def logslastn(chan, n):
     response = request.urlopen(url, data,timeout = 100)
     the_page = response.read().decode('utf-8')
     # print(the_page)
-    return (the_page)
+    return (the_page)'''
+    return postlog(mess)
 
 def getdate(line):
     test = line[line.find('[') + 1:line.find(']')]
@@ -949,11 +956,7 @@ def logslasth(chan, h):
     #print("sending")
     response = request.urlopen(url, data, timeout = 100)
     the_page = response.read().decode('utf-8')'''
-    GHgist = simplegist_fix.Simplegist()
-    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
-    #print("yay")
-    #print(the_page)
-    return (the_page['Gist-Link'])
+    return postlog(mess)
 
 
 def logslastseen(chan, user):
@@ -997,10 +1000,7 @@ def logslastseen(chan, user):
     # req = request.Request(url, data, headers)
     response = request.urlopen(url, data, timeout = 100)
     the_page = response.read().decode('utf-8')'''
-    GHgist = simplegist_fix.Simplegist()
-    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
-    #print(the_page)
-    return (the_page['Gist-Link'])
+    return postlog(mess)
 
 def kitten(_channel, gif = False):
     global redditreader
