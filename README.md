@@ -34,6 +34,8 @@ joshpost, : POSHJOST! \o/
 linux, : Yay Linux! \o/  
 madness?, : This is PUUDDIIIIIINNGGG!!!!  
 microsoft, windows, : ACTION shakes fist at Microsoft  
+over 9000, : OVER NINE THOUSAND?!?!?!?  
+over nine thousand, : OVER NINE THOUSAND?!?!?!?  
 pudding, : PUDDING!  
 python, : Yay Python!  
 tintin, : YAY TINTIN!  
