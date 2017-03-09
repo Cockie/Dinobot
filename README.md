@@ -103,8 +103,8 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !squirrel: ʕ=˘ϖ˘=ʔ༄  
 !strong: ᕙ(⇀‸↼‶)ᕗ  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
-!thumbsup: (　^ω^）b  
-!thumbup: (　^ω^）b  
+!thumbsup: ( ^ω^）b  
+!thumbup: ( ^ω^）b  
 !walk: ᕕ( ᐛ )ᕗ  
 !welder: (ﾒ▼Д▼)┏※==☆  
 !whee: ─=≡Σ(((つ◕ل͜◕)つ  
