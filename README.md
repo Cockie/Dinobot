@@ -18,7 +18,6 @@ space: SPAAACE!
 !asdf, : https://drive.google.com/open?id=0B-BMdS4aDoPtUlRUc1lia1N4bkU  
 !burn, : Apply cold water to burned area http://i.imgur.com/YhlseLP.jpg  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
-!no, : http://www.nooooooooooooooo.com  
 !oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
 !soon, : Soon™ http://i.imgur.com/g6ICwYO.jpg  
