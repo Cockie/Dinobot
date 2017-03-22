@@ -13,3 +13,4 @@ s taiya except for certain commands that are set up not to, so she won't rant to
 goatbot
 s taiya and images don't have a tittle, only webpages
 bfett
+not ignore everything
