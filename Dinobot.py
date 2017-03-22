@@ -30,7 +30,6 @@ import praw
 
 import simplegist_fix
 
-
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -99,6 +98,7 @@ def writeblacklist():
         f.write(nick.strip() + '\n')
     f.close()
 
+
 def logerror(error):
     message = str(error) + '\n' + traceback.format_exc()
     message = message.splitlines()
@@ -108,14 +108,16 @@ def logerror(error):
         f.write(line.strip('\n') + '\n')
     f.write("------------------------------")
     f.close()
-    
+
+
 def misspell(text, number):
-    for i in range(0,number):
-        ran = random.randint(0,len(text)-2)
+    for i in range(0, number):
+        ran = random.randint(0, len(text) - 2)
         t = list(text)
-        t[ran], t[ran+1] = t[ran+1], t[ran]
+        t[ran], t[ran + 1] = t[ran + 1], t[ran]
         text = ''.join(t)
     return text
+
 
 def initialise():
     global spacelist
@@ -184,8 +186,8 @@ def initialise():
                 pass
             else:
                 emoticons[line[0]] = line[1].replace("\\n", '\n')
-    #print("EMOTICONS")
-    #print(emoticons)
+    # print("EMOTICONS")
+    # print(emoticons)
     with open('triggers.txt') as f:
         triggers = OrderedDict()
         for line in f:
@@ -210,8 +212,8 @@ def initialise():
                 timers[line[0][0]] = 0
                 timervals[line[0][0]] = int(line[2])
                 botnamedtriggers[line[0][0]] = True if line[3].replace("\\n", '\n') == 'T' else False
-    #print("TRIGGERS")
-    #print(triggers)
+    # print("TRIGGERS")
+    # print(triggers)
 
     with open('README.md', 'w') as f:
         with open('read1.txt') as f1:
@@ -253,16 +255,16 @@ def initialise():
     readblacklist()
 
     user_agent = "Saoirse v4.0 by /u/Dinosawer"
-    #redditreader = praw.Reddit(user_agent=user_agent)
-    #redditreader.set_oauth_app_info('fkSuMRqgYeFVFw', 'nbqOSEW8CNnRICxrzMuo8YQdTws', 'https://github.com/Cockie/Dinobot', )
-    #redditreader.refresh_access_information(REFRESH_TOKEN)
+    # redditreader = praw.Reddit(user_agent=user_agent)
+    # redditreader.set_oauth_app_info('fkSuMRqgYeFVFw', 'nbqOSEW8CNnRICxrzMuo8YQdTws', 'https://github.com/Cockie/Dinobot', )
+    # redditreader.refresh_access_information(REFRESH_TOKEN)
     redditreader = praw.Reddit(
         user_agent="Saoirse v4.0 by /u/Dinosawer",
         client_id='fkSuMRqgYeFVFw',
         client_secret='nbqOSEW8CNnRICxrzMuo8YQdTws',
     )
-    #for submission in redditreader.subreddit('redditdev').random():
-        #print(submission.title)
+    # for submission in redditreader.subreddit('redditdev').random():
+    # print(submission.title)
     push = False
     strout = "Automatic update"
     output = subprocess.check_output(["git", "diff", "README.md"])
@@ -331,7 +333,8 @@ def ping(mess):  # This is our first function! It will respond to server Pings.
     ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
 
 
-def sendmsg(chan, msg, delay=True, nick=""):  # This is the send message function, it simply sends messages to the channel.
+def sendmsg(chan, msg, delay=True,
+            nick=""):  # This is the send message function, it simply sends messages to the channel.
     global connected
     if delay:
         time_ = len(msg) / 50.0
@@ -343,7 +346,7 @@ def sendmsg(chan, msg, delay=True, nick=""):  # This is the send message functio
         msg = msg.replace('🍮', "༼ ༽")
         print(msg)
     msg = msg.replace('%USER%', nick)
-    msg = msg.split('\n')   
+    msg = msg.split('\n')
     for line in msg:
         printIRC(":" + botnick + '!' + " PRIVMSG " + chan + " :" + line + '\n')
         try:
@@ -381,13 +384,13 @@ def printIRC(mess):
     if usr == "cord":
         try:
             if ':* ' in mess:
-                mess = mess.replace(':* ', ':ACTION')+' '
+                mess = mess.replace(':* ', ':ACTION') + ' '
                 usr = mess[mess.find(''):mess.find('')].strip('')
             else:
                 usr = mess[mess.find('<'):mess.find('>')].strip('<')
-            usr = usr.replace('','').replace('','').strip()
-            mess = mess.replace('<'+usr+'>','').replace(''+usr+'','')
- 
+            usr = usr.replace('', '').replace('', '').strip()
+            mess = mess.replace('<' + usr + '>', '').replace('' + usr + '', '')
+
         except Exception:
             pass
     if "NOTICE" in mess:
@@ -460,10 +463,12 @@ def greet(_channel, mess):
     sendmsg(_channel, "Hey " + usr + "!")
     sendmsg(_channel, "o/")
 
+
 def idleresponse(_channel, _nick):
     global idleresponses
     response = random.choice(idleresponses)
     sendmsg(_channel, response, nick=_nick)
+
 
 def rektwiki(_channel, mess):
     if "rekt wiki" in mess:
@@ -564,9 +569,9 @@ def rektposts(user, channel):
         url = url.replace('start=' + str(startIndicator), 'start=' + str(newstart))
 
         # parse html
-        parsed_html = BeautifulSoup(htmlstr,"html5lib")
+        parsed_html = BeautifulSoup(htmlstr, "html5lib")
 
-        prev_parsed_html = BeautifulSoup(prevhtmlstr,"html5lib")
+        prev_parsed_html = BeautifulSoup(prevhtmlstr, "html5lib")
         if prevhtmlstr != "":
             if parsed_html.body.find('div', attrs={'class': 'content'}).text == prev_parsed_html.body.find('div',
                                                                                                            attrs={
@@ -599,7 +604,6 @@ def rektposts(user, channel):
         links = links[startat:]
         auths = auths[startat:]
         posts = posts[startat:]
-
 
         # pars posts
         for j, stuff in enumerate(posts):
@@ -639,7 +643,7 @@ def rektposts(user, channel):
 
 def findtitle(_channel, mess):
     global session
-    #print("Finding title")
+    # print("Finding title")
     res = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
                      mess)
     head = {'User-Agent': 'Chrome/35.0.1916.47'}
@@ -665,11 +669,11 @@ def findtitle(_channel, mess):
         htmlstr = r.text
     else:
         r = requests.head(url=res[0])
-        #print(r.headers['content-type'])
+        # print(r.headers['content-type'])
         if not r.headers['content-type'].startswith("text"):
             return
         try:
-            r = requests.get(res[0], data=None, headers=head, timeout = 15, stream = True)
+            r = requests.get(res[0], data=None, headers=head, timeout=15, stream=True)
         except Exception as e:
             logerror(e)
             return
@@ -677,37 +681,37 @@ def findtitle(_channel, mess):
         i = 0
         htmlstr = ""
         try:
-            for chunk in r.iter_content(chunk_size = 1024):
+            for chunk in r.iter_content(chunk_size=1024):
                 htmlstr += chunk.decode()
                 if "</title>" in htmlstr:
                     break
-                if i>15:
+                if i > 15:
                     break
-                i+=1
+                i += 1
         except Exception as e:
             logerror(e)
             return
-        #print(htmlstr)
+            # print(htmlstr)
     # print(r.geturl())
 
     try:
         htmlstr = htmlstr.decode()
     except Exception as e:
         htmlstr = str(htmlstr)
-    parsed_html = BeautifulSoup(htmlstr,"html5lib")
+    parsed_html = BeautifulSoup(htmlstr, "html5lib")
     try:
         title = parsed_html.title.text
     except Exception as e:
         logerror(e)
         return
-    title = title.replace("",'')
-    title = title.replace("\n",' ').replace('\r',' ').strip()
+    title = title.replace("", '')
+    title = title.replace("\n", ' ').replace('\r', ' ').strip()
     # print(htmlstr)
     # htmlstr=htmlstr.decode().replace('\t','').replace('\n','')
     # print(htmlstr)
-    #print(title)
-    if len(title)>400:
-        title = title[0:400]+"..."
+    # print(title)
+    if len(title) > 400:
+        title = title[0:400] + "..."
     if htmlstr != "":
         sendmsg(_channel, title)
 
@@ -741,29 +745,29 @@ def wiki(_channel, string, count):
         string = string[3:]
     elif string.startswith("the "):
         string = string[4:]
-    #print(string)
+    # print(string)
     try:
         message = wikipedia.summary(string, sentences=count).replace('. ', ".\n")
         pageresult = wikipedia.page(string).url.replace('Https://en.wikipedia.org/wiki/', '').replace(
             'https://en.wikipedia.org/wiki/', '')
     except Exception:
         res = wikipedia.search(string)
-        #print(res)
+        # print(res)
         temppage = 0
         pageresult = 0
         ref = 0
         counter = 0
         maxres = 5
         test = wikipedia.suggest(string)
-        #print(test)
+        # print(test)
         if len(res) == 0:
             message = "I found nothing, sorry!"
             sendmsg(_channel, message, delay=False)
             return
         if test is None or test.lower().replace(' ', '') != string.replace(' ', ''):
             for stuff in res:
-                #print(stuff.lower().replace(' ', ''))
-                #print(string.replace(' ', ''))
+                # print(stuff.lower().replace(' ', ''))
+                # print(string.replace(' ', ''))
                 if stuff.lower().replace(' ', '') == string.replace(' ', ''):  # exact match
                     pageresult = stuff
                     break
@@ -796,7 +800,7 @@ def wiki(_channel, string, count):
                         break
         else:
             pageresult = test
-            #print(pageresult)
+            # print(pageresult)
         try:
             message = wikipedia.summary(pageresult, sentences=count).replace('. ', ".\n")
         except wikipedia.exceptions.DisambiguationError as e:
@@ -820,14 +824,14 @@ def wiki(_channel, string, count):
             return
     buf = io.StringIO(str(message))
     read = buf.readline()
-    #print(read)
+    # print(read)
     testbool = False
     while read != "":
         sendmsg(_channel, read.strip().replace('\n', ''), delay=testbool)
         read = buf.readline()
         testbool = True
     if count != 1:
-        #print(pageresult)
+        # print(pageresult)
         sendmsg(_channel, "https://en.wikipedia.org/wiki/" + pageresult.replace(' ', '_'))
 
 
@@ -856,12 +860,15 @@ def blacklisted(user):
     global blacklist
     return any([stuff in user.lower() for stuff in blacklist])
 
+
 def postlog(mess):
     GHgist = simplegist_fix.Simplegist()
-    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1, content=mess)
-    #print("yay")
-    #print(the_page)
+    the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1,
+                             content=mess)
+    # print("yay")
+    # print(the_page)
     return (the_page['Gist-Link'])
+
 
 def logslastn(chan, n):
     mess = ""
@@ -893,6 +900,7 @@ def logslastn(chan, n):
     return (the_page)'''
     return postlog(mess)
 
+
 def getdate(line):
     test = line[line.find('[') + 1:line.find(']')]
     test = test.split(' ')
@@ -907,21 +915,22 @@ def getdate(line):
     ti = datetime.datetime(year, month, day, hour, minute, sec)
     return ti
 
+
 def logslasth(chan, h):
     mess = ""
-    
-    amlines = 60*round(h)*5
+
+    amlines = 60 * round(h) * 5
     if amlines > logmax:
         amlines = logmax
     if amlines < 50:
         amlines = 50
-    #print(amlines)
+    # print(amlines)
     lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
     n = datetime.datetime.now()
-    #for some reason the first element is borked
+    # for some reason the first element is borked
     del lines[0]
     line = lines[0]
-    #for people who ask ridiculous amounts of lines
+    # for people who ask ridiculous amounts of lines
     ti = getdate(line)
     ti = n - ti
     mess = ""
@@ -932,7 +941,7 @@ def logslasth(chan, h):
         lines.reverse()
         for line in lines:
             line = line.strip('\n').strip()
-            #print(line)
+            # print(line)
             if line != '':
                 try:
                     ti = getdate(line)
@@ -943,7 +952,7 @@ def logslasth(chan, h):
                         mess = line + '\n' + mess
                 except Exception:
                     pass
-    #print("yay")
+    # print("yay")
     '''url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
@@ -968,12 +977,12 @@ def logslastseen(chan, user):
         user = user[0:4]
     except Exception:
         pass
-    #print(user)
+    # print(user)
     pinged = False
     for line in lines:
         line = line.strip('\n').strip()
         if line != '':
-            #print(line)
+            # print(line)
             if user in line and "ping timeout" in line.lower() and "quit" in line.lower() and '<' not in line.lower() and '*' not in line.lower():
                 pinged = True
             if pinged:
@@ -983,12 +992,13 @@ def logslastseen(chan, user):
                 else:
                     mess = line + '\n' + mess
             else:
-                if user in line and ("quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
+                if user in line and (
+                        "quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
                     mess = line + '\n' + mess
                     break
                 else:
                     mess = line + '\n' + mess
-    #print(mess)
+    # print(mess)
     '''url = "http://paste.ee/api"
     payload = {"key": "2f7c3fb1a18609292fb8cc5b8ca9e0bb", \
                "description": "logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", \
@@ -1002,7 +1012,8 @@ def logslastseen(chan, user):
     the_page = response.read().decode('utf-8')'''
     return postlog(mess)
 
-def kitten(_channel, gif = False):
+
+def kitten(_channel, gif=False):
     global redditreader
     if gif:
         sub = redditreader.subreddit('CatGifs')
@@ -1014,7 +1025,8 @@ def kitten(_channel, gif = False):
         kitten(_channel, gif)
     else:
         sendmsg(_channel, response)
-    
+
+
 def puppy(_channel):
     global redditreader
     sub = redditreader.subreddit('puppies')
@@ -1025,6 +1037,7 @@ def puppy(_channel):
     else:
         sendmsg(_channel, response)
 
+
 def duck(_channel):
     global redditreader
     sub = redditreader.subreddit('babyduckgifs')
@@ -1033,7 +1046,8 @@ def duck(_channel):
         duck(_channel)
     else:
         sendmsg(_channel, response)
-    
+
+
 def squirrel(_channel):
     global redditreader
     sub = redditreader.subreddit('squirrels')
@@ -1042,7 +1056,8 @@ def squirrel(_channel):
         squirrel(_channel)
     else:
         sendmsg(_channel, response)
-        
+
+
 def goat(_channel):
     global redditreader
     sub = redditreader.subreddit('goats')
@@ -1051,7 +1066,8 @@ def goat(_channel):
         goat(_channel)
     else:
         sendmsg(_channel, response)
-        
+
+
 def awwim(_channel):
     global redditreader
     test = random.choice([True, False])
@@ -1064,7 +1080,7 @@ def awwim(_channel):
         awwim(_channel)
     else:
         sendmsg(_channel, response)
-    
+
 
 def connect():
     global queue
@@ -1099,7 +1115,7 @@ def connect():
                 break
         mess = queue[0]  # removing any unnecessary linebreaks.
         mess = mess.strip().strip('\n\r').strip('\r\n').strip()
-        print(mess) # Here we print what's coming from the server
+        print(mess)  # Here we print what's coming from the server
         if mess.find("Found your hostname") != -1 or mess.find("No ident response") != -1:
             sent = "NICK " + botnick + "\n" + "USER " + botnick + " " + botnick + " " + botnick + " :v4.0 An IRC bot by Dinosawer.\n"
             ircsock.send(bytes(sent, 'UTF-8'))  # here we actually assign the nick to the bot
@@ -1151,14 +1167,14 @@ def readirc():
         _channel, user, mess = printIRC(mess)
     except Exception as e:
         # some weird message?
-        #print(mess)
+        # print(mess)
         f = open('error.txt')
         try:
             f.write(str(mess) + '\n')
         except Exception:
             pass
         f.close()
-        #logerror(e)
+        # logerror(e)
         return
     """test = mess.strip('\r\n').strip().strip("'")
     mess = test"""
@@ -1173,7 +1189,7 @@ def readirc():
         garbleduser = user
     # print(_channel)
     if "GameSurge" not in mess and user != botnick:
-        
+
         if any([nick in lmess for nick in botnicks]):
             if any([greeting in lmess for greeting in greetings]):
                 sendmsg(_channel, random.choice(greetings).title() + "!")
@@ -1243,141 +1259,139 @@ def readirc():
                     sleeping(0.6)
                     sendmsg(_channel, value, nick=garbleduser)
                     timers[key[0]] = timervals[key[0]]
-                        return
-            if not blacklisted(user):
-                idleresponse(_channel, garbleduser)
+                    return
+        if not blacklisted(user):
+            idleresponse(_channel, garbleduser)
             # no-named things
 
+    if "!logs" in lmess:
+        try:
+            n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
+            if n.endswith('h') or n.endswith('hour') or n.endswith('hours'):
+                try:
+                    n = n.split('h')[0].strip()
+                    n = float(n)
+                    if n < 0:
+                        raise ValueError('negative value')
+                except Exception:
+                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                    return
+                sendmsg(_channel, logslasth(_channel, n))
+                return
+            elif n.endswith('m') or n.endswith('minutes') or n.endswith('minute'):
+                try:
+                    n = n.split('m')[0].strip()
+                    n = float(n) / 60
+                    if n < 0:
+                        raise ValueError('negative value')
+                except Exception:
+                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                    return
+                sendmsg(_channel, logslasth(_channel, n))
+                return
+            else:
+                try:
+                    n = int(n)
+                    if n < 0:
+                        raise ValueError('negative value')
+                except Exception:
+                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                    return
+                if n > logmax:
+                    sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
+                    n = logmax
+                sendmsg(_channel, logslastn(_channel, n))
+                return
+        except Exception as e:
+            sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
+            logerror(e)
+            return
 
-if "!logs" in lmess:
-    try:
-        n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
-        if n.endswith('h') or n.endswith('hour') or n.endswith('hours'):
-            try:
-                n = n.split('h')[0].strip()
-                n = float(n)
-                if n < 0:
-                    raise ValueError('negative value')
-            except Exception:
-                sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                return
-            sendmsg(_channel, logslasth(_channel, n))
+    if "!loglast" in lmess:
+        sendmsg(_channel, logslastseen(_channel, user))
+        return
+    if "rekt wiki" in lmess:
+        rektwiki(_channel, lmess)
+        return
+    if "[[[" in lmess:
+        try:
+            rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
+        except Exception as e:
+            logerror(e)
             return
-        elif n.endswith('m') or n.endswith('minutes') or n.endswith('minute'):
-            try:
-                n = n.split('m')[0].strip()
-                n = float(n) / 60
-                if n < 0:
-                    raise ValueError('negative value')
-            except Exception:
-                sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                return
-            sendmsg(_channel, logslasth(_channel, n))
+    if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
+            re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+                       lmess)) != 0:
+        try:
+            findtitle(_channel, mess)
+        except Exception as e:
+            logerror(e)
+        return
+    if '!kitten' in lmess:
+        kitten(_channel, gif=random.choice([True, False]))
+        return
+    if '!puppy' in lmess:
+        puppy(_channel)
+        return
+    if '!duck' in lmess:
+        duck(_channel)
+        return
+    if '!squirrel' in lmess:
+        squirrel(_channel)
+        return
+    if '!goat' in lmess:
+        goat(_channel)
+        return
+    if '!awwim' in lmess:
+        awwim(_channel)
+        return
+    if 'kitten.gif' in lmess:
+        kitten(_channel, gif=True)
+        return
+    if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
+        kitten(_channel, gif=False)
+        return
+    elif "TABLEFLIP" in mess:
+        temp = "︵ヽ(`Д´)ﾉ︵"
+        for i in range(1, lmess.count('!')):
+            temp += "  "
+            temp = "  " + temp
+        temp += "┻━┻ "
+        temp = "┻━┻ " + temp
+        sendmsg(_channel, temp)
+        return
+    elif "tableflip" in lmess:
+        temp = "(╯°□°）╯︵"
+        for i in range(1, lmess.count('!')):
+            temp += "  "
+        temp += "┻━┻ "
+        sendmsg(_channel, temp)
+        return
+    for key, value in emoticons.items():
+        if key in lmess:
+            sendmsg(_channel, value)
             return
-        else:
-            try:
-                n = int(n)
-                if n < 0:
-                    raise ValueError('negative value')
-            except Exception:
-                sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                return
-            if n > logmax:
-                sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
-                n = logmax
-            sendmsg(_channel, logslastn(_channel, n))
-            return
-    except Exception as e:
-        sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
-        logerror(e)
+    if not shushed and re.search(regex1, lmess) is not None:
+        sendmsg(_channel, "DOOOOMED!")
+        return
+    if not shushed and re.search(regex2, lmess) is not None:
+        space(_channel)
+        return
+    if "!procemo" in lmess:
+        procemo(_channel)
+        return
+    if "!listemo" in lmess or "!emoticonlist" in lmess:
+        listemo(_channel, user, mess)
         return
 
-if "!loglast" in lmess:
-    sendmsg(_channel, logslastseen(_channel, user))
-    return
-if "rekt wiki" in lmess:
-    rektwiki(_channel, lmess)
-    return
-if "[[[" in lmess:
-    try:
-        rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
-    except Exception as e:
-        logerror(e)
-        return
-if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
-        re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                   lmess)) != 0:
-    try:
-        findtitle(_channel, mess)
-    except Exception as e:
-        logerror(e)
-    return
-if '!kitten' in lmess:
-    kitten(_channel, gif=random.choice([True, False]))
-    return
-if '!puppy' in lmess:
-    puppy(_channel)
-    return
-if '!duck' in lmess:
-    duck(_channel)
-    return
-if '!squirrel' in lmess:
-    squirrel(_channel)
-    return
-if '!goat' in lmess:
-    goat(_channel)
-    return
-if '!awwim' in lmess:
-    awwim(_channel)
-    return
-if 'kitten.gif' in lmess:
-    kitten(_channel, gif=True)
-    return
-if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
-    kitten(_channel, gif=False)
-    return
-elif "TABLEFLIP" in mess:
-    temp = "︵ヽ(`Д´)ﾉ︵"
-    for i in range(1, lmess.count('!')):
-        temp += "  "
-        temp = "  " + temp
-    temp += "┻━┻ "
-    temp = "┻━┻ " + temp
-    sendmsg(_channel, temp)
-    return
-elif "tableflip" in lmess:
-    temp = "(╯°□°）╯︵"
-    for i in range(1, lmess.count('!')):
-        temp += "  "
-    temp += "┻━┻ "
-    sendmsg(_channel, temp)
-    return
-for key, value in emoticons.items():
-    if key in lmess:
-        sendmsg(_channel, value)
-        return
-if not shushed and re.search(regex1, lmess) is not None:
-    sendmsg(_channel, "DOOOOMED!")
-    return
-if not shushed and re.search(regex2, lmess) is not None:
-    space(_channel)
-    return
-if "!procemo" in lmess:
-    procemo(_channel)
-    return
-if "!listemo" in lmess or "!emoticonlist" in lmess:
-    listemo(_channel, user, mess)
-    return
-
-
-        if not shushed:
-            for key, value in triggers.items():
-                if any([stuff in lmess for stuff in key]):
-                    if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
-                        sleeping(0.6)
-                        sendmsg(_channel, value, nick=garbleduser)
-                        timers[key[0]] = timervals[key[0]]
-                        return
+    if not shushed:
+        for key, value in triggers.items():
+            if any([stuff in lmess for stuff in key]):
+                if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
+                    sleeping(0.6)
+                    sendmsg(_channel, value, nick=garbleduser)
+                    timers[key[0]] = timervals[key[0]]
+                    return
     return
 
 
