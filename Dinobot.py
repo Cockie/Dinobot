@@ -1253,15 +1253,15 @@ def readirc():
             if "confuc" in lmess or "confusius" in lmess:
                 confucius(_channel)
                 return
-        for key, value in namedtriggers.items():
-            if any([stuff in lmess for stuff in key]):
-                if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
-                    sleeping(0.6)
-                    sendmsg(_channel, value, nick=garbleduser)
-                    timers[key[0]] = timervals[key[0]]
-                    return
-        if not blacklisted(user):
-            idleresponse(_channel, garbleduser)
+            for key, value in namedtriggers.items():
+                if any([stuff in lmess for stuff in key]):
+                    if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
+                        sleeping(0.6)
+                        sendmsg(_channel, value, nick=garbleduser)
+                        timers[key[0]] = timervals[key[0]]
+                        return
+            if not blacklisted(user):
+                idleresponse(_channel, garbleduser)
             # no-named things
 
     if "!logs" in lmess:
