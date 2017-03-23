@@ -40,6 +40,7 @@ greetings = ["hello", "hey", "hi", "greetings", "hoi"]
 wikitriggers = ["what is", "what's", "whats", "who's", "who is", "how do i"]
 botnicks = ["saoirse", "saorise"]
 blacklist = []
+ignorelist = []
 timers = {}
 triggers = OrderedDict()
 namedtriggers = OrderedDict()
@@ -95,6 +96,22 @@ def writeblacklist():
     global blacklist
     f = open('blacklist.txt', 'w')
     for nick in blacklist:
+        f.write(nick.strip() + '\n')
+    f.close()
+
+
+def readignorelist():
+    global ignorelist
+    ignorelist = []
+    with open('ignored.txt') as f:
+        for line in f:
+            ignorelist.append(line.strip())
+
+
+def writeignorelist():
+    global ignorelist
+    f = open('ignored.txt', 'w')
+    for nick in ignorelist:
         f.write(nick.strip() + '\n')
     f.close()
 
@@ -253,6 +270,7 @@ def initialise():
             logerror(e)
 
     readblacklist()
+    readignorelist()
 
     user_agent = "Saoirse v4.0 by /u/Dinosawer"
     # redditreader = praw.Reddit(user_agent=user_agent)
@@ -861,6 +879,11 @@ def blacklisted(user):
     return any([stuff in user.lower() for stuff in blacklist])
 
 
+def ignored(user):
+    global ignorelist
+    return any([stuff in user.lower() for stuff in ignorelist])
+
+
 def postlog(mess):
     GHgist = simplegist_fix.Simplegist()
     the_page = GHgist.create(name="logs" + "[" + strftime("%d/%m/%Y %H:%M:%S") + "]", description='LT logs', public=1,
@@ -1191,68 +1214,69 @@ def readirc():
     if "GameSurge" not in mess and user != botnick:
 
         if any([nick in lmess for nick in botnicks]):
-            if any([greeting in lmess for greeting in greetings]):
-                sendmsg(_channel, random.choice(greetings).title() + "!")
-                # lmess=stripleft(lmess,"saoirse")
-            # mess=stripleft(mess,"Saoirse")
-            # print(lmess)
-            if "Dinosawer" in user:
-                if "join" in lmess:
-                    tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
-                    channel.append(tojoin)
-                    joinchan(tojoin)
-                    sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
-                    return
-                elif "leave" in lmess:
-                    sendmsg(_channel, "Bye! o/")
-                    leavechan(_channel)
-                    return
-                elif "quit" in lmess:
-                    sendmsg(_channel, "Nope!")
-                    return
-                elif "initialise" in lmess or "initialize" in lmess:
-                    sendmsg(_channel, "OK, reinitialising...")
-                    initialise()
-                    sendmsg(_channel, "Done! Should work now.")
-                    return
-                elif "deignore" in lmess and "Dinosawer" in user:
-                    nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
-                    blacklist.remove(nick)
-                    writeblacklist()
-                    return
-                elif "ignore" in lmess and "Dinosawer" in user:
-                    nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
-                    if nick != "dinosawer":
-                        blacklist.append(nick)
+            if not blacklisted(user):
+                if any([greeting in lmess for greeting in greetings]):
+                    sendmsg(_channel, random.choice(greetings).title() + "!")
+                    # lmess=stripleft(lmess,"saoirse")
+                # mess=stripleft(mess,"Saoirse")
+                # print(lmess)
+                if "Dinosawer" in user:
+                    if "join" in lmess:
+                        tojoin = lmess[lmess.find("join"):].replace("join", '').strip()
+                        channel.append(tojoin)
+                        joinchan(tojoin)
+                        sendmsg(_channel, "To " + tojoin + " and beyond! /o/")
+                        return
+                    elif "leave" in lmess:
+                        sendmsg(_channel, "Bye! o/")
+                        leavechan(_channel)
+                        return
+                    elif "quit" in lmess:
+                        sendmsg(_channel, "Nope!")
+                        return
+                    elif "initialise" in lmess or "initialize" in lmess:
+                        sendmsg(_channel, "OK, reinitialising...")
+                        initialise()
+                        sendmsg(_channel, "Done! Should work now.")
+                        return
+                    elif "deignore" in lmess and "Dinosawer" in user:
+                        nick = lmess[lmess.find("deignore") + len("deignore"):].strip()
+                        blacklist.remove(nick)
                         writeblacklist()
                         return
-            if "rekt" in lmess and "post" in lmess:
-                sendmsg(_channel, "A minute, %USER%, I'll check...", nick=garbleduser)
-                rektposts(user, _channel)
-                return
-            if "set rekt update" in lmess:
-                setrekturl(_channel, lmess)
-                return
-            if "shush" in lmess:
-                sendmsg(_channel, "OK, I'll shut up :(")
-                shushed = True
-                timers['shushed'] = 1800
-                return
-            elif "speak" in lmess:
-                sendmsg(_channel, "Yay! Pudding!")
-                shushed = False
-                timers['shushed'] = 0
-                return
-            # wikipedia search
-            else:
-                for stuff in wikitriggers:
-                    if stuff in lmess:
-                        lmess = lmess[lmess.find(stuff):]
-                        wiki(_channel, stripleft(lmess, stuff), 3)
-                        return
-            if "confuc" in lmess or "confusius" in lmess:
-                confucius(_channel)
-                return
+                    elif "ignore" in lmess and "Dinosawer" in user:
+                        nick = lmess[lmess.find("ignore") + len("ignore"):].strip()
+                        if nick != "dinosawer":
+                            blacklist.append(nick)
+                            writeblacklist()
+                            return
+                if "rekt" in lmess and "post" in lmess:
+                    sendmsg(_channel, "A minute, %USER%, I'll check...", nick=garbleduser)
+                    rektposts(user, _channel)
+                    return
+                if "set rekt update" in lmess:
+                    setrekturl(_channel, lmess)
+                    return
+                if "shush" in lmess:
+                    sendmsg(_channel, "OK, I'll shut up :(")
+                    shushed = True
+                    timers['shushed'] = 1800
+                    return
+                elif "speak" in lmess:
+                    sendmsg(_channel, "Yay! Pudding!")
+                    shushed = False
+                    timers['shushed'] = 0
+                    return
+                # wikipedia search
+                else:
+                    for stuff in wikitriggers:
+                        if stuff in lmess:
+                            lmess = lmess[lmess.find(stuff):]
+                            wiki(_channel, stripleft(lmess, stuff), 3)
+                            return
+                if "confuc" in lmess or "confusius" in lmess:
+                    confucius(_channel)
+                    return
             for key, value in namedtriggers.items():
                 if any([stuff in lmess for stuff in key]):
                     if timers[key[0]] <= 0 and (not blacklisted(user) or botnamedtriggers[key[0]]):
@@ -1260,138 +1284,138 @@ def readirc():
                         sendmsg(_channel, value, nick=garbleduser)
                         timers[key[0]] = timervals[key[0]]
                         return
-            if not blacklisted(user):
+            if not blacklisted(user) and not ignored(user):
                 idleresponse(_channel, garbleduser)
-            # no-named things
-
-    if "!logs" in lmess:
-        try:
-            n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
-            if n.endswith('h') or n.endswith('hour') or n.endswith('hours'):
+                # no-named things
+        if not blacklisted(user):
+            if "!logs" in lmess:
                 try:
-                    n = n.split('h')[0].strip()
-                    n = float(n)
-                    if n < 0:
-                        raise ValueError('negative value')
-                except Exception:
-                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                    n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
+                    if n.endswith('h') or n.endswith('hour') or n.endswith('hours'):
+                        try:
+                            n = n.split('h')[0].strip()
+                            n = float(n)
+                            if n < 0:
+                                raise ValueError('negative value')
+                        except Exception:
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
+                        sendmsg(_channel, logslasth(_channel, n))
+                        return
+                    elif n.endswith('m') or n.endswith('minutes') or n.endswith('minute'):
+                        try:
+                            n = n.split('m')[0].strip()
+                            n = float(n) / 60
+                            if n < 0:
+                                raise ValueError('negative value')
+                        except Exception:
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
+                        sendmsg(_channel, logslasth(_channel, n))
+                        return
+                    else:
+                        try:
+                            n = int(n)
+                            if n < 0:
+                                raise ValueError('negative value')
+                        except Exception:
+                            sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
+                            return
+                        if n > logmax:
+                            sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
+                            n = logmax
+                        sendmsg(_channel, logslastn(_channel, n))
+                        return
+                except Exception as e:
+                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
+                    logerror(e)
                     return
-                sendmsg(_channel, logslasth(_channel, n))
-                return
-            elif n.endswith('m') or n.endswith('minutes') or n.endswith('minute'):
-                try:
-                    n = n.split('m')[0].strip()
-                    n = float(n) / 60
-                    if n < 0:
-                        raise ValueError('negative value')
-                except Exception:
-                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                    return
-                sendmsg(_channel, logslasth(_channel, n))
-                return
-            else:
-                try:
-                    n = int(n)
-                    if n < 0:
-                        raise ValueError('negative value')
-                except Exception:
-                    sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
-                    return
-                if n > logmax:
-                    sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
-                    n = logmax
-                sendmsg(_channel, logslastn(_channel, n))
-                return
-        except Exception as e:
-            sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
-            logerror(e)
-            return
 
-    if "!loglast" in lmess:
-        sendmsg(_channel, logslastseen(_channel, user))
-        return
-    if "rekt wiki" in lmess:
-        rektwiki(_channel, lmess)
-        return
-    if "[[[" in lmess:
-        try:
-            rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
-        except Exception as e:
-            logerror(e)
-            return
-    if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
-            re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                       lmess)) != 0:
-        try:
-            findtitle(_channel, mess)
-        except Exception as e:
-            logerror(e)
-        return
-    if '!kitten' in lmess:
-        kitten(_channel, gif=random.choice([True, False]))
-        return
-    if '!puppy' in lmess:
-        puppy(_channel)
-        return
-    if '!duck' in lmess:
-        duck(_channel)
-        return
-    if '!squirrel' in lmess:
-        squirrel(_channel)
-        return
-    if '!goat' in lmess:
-        goat(_channel)
-        return
-    if '!awwim' in lmess:
-        awwim(_channel)
-        return
-    if 'kitten.gif' in lmess:
-        kitten(_channel, gif=True)
-        return
-    if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
-        kitten(_channel, gif=False)
-        return
-    elif "TABLEFLIP" in mess:
-        temp = "︵ヽ(`Д´)ﾉ︵"
-        for i in range(1, lmess.count('!')):
-            temp += "  "
-            temp = "  " + temp
-        temp += "┻━┻ "
-        temp = "┻━┻ " + temp
-        sendmsg(_channel, temp)
-        return
-    elif "tableflip" in lmess:
-        temp = "(╯°□°）╯︵"
-        for i in range(1, lmess.count('!')):
-            temp += "  "
-        temp += "┻━┻ "
-        sendmsg(_channel, temp)
-        return
-    for key, value in emoticons.items():
-        if key in lmess:
-            sendmsg(_channel, value)
-            return
-    if not shushed and re.search(regex1, lmess) is not None:
-        sendmsg(_channel, "DOOOOMED!")
-        return
-    if not shushed and re.search(regex2, lmess) is not None:
-        space(_channel)
-        return
-    if "!procemo" in lmess:
-        procemo(_channel)
-        return
-    if "!listemo" in lmess or "!emoticonlist" in lmess:
-        listemo(_channel, user, mess)
-        return
-
-    if not shushed:
-        for key, value in triggers.items():
-            if any([stuff in lmess for stuff in key]):
-                if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
-                    sleeping(0.6)
-                    sendmsg(_channel, value, nick=garbleduser)
-                    timers[key[0]] = timervals[key[0]]
+            if "!loglast" in lmess:
+                sendmsg(_channel, logslastseen(_channel, user))
+                return
+            if "rekt wiki" in lmess:
+                rektwiki(_channel, lmess)
+                return
+            if "[[[" in lmess:
+                try:
+                    rektwiki(_channel, lmess[lmess.find('[[['):lmess.find(']]]')].replace('[', '').replace(']', ''))
+                except Exception as e:
+                    logerror(e)
                     return
+            if "http://www.gamesurge.net/cms/spamServ" not in lmess and len(
+                    re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+                               lmess)) != 0:
+                try:
+                    findtitle(_channel, mess)
+                except Exception as e:
+                    logerror(e)
+                return
+            if '!kitten' in lmess:
+                kitten(_channel, gif=random.choice([True, False]))
+                return
+            if '!puppy' in lmess:
+                puppy(_channel)
+                return
+            if '!duck' in lmess:
+                duck(_channel)
+                return
+            if '!squirrel' in lmess:
+                squirrel(_channel)
+                return
+            if '!goat' in lmess:
+                goat(_channel)
+                return
+            if '!awwim' in lmess:
+                awwim(_channel)
+                return
+            if 'kitten.gif' in lmess:
+                kitten(_channel, gif=True)
+                return
+            if 'kitten.jpg' in lmess or 'kitten.jpeg' in lmess or 'kitten.png' in lmess:
+                kitten(_channel, gif=False)
+                return
+            elif "TABLEFLIP" in mess:
+                temp = "︵ヽ(`Д´)ﾉ︵"
+                for i in range(1, lmess.count('!')):
+                    temp += "  "
+                    temp = "  " + temp
+                temp += "┻━┻ "
+                temp = "┻━┻ " + temp
+                sendmsg(_channel, temp)
+                return
+            elif "tableflip" in lmess:
+                temp = "(╯°□°）╯︵"
+                for i in range(1, lmess.count('!')):
+                    temp += "  "
+                temp += "┻━┻ "
+                sendmsg(_channel, temp)
+                return
+            for key, value in emoticons.items():
+                if key in lmess:
+                    sendmsg(_channel, value)
+                    return
+            if not shushed and re.search(regex1, lmess) is not None and not ignored(user):
+                sendmsg(_channel, "DOOOOMED!")
+                return
+            if not shushed and re.search(regex2, lmess) is not None and not ignored(user):
+                space(_channel)
+                return
+            if "!procemo" in lmess:
+                procemo(_channel)
+                return
+            if "!listemo" in lmess or "!emoticonlist" in lmess:
+                listemo(_channel, user, mess)
+                return
+
+        if not shushed and not ignored(user):
+            for key, value in triggers.items():
+                if any([stuff in lmess for stuff in key]):
+                    if timers[key[0]] <= 0 and (not blacklisted(user) or bottriggers[key[0]]):
+                        sleeping(0.6)
+                        sendmsg(_channel, value, nick=garbleduser)
+                        timers[key[0]] = timervals[key[0]]
+                        return
     return
 
 
