@@ -498,11 +498,18 @@ def rektwiki(_channel, mess):
     except Exception as e:
         logerror(e)
         return
-    htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
-    htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
-    htmlstr = htmlstr[:htmlstr.find("\""):].replace("\"", '')
-    # print(htmlstr + '\n')
-    sendmsg(_channel, htmlstr)
+    try:
+        htmlstr = r.read().decode().replace(' ', '').replace('\t', '').replace('\n', '')
+        htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
+        res = htmlstr[:htmlstr.find("\""):].replace("\"", '')
+        while "deleted:" in res:
+            htmlstr = htmlstr[htmlstr.find("<divclass=\"title\"><ahref=\""):].replace("<divclass=\"title\"><ahref=\"", '')
+            res = htmlstr[:htmlstr.find("\""):].replace("\"", '')
+        # print(htmlstr + '\n')
+        sendmsg(_channel, res)
+    except Exception as e:
+        logerror(e)
+        return
 
 
 def removeTags(mess):
