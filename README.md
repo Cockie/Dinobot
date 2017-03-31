@@ -84,6 +84,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !lizard: ᘛ⁐̤ᕐᕗ--°  
 !magic: (∩｀-´)⊃━☆ﾟ.*･｡ﾟ  
 !moustache: ƪ(˘︷ ˘)و  
+!muahaha: ψ(｀∇´)ψ  
 !muhaha: ψ(｀∇´)ψ  
 !ohno:  ヽ（゜ロ゜；）ノ  
 !ohyes: ໒( ͡ᵔ ▾ ͡ᵔ )७  
