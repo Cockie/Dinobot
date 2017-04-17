@@ -1291,7 +1291,7 @@ def readirc():
                         sendmsg(_channel, value, nick=garbleduser)
                         timers[key[0]] = timervals[key[0]]
                         return
-            if not blacklisted(user) and not ignored(user):
+            if not blacklisted(user) and not ignored(user) and '?' in lmess:
                 idleresponse(_channel, garbleduser)
                 # no-named things
         if not blacklisted(user):
