@@ -220,7 +220,7 @@ def initialise():
     with open('namecommands.txt') as f:
         namedtriggers = OrderedDict()
         for line in f:
-            line = line.strip('\n').strip(' ').split('|')
+            line = line.lower().strip('\n').strip(' ').split('|')
             line[0] = line[0].replace('/me','ACTION').split('&')
             if line[0][0] == '':
                 pass
