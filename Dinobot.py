@@ -371,6 +371,7 @@ def sendmsg(chan, msg, delay=True,
         msg = msg.replace('🍮', "༼ ༽")
         print(msg)
     msg = msg.replace('%USER%', nick)
+    msg = msg.replace('%user%', nick)
     msg = msg.split('\n')
     for line in msg:
         if line.startswith("/me"):
