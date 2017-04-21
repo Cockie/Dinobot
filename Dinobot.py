@@ -313,13 +313,13 @@ def initialise():
         output = subprocess.call(["git", "add", "blacklist.txt"], stdout=subprocess.PIPE)
         print(output)
         strout += " blacklist"
-    output = subprocess.check_output(["git", "diff", "namedcommands.txt"])
+    output = subprocess.check_output(["git", "diff", "namecommands.txt"])
     print(output)
     if output != b'':
         push = True
-        output = subprocess.call(["git", "add", "namedcommands.txt"], stdout=subprocess.PIPE)
+        output = subprocess.call(["git", "add", "namecommands.txt"], stdout=subprocess.PIPE)
         print(output)
-        strout += " namedcommands"
+        strout += " namecommands"
     if push:
         output = subprocess.call(["git", "commit", "-m", strout], stdout=subprocess.PIPE)
         print(output)
