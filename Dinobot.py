@@ -220,7 +220,7 @@ def initialise():
     with open('namecommands.txt') as f:
         namedtriggers = OrderedDict()
         for line in f:
-            line = line.lower().strip('\n').strip(' ').split('|')
+            line = line.strip('\n').strip(' ').split('|')
             line[0] = line[0].replace('/me','ACTION').split('&')
             if line[0][0] == '':
                 pass
@@ -371,7 +371,6 @@ def sendmsg(chan, msg, delay=True,
         msg = msg.replace('🍮', "༼ ༽")
         print(msg)
     msg = msg.replace('%USER%', nick)
-    msg = msg.replace('%user%', nick)
     msg = msg.split('\n')
     for line in msg:
         if line.startswith("/me"):
