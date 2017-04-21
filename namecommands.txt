@@ -1,9 +1,9 @@
 no saoirse&no, saoirse|No?|5|T
-saoirse fuck off&saoirse, fuck off&fuck off saoirse|ACTION throws pudding in %USER%'s face|5|F
+saoirse fuck off&saoirse, fuck off&fuck off saoirse|/me throws pudding in %USER%'s face|5|F
 gives the pudding to saoirse|Yay! Thanks %USER%! (^-^)_🍮|2|T
 music|https://youtu.be/dQw4w9WgXcQ|2|F
 what do you look like|http://i.imgur.com/kda3ckO.png|5|F
-quilt|ACTION quilts a blanket for %USER%|5|F
+quilt|/me quilts a blanket for %USER%|5|F
 quit|Nope!|1|F
 leave|Nu-uh!|1|F
 shut up|No, YOU shut up!|5|T
@@ -16,9 +16,10 @@ no take pudding|No... pudding? ｡･ﾟﾟ･(>д<)･ﾟﾟ･｡|5|F
 take pudding|YAAAAY PUDDING!! (^-^)_🍮|5|F
 help&halp|https://raw.githubusercontent.com/Cockie/Dinobot/master/README.md|5|F
 source|https://github.com/Cockie/Dinobot|5|F
-gives saoirse flowers|...this is no pudding :(|100|T
+/me pushes the pudding towards Saoirse|/me whispers 'Thanks %USER%' and tucks %USER in|10|T
+gives saoirse flowers|Pudding! ...this is no pudding :(|100|T
 gives saoirse pudding|Yay! (^-^)_🍮|100|T
-gives saoirse flour|ACTION uses it to make pudding |5|F
-gives saoirse a spoon|ACTION waves it in the air |5|F
-gives saoirse|ACTION looks at it and wonders what she's supposed to do with it |5|F
+gives saoirse flour|/me uses it to make pudding |5|T
+gives saoirse a spoon|/me waves it in the air |5|T
+gives saoirse|/me looks at it and wonders what she's supposed to do with it|5|T
 thanks saoirse&thank you saoirse|You're welcome! Hi welcome! ^.^|5|T

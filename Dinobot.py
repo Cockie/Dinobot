@@ -221,7 +221,7 @@ def initialise():
         namedtriggers = OrderedDict()
         for line in f:
             line = line.strip('\n').strip(' ').split('|')
-            line[0] = line[0].split('&')
+            line[0] = line[0].replace('/me','ACTION').split('&')
             if line[0][0] == '':
                 pass
             else:
@@ -313,6 +313,13 @@ def initialise():
         output = subprocess.call(["git", "add", "blacklist.txt"], stdout=subprocess.PIPE)
         print(output)
         strout += " blacklist"
+    output = subprocess.check_output(["git", "diff", "namedcommands.txt"])
+    print(output)
+    if output != b'':
+        push = True
+        output = subprocess.call(["git", "add", "namedcommands.txt"], stdout=subprocess.PIPE)
+        print(output)
+        strout += " namedcommands"
     if push:
         output = subprocess.call(["git", "commit", "-m", strout], stdout=subprocess.PIPE)
         print(output)
@@ -366,6 +373,8 @@ def sendmsg(chan, msg, delay=True,
     msg = msg.replace('%USER%', nick)
     msg = msg.split('\n')
     for line in msg:
+        if line.startswith("/me"):
+            line = "ACTION" + line[3:].strip('\n') + ""
         printIRC(":" + botnick + '!' + " PRIVMSG " + chan + " :" + line + '\n')
         try:
             ircsock.send(bytes("PRIVMSG " + chan + " :" + line + "\n", 'UTF-8'))
