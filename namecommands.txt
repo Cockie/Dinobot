@@ -22,4 +22,5 @@ gives saoirse pudding|Yay! (^-^)_🍮|100|T
 gives saoirse flour|/me uses it to make pudding |5|T
 gives saoirse a spoon|/me waves it in the air |5|T
 gives saoirse|/me looks at it and wonders what she's supposed to do with it|5|T
+pokes saoirse|/me pokes %USER% with a spoon|5|T
 thanks saoirse&thank you saoirse|You're welcome! Hi welcome! ^.^|5|T
