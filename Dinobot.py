@@ -367,8 +367,8 @@ def procemo(chan):
 
 
 def ping(mess):  # This is our first function! It will respond to server Pings.
-    if 'PING:' in mess:
-        mess = mess.replace('PING:','').strip()
+    if 'PING :' in mess:
+        mess = mess.replace('PING :','').strip()
         ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
     elif 'PONG' in mess:
         mess = mess[mess.find('PONG'):]
