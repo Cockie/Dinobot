@@ -59,7 +59,8 @@ emoticons = {}
 spacelist = []
 # Some basic variables used to configure the bot
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server = "irc.web.gamesurge.net"  # Server
+servers = ["irc.web.gamesurge.net", "burstfire.uk.eu.gamesurge.net"]
+serverID = 1# Server
 channel = []
 botnick = "Saoirse"  # Your bots nick
 username = ""
@@ -74,6 +75,17 @@ rekturl = ""
 idleresponses = []
 redditreader = 0
 
+def server():
+    global servers
+    global serverID
+    return servers[serverID]
+
+def switchServer():
+    global serverID
+    global servers
+    serverID+=1
+    if serverID >= len(servers):
+        serverID = 0
 
 def stringify(t):
     res = ""
@@ -355,7 +367,14 @@ def procemo(chan):
 
 
 def ping(mess):  # This is our first function! It will respond to server Pings.
-    ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
+    if 'PING:' in mess:
+        mess = mess.replace('PING:','').strip()
+        ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
+    elif 'PONG' in mess:
+        mess = mess[mess.find('PONG'):]
+        mess = mess.split('"')[0]
+        ircsock.send(bytes('PONG %s\r\n' % mess, 'UTF-8'))
+    
 
 
 def sendmsg(chan, msg, delay=True,
@@ -1130,11 +1149,12 @@ def connect():
     while not connected:
         try:
             print("Trying to connect...")
-            ircsock.connect((server, 6667))
+            ircsock.connect((server(), 6667))
             connected = True
         except Exception as e:
             logerror(e)
             connected = False
+            switchServer()
             sleeping(5)
     ircsock.settimeout(180)
     ircsock.send(bytes(
