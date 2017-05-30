@@ -19,6 +19,7 @@ import re
 import subprocess
 from collections import OrderedDict
 import sys
+import os
 import readline
 import select
 import html
@@ -60,7 +61,7 @@ spacelist = []
 # Some basic variables used to configure the bot
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 servers = ["irc.web.gamesurge.net", "burstfire.uk.eu.gamesurge.net"]
-serverID = 1# Server
+serverID = 0# Server
 channel = []
 botnick = "Saoirse"  # Your bots nick
 username = ""
@@ -86,6 +87,8 @@ def switchServer():
     serverID+=1
     if serverID >= len(servers):
         serverID = 0
+        return True
+    return False
 
 def stringify(t):
     res = ""
@@ -1154,7 +1157,11 @@ def connect():
         except Exception as e:
             logerror(e)
             connected = False
-            switchServer()
+            done = switchServer()
+            # hard restart
+            if done:
+                python = sys.executable
+                os.execl(python, python, *sys.argv)
             sleeping(5)
     ircsock.settimeout(180)
     ircsock.send(bytes(
