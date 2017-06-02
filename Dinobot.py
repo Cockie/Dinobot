@@ -933,6 +933,8 @@ def postlog(mess):
 
 def logslastn(chan, n):
     mess = ""
+    if n == 0:
+        return
     lines = tailer.tail(open(chan + ".txt", errors='ignore'), n)
     for line in lines:
         mess += line + '\n'
@@ -979,7 +981,8 @@ def getdate(line):
 
 def logslasth(chan, h):
     mess = ""
-
+    if h == 0:
+        return
     amlines = 60 * round(h) * 5
     if amlines > logmax:
         amlines = logmax
