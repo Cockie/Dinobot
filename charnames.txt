@@ -1,20 +1,10 @@
-Dinosawer&Dinosawer&4
-Cha0zz&Dr. Cha0zz&1
-Triggerhappy&Jimmy Triggerhappy&2
-BFett&BFett&1
-DigitalDuck&Francis&4
-Cornflakes_91&Squidhead&4
-Grimm&Kalah Grimm&4
-A New Challenger&Servius&2
-Black--Snow&Blake Lowe&3
-BMRX&Payback-13&4
-Charley_Deallus&Dak Perkins&2
-vector67&Nequeba&3
-Hema&Hema&2
-DeusVorpal&Ysavva&1
-IronDuke&William "Quackshot"&3
-outlander4&Foreigner&3
-Idunno&Unit 4965&2
-Hapchazzard&Tæpilus&1
-F4wk35&John "Fawkes" Fletcher&3
-cuisinart8&Andrew Rice&4
+Dinosawer&Saoirse&1
+Cha0zz&Bob&1
+Cornflakes_91&Gearhead&1
+Hema&Brom&1
+Hapchazzard&Buck&1
+F4wk35&Frank&1
+cuisinart8&Caleb&1
+Detritus&Miles&1
+firedude1218&Sparky&1
+Triggerhappy&Lemons&1
