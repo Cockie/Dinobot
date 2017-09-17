@@ -28,7 +28,7 @@ space: SPAAACE!
 all hail, : All hail! /o/  
 america, murika, : MURIKAH!!! /o/  
 blood, : B L O O D  
-bots assemble, : Saoirse, queen of the spoon trone!  
+bots assemble, : Saoirse, queen of the spoon throne!  
 c++, : Yay C++!  
 hail hydra, : Hail Hydra! o/  
 hail satan, : All hail the dark lord!! /o/ His victory is certain!! /o/  
