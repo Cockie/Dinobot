@@ -1368,12 +1368,12 @@ def readirc():
                             sendmsg(_channel, "Please enter a valid number of lines to paste! ^.^")
                             return
                         if n > logmax:
-                            sendmsg(_channel, "Sorry, won't do more than " + str(logmax) + " ^.^")
+                            sendmsg(_channel, "Sorry, that's a bit too many! I'll give you " + str(logmax) + " lines instead! ^.^")
                             n = logmax
                         sendmsg(_channel, logslastn(_channel, n))
                         return
                 except Exception as e:
-                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: " + str(e) + '"')
+                    sendmsg(_channel, "Something went wrong. Tell Dinosawer: "+'"' + str(e) + '"')
                     logerror(e)
                     return
 
