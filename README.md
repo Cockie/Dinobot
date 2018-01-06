@@ -48,6 +48,8 @@ what is this madness, : madness?
 This
 is
 PUUDDIIIIIINNGGG!!!!  
+Пудинг, : PUDDING!  
+пудинг, : PUDDING!  
   
 Emoticons:  
 !listemo or !emoticonlist: she'll PM you a list of all emoticons and their commands  

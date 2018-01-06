@@ -7,6 +7,8 @@ over 9000|OVER NINE THOUSAND?!?!?!?|30|F
 !asdf|https://drive.google.com/open?id=0B-BMdS4aDoPtUlRUc1lia1N4bkU|2|F
 joshpost|POSHJOST! \o/|5|T
 pudding|PUDDING!|10|F
+Пудинг|PUDDING!|10|F
+пудинг|PUDDING!|10|F
 tintin|YAY TINTIN!|200|F
 america&murika|MURIKAH!!! /o/|200|F
 microsoft&windows|ACTION shakes fist at Microsoft|500|F
