@@ -19,6 +19,7 @@ space: SPAAACE!
 !beam, : https://www.youtube.com/watch?v=hMa3LXe6oVc  
 !burn, : Apply cold water to burned area http://i.imgur.com/YhlseLP.jpg  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
+!godleft, : https://i.imgur.com/Ea8mTFM.png  
 !oh,you, : Oh, you! http://i.imgur.com/9kiHtGb.jpg  
 !rubyreplace, : https://github.com/Cockie/RubyReplace  
 !soon, : Soon™ http://i.imgur.com/g6ICwYO.jpg  

@@ -11,3 +11,4 @@ goatbot
 snugglebunny
 quackthing
 s all bots equally for example
+sophia
