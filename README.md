@@ -61,6 +61,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !angry: ヽ(#`Д´)ﾉ  
 !awizard: (｡͡°□͡°)⊃━☆ﾟ.*･｡ﾟ  
 !aww: (｡◕‿‿◕｡)  
+!bonsai: ─=≡Σ(((⊃ ﾟ▽ﾟ)⊃╔═⊱───✴  "BOOONSAAAIIIII!!!"  
 !boo: 〜(・Д ・)〜  
 !bored: (￣Д￣)＝３  
 !bow: (シ_ _)シ  

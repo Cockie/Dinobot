@@ -49,7 +49,6 @@ whyy&¯\_(ツ)_/¯
 !angry&ヽ(#`Д´)ﾉ
 !strong&ᕙ(⇀‸↼‶)ᕗ
 !panic&｡ﾟ(ﾟ `Д)ﾉ｡ﾟヽ(   )ﾉﾟ｡ヽ(Д´ ﾟ)ﾉﾟ｡｡ﾟヽ(ﾟ`Д´ﾟ)ﾉﾟ｡
-!dino&─=≡Σ(((⊃ ﾟ▽ﾟ)⊃╔═⊱───✴  "BOOONSAAAIIIII!!!"
 !hwizard& °˖✧◝(＾ω＾)◜✧˖°
 !hype&ヾ(@°▽°@)ノ
 !ohyou&(◞థ‿థ)ᴖ
@@ -60,3 +59,5 @@ whyy&¯\_(ツ)_/¯
 !pingpong&(｡･ω･)ρ┳┷┳ﾟσ(･ω･*)
 !cha0zz&(－‸ლ) "Idiot, idiots everywhere."
 !cheers&⊂( °∇°)つ旦”☆”旦⊂(°∇° )つ
+!dino&─=≡Σ(((⊃ ﾟ▽ﾟ)⊃╔═⊱───✴  "BOOONSAAAIIIII!!!"
+!bonsai&─=≡Σ(((⊃ ﾟ▽ﾟ)⊃╔═⊱───✴  "BOOONSAAAIIIII!!!"
