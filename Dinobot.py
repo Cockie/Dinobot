@@ -1043,6 +1043,7 @@ def logslastseen(chan, user):
         pass
     # print(user)
     pinged = False
+    otherspoken = False
     for line in lines:
         line = line.strip('\n').strip()
         if line != '':
@@ -1059,8 +1060,11 @@ def logslastseen(chan, user):
                 if user in line and (
                         "quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
                     mess = line + '\n' + mess
-                    break
+                    if otherspoken:
+                        break
                 else:
+                    if user not in line:
+                        otherspoken = True
                     mess = line + '\n' + mess
     # print(mess)
     '''url = "http://paste.ee/api"
@@ -1334,6 +1338,9 @@ def readirc():
                 idleresponse(_channel, garbleduser)
                 # no-named things
         if not blacklisted(user):
+            if "!logslast" in lmess or "!loglast" in lmess:
+                sendmsg(_channel, logslastseen(_channel, user))
+                return
             if "!logs" in lmess:
                 try:
                     n = lmess[lmess.find("!logs"):].strip().split(' ')[1].strip()
@@ -1377,9 +1384,6 @@ def readirc():
                     logerror(e)
                     return
 
-            if "!loglast" in lmess:
-                sendmsg(_channel, logslastseen(_channel, user))
-                return
             if "rekt wiki" in lmess:
                 rektwiki(_channel, lmess)
                 return
