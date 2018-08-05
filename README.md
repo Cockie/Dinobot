@@ -111,6 +111,7 @@ TABLEFLIP: ┻━┻ ︵ヽ(`Д´)ﾉ︵┻━┻
 !squirrel: ʕ=˘ϖ˘=ʔ༄  
 !strong: ᕙ(⇀‸↼‶)ᕗ  
 !swizard: ᕕ(ಠ‸ಠ)⊃━☆ﾟ.*･｡ﾟ  
+!tea: ヽ(ʘ□ʘ)_旦”"  
 !thumbsup: ( ^ω^）b  
 !thumbup: ( ^ω^）b  
 !walk: ᕕ( ᐛ )ᕗ  
