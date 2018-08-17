@@ -1069,14 +1069,10 @@ def lastseen(chan, user):
         return "I couldn't find when you were last here. Must've been a while (or I fell asleep ^.^)"
     mess = mess.strip('\n').strip()
     # print(line)
-    ti = 0
-    if mess != '':
-        try:
-            ti = getdate(mess)
-            ti = n - ti
-        except Exception:
-            pass
-    thing = ti.strftime('I last saw you %d d,%H h, %M m %Ss ago') + "("+mess+")"
+    ti = getdate(mess)
+    ti = n - ti
+
+    thing = 'I last saw you '+str(ti.days)+"d, "+ str(ti.seconds//3600) + "m, "+ str((ti.seconds//60)%60)+"s ago ("+mess+")"
     return thing
 
 
