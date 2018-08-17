@@ -1055,10 +1055,9 @@ def lastseen(chan, user):
             if "<" + user in line:
                 if not other:
                     continue
-                mess = line + '\n' + mess
                 found = True
                 mess = line
-                
+                break
             if user in line and (
                     "quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
                 found = True
