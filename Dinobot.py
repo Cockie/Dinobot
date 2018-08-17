@@ -1031,6 +1031,54 @@ def logslasth(chan, h):
     the_page = response.read().decode('utf-8')'''
     return postlog(mess)
 
+def lastseen(chan, user):
+    mess = ""
+    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
+    lines.reverse()
+    n = datetime.datetime.now()
+    try:
+        user = user[0:4]
+    except Exception:
+        pass
+    # print(user)
+    found = False
+    other = False
+    mess = ""
+    for line in lines:
+        line = line.strip('\n').strip()
+        if line != '':
+            # print(line)
+            if user in line and "ping timeout" in line.lower() and "quit" in line.lower() and '<' not in line.lower() and '*' not in line.lower():
+                found = True
+                mess = line
+                break
+            if "<" + user in line:
+                if not other:
+                    continue
+                mess = line + '\n' + mess
+                found = True
+                mess = line
+                
+            if user in line and (
+                    "quit" in line.lower() or "left" in line) and '<' not in line.lower() and '*' not in line.lower():
+                found = True
+                mess = line
+                break
+            other = True
+    if not found:
+        return "I couldn't find when you were last here. Must've been a while (or I fell asleep ^.^)"
+    mess = mess.strip('\n').strip()
+    # print(line)
+    ti = 0
+    if mess != '':
+        try:
+            ti = getdate(mess)
+            ti = n - ti
+        except Exception:
+            pass
+    thing = ti.strftime('I last saw you %d d,%H h, %M m %Ss ago') + "("+mess+")"
+    return thing
+
 
 def logslastseen(chan, user):
     mess = ""
@@ -1303,6 +1351,9 @@ def readirc():
                 if "rekt" in lmess and "post" in lmess:
                     sendmsg(_channel, "A minute, %USER%, I'll check...", nick=garbleduser)
                     rektposts(user, _channel)
+                    return
+                if "last" in lmess and "online" in lmess:
+                    sendmsg(_channel, lastseen(_channel, user))
                     return
                 if "set rekt update" in lmess:
                     setrekturl(_channel, lmess)
