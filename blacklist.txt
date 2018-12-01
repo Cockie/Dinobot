@@ -14,3 +14,4 @@ s all bots equally for example
 sophia
 arethusa
 s most bots for commands, yeah
+buck
