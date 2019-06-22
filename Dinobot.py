@@ -35,6 +35,8 @@ try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
     from bs4 import BeautifulSoup
+from functools import partial
+open_utf8 = partial(open, encoding='UTF-8')
 
 queue = []
 greetings = ["hello", "hey", "hi", "greetings", "hoi"]
@@ -101,7 +103,7 @@ def stringify(t):
 def readblacklist():
     global blacklist
     blacklist = []
-    with open('blacklist.txt') as f:
+    with open_utf8('blacklist.txt') as f:
         for line in f:
             blacklist.append(line.strip())
     print(blacklist)
@@ -109,7 +111,7 @@ def readblacklist():
 
 def writeblacklist():
     global blacklist
-    f = open('blacklist.txt', 'w')
+    f = open_utf8('blacklist.txt', 'w')
     for nick in blacklist:
         f.write(nick.strip() + '\n')
     f.close()
@@ -118,14 +120,14 @@ def writeblacklist():
 def readignorelist():
     global ignorelist
     ignorelist = []
-    with open('ignored.txt') as f:
+    with open_utf8('ignored.txt') as f:
         for line in f:
             ignorelist.append(line.strip())
 
 
 def writeignorelist():
     global ignorelist
-    f = open('ignored.txt', 'w')
+    f = open_utf8('ignored.txt', 'w')
     for nick in ignorelist:
         f.write(nick.strip() + '\n')
     f.close()
@@ -134,7 +136,7 @@ def writeignorelist():
 def logerror(error):
     message = str(error) + '\n' + traceback.format_exc()
     message = message.splitlines()
-    f = open('error.txt', 'a')
+    f = open_utf8('error.txt', 'a')
     f.write("[" + strftime("%d/%m/%Y %H:%M:%S") + "] " + '\n')
     for line in message:
         f.write(line.strip('\n') + '\n')
@@ -175,25 +177,25 @@ def initialise():
     global rekturl
     global idleresponses
     global redditreader
-    with open('rekt.txt') as f:
+    with open_utf8('rekt.txt') as f:
         line = f.readline()
         line = line.strip('\n').strip()
         rekturl = line
-    with open('space.txt') as f:
+    with open_utf8('space.txt') as f:
         for line in f:
             spacelist.append(line.strip().replace('"', ''))
     timers['space'] = 0
     timers['shushed'] = 0
 
-    with open('confucius.txt') as f:
+    with open_utf8('confucius.txt') as f:
         for line in f:
             line = line[line.find('.') + 1:].strip()
             confus.append(line)
-    with open('responses.txt') as f:
+    with open_utf8('responses.txt') as f:
         for line in f:
             idleresponses.append(line.strip('\n').strip())
     test = "#LEFTS"
-    with open('procemo.txt') as f:
+    with open_utf8('procemo.txt') as f:
         for line in f:
             line = line.strip('\n').strip(' ')
             if line == '':
@@ -210,7 +212,7 @@ def initialise():
                 elif test == "#MOUTHS":
                     mouths.append(line)
 
-    with open('emoticons.txt') as f:
+    with open_utf8('emoticons.txt') as f:
         for line in f:
             # print(line)
             line = line.strip('\n').strip(' ').split('&')
@@ -220,7 +222,7 @@ def initialise():
                 emoticons[line[0]] = line[1].replace("\\n", '\n')
     # print("EMOTICONS")
     # print(emoticons)
-    with open('triggers.txt') as f:
+    with open_utf8('triggers.txt') as f:
         triggers = OrderedDict()
         for line in f:
             line = line.strip('\n').strip(' ').split('|')
@@ -232,7 +234,7 @@ def initialise():
                 timers[line[0][0]] = 0
                 timervals[line[0][0]] = int(line[2])
                 bottriggers[line[0][0]] = True if line[3].replace("\\n", '\n') == 'T' else False
-    with open('namecommands.txt') as f:
+    with open_utf8('namecommands.txt') as f:
         namedtriggers = OrderedDict()
         for line in f:
             line = line.strip('\n').strip(' ').split('|')
@@ -247,24 +249,24 @@ def initialise():
     # print("TRIGGERS")
     # print(triggers)
 
-    with open('README.md', 'w') as f:
-        with open('read1.txt') as f1:
+    with open_utf8('README.md', 'w') as f:
+        with open_utf8('read1.txt') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(triggers):
                 f.write(stringify(key) + ": " + triggers[key] + "  \n")
         f.write("  \n")
-        with open('read2.txt') as f1:
+        with open_utf8('read2.txt') as f1:
             for line in f1:
                 f.write(line)
             for key in sorted(emoticons):
                 f.write(key + ": " + emoticons[key] + "  \n")
 
-    with open('autojoin.txt') as f:
+    with open_utf8('autojoin.txt') as f:
         for line in f:
             channel.append(line.strip().replace('\n', ''))
 
-    with open('auth.txt') as f:
+    with open_utf8('auth.txt') as f:
         username = f.readline().strip().replace('\n', '')
         password = f.readline().strip().replace('\n', '')
         forumusername = f.readline().strip().replace('\n', '')
@@ -420,7 +422,7 @@ def joinchan(chan):  # This function is used to join channels.
 
 
 def fileprint(chan, stri):
-    with open(chan + ".txt", 'a') as f:
+    with open_utf8(chan + ".txt", 'a') as f:
         f.write(stri.replace(chan, '').strip().strip('\n') + '\n')
     print(stri)
 
@@ -558,7 +560,7 @@ def splitInLines(mess):
 def setrekturl(_channel, mess):
     global rekturl
     newurl = mess[mess.find("update") + 6:].strip('\n').strip()
-    f = open('rekt.txt', 'w')
+    f = open_utf8('rekt.txt', 'w')
     f.write(newurl)
     rekturl = newurl
     sendmsg(_channel, "Okay, " + newurl + " is saved as the new update! ^.^")
@@ -569,7 +571,7 @@ def rektposts(user, channel):
     if 'start' not in url:
         url = url.replace('#', '&start=0#')
     nicks = {}
-    with open('charnames.txt') as f:
+    with open_utf8('charnames.txt') as f:
         for line in f:
             line = line.split('&')
             nicks[line[0]] = False
@@ -935,7 +937,7 @@ def logslastn(chan, n):
     mess = ""
     if n == 0:
         return "Very funny! :p"
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), n)
+    lines = tailer.tail(open_utf8(chan + ".txt", errors='ignore'), n)
     for line in lines:
         mess += line + '\n'
 
@@ -989,7 +991,7 @@ def logslasth(chan, h):
     if amlines < 50:
         amlines = 50
     # print(amlines)
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), amlines)
+    lines = tailer.tail(open_utf8(chan + ".txt", errors='ignore'), amlines)
     n = datetime.datetime.now()
     # for some reason the first element is borked
     del lines[0]
@@ -1033,7 +1035,7 @@ def logslasth(chan, h):
 
 def lastseen(chan, user):
     mess = ""
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
+    lines = tailer.tail(open_utf8(chan + ".txt", errors='ignore'), logmax)
     lines.reverse()
     n = datetime.datetime.now()
     try:
@@ -1077,7 +1079,7 @@ def lastseen(chan, user):
 
 def logslastseen(chan, user):
     mess = ""
-    lines = tailer.tail(open(chan + ".txt", errors='ignore'), logmax)
+    lines = tailer.tail(open_utf8(chan + ".txt", errors='ignore'), logmax)
     lines.reverse()
     n = datetime.datetime.now()
     try:
@@ -1284,7 +1286,7 @@ def readirc():
     except Exception as e:
         # some weird message?
         # print(mess)
-        f = open('error.txt')
+        f = open_utf8('error.txt')
         try:
             f.write(str(mess) + '\n')
         except Exception:
