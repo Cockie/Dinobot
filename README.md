@@ -32,7 +32,7 @@ space: SPAAACE!
 *crickets*, : chirp chirp  
 \o/, : \o/  
 all hail, : All hail! /o/  
-america, murika, : MURIKAH!!! /o/  
+america, murika, murica, : MURIKAH!!! /o/  
 blood, : B L O O D  
 bots assemble, bots, assemble, bots,assemble, : Saoirse, queen of the spoon throne!  
 c++, : Yay C++!  

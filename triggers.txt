@@ -14,7 +14,7 @@ pudding|PUDDING!|10|F
 Пудинг|PUDDING!|10|F 
 пудинг|PUDDING!|10|F 
 tintin|YAY TINTIN!|200|F 
-america&murika|MURIKAH!!! /o/|200|F 
+america&murika&murica|MURIKAH!!! /o/|200|F 
 microsoft&windows|ACTION shakes fist at Microsoft|500|F 
 python|Yay Python!|500|F 
 c++|Yay C++!|500|F 
