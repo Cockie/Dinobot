@@ -18,6 +18,7 @@ space: SPAAACE!
 !asdf, : https://drive.google.com/open?id=0B-BMdS4aDoPtUlRUc1lia1N4bkU  
 !beam, : https://www.youtube.com/watch?v=hMa3LXe6oVc  
 !burn, : Apply cold water to burned area http://i.imgur.com/YhlseLP.jpg  
+!clink, : https://i.imgur.com/9cxi8j4.png  
 !discord-invite, : https://discord.gg/0jH4fqNh4KiWRpkl  
 !godleft, : https://i.imgur.com/Ea8mTFM.png  
 !hackertal, : https://i.imgur.com/Zy2OEtw.png  
