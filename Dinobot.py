@@ -527,7 +527,7 @@ def rektwiki(_channel, mess):
         mess = mess.replace("rekt wiki", '')
     mess = mess.strip()
     try:
-        r = request.urlopen("http://lt-rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
+        r = request.urlopen("http://rekt.wikidot.com/search:site/q/" + mess.strip().replace(' ', '\%20'))
     except Exception as e:
         logerror(e)
         return
